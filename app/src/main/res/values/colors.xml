@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f1f1f2</color>
+    <color name="colorPrimaryDark">#2aaae6</color>
+    <color name="colorAccent">#f1f1f2</color>
+    <color name="colorText">#000</color>
+    <color name="colorText2">#FFFFFF</color>
+
+    <!--FFC931 skolefargen-->
+</resources>
+
