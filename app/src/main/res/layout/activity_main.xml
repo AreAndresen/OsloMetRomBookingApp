@@ -33,7 +33,7 @@
 
 
     <Button
-        android:id="@+id/resturanterKnapp"
+        android:id="@+id/seRomKnapp"
         android:layout_width="270dp"
         android:layout_height="73dp"
         android:layout_below="@id/overskrift"
@@ -45,7 +45,7 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="9"
-        android:text="Restauranter"
+        android:text="Se grupperom"
         android:textColor="@color/colorText2"
         android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="9"
-        android:layout_below="@id/resturanterKnapp"
+        android:layout_below="@id/seRomKnapp"
         android:textSize="20sp"
         android:text="Venner" />
 

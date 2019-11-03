@@ -11,7 +11,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     //--------KNAPPER-------
-    Button resturanterKnapp, vennerKnapp, bestillingKnapp, innstillingerKnapp;
+    Button seRomKnapp, vennerKnapp, bestillingKnapp, innstillingerKnapp;
 
 
     @Override
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //--------KNAPPER--------
-        resturanterKnapp = findViewById(R.id.resturanterKnapp);
+        seRomKnapp = findViewById(R.id.seRomKnapp);
         vennerKnapp = findViewById(R.id.vennerKnapp);
         bestillingKnapp = findViewById(R.id.bestillingerKnapp);
         innstillingerKnapp = findViewById(R.id.innstillingerKnapp);
@@ -29,11 +29,11 @@ public class MainActivity extends AppCompatActivity {
 
         //--------LISTENERS--------
         //KLIKK RESTURANTER
-        resturanterKnapp.setOnClickListener(new View.OnClickListener() {
+        seRomKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent_startspill = new Intent (MainActivity.this, Resturanter.class);
-                //startActivity(intent_startspill);
+                Intent intent_startspill = new Intent (MainActivity.this, Kart.class);
+                startActivity(intent_startspill);
                 finish();
             }
         });
