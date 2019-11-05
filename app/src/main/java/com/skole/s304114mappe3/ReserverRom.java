@@ -383,14 +383,14 @@ public class ReserverRom extends AppCompatActivity {
         //LEGGER TIL BESTILLINGEN I DB MED GENERERT LØPENUMMER FRA MINNET
         db.leggTilBestilling(bestilling, indeksen);
     }
-
+    */
 
 
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent (RegistrerBestilling.this, Bestillinger.class);
+        Intent intent = new Intent (ReserverRom.this, MainActivity.class);
         startActivity(intent);
         finish();
-    }*/
+    }
 }
