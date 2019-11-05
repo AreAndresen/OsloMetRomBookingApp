@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         reserverRomKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent_preferanser = new Intent (MainActivity.this, Bestillinger.class);
-                //startActivity(intent_preferanser);
+                Intent intent_preferanser = new Intent (MainActivity.this, ReserverRom.class);
+                startActivity(intent_preferanser);
                 finish();
             }
         });

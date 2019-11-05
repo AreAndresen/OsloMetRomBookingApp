@@ -1,9 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android= "http://schemas.android.com/apk/res/android"
+    xmlns:tools= "http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReserverRom">
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    tools:context=".RegistrerRom"
+    android:layout_gravity="center"
+    android:background="@color/colorPrimary"
+    >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="115dp"
+        android:layout_height="85dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/tittelInfo"
+        android:layout_below="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="9"
+        android:text="Ny reservering"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/boks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tittelInfo"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="15dp"
+        tools:context=".RegistrerRom">
+
+        <TextView
+            android:id="@+id/tid"
+            android:textColor="@color/colorText"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tid" />
+
+        <LinearLayout
+            android:id="@+id/boks1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tid"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:weightSum="100">
+            >
+
+            <TextView
+                android:id="@+id/start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/slutt"
+                android:padding="5dp"
+                android:text="Start:"
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorText"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/slutt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="110dp"
+                android:layout_toRightOf="@+id/start"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColorHint="@color/colorText"
+                android:text="Slutt:"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/boks2"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:weightSum="100"
+            android:layout_below="@+id/boks1">
+
+            <Spinner
+                android:id="@+id/spinStart"
+                android:layout_width="156dp"
+                android:layout_height="35dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/colorText2"
+                android:layout_marginTop="5dp" />
+
+            <Spinner
+                android:id="@+id/spinSlutt"
+                android:layout_width="156dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/colorText2"
+                android:layout_marginTop="5dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tlf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/boks2"
+            android:layout_marginTop="10dp"
+            android:text="Dato:"
+
+            android:textColor="@color/colorText"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/visDato"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tlf"
+            android:layout_gravity="center"
+            android:layout_marginTop="-1dp"
+            android:hint="Velg dato*"
+            android:background="@color/colorText2"
+            android:padding="5dp"
+            android:textColor="@color/colorText"
+            android:textColorHint="@color/colorText"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/visDato"
+            android:layout_marginTop="10dp"
+            android:text="Rom:"
+            android:textColor="@color/colorText"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/typeResturant"
+            android:layout_width="156dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/type"
+            android:layout_marginBottom="5dp"
+            android:background="@color/colorText2"
+            android:layout_marginTop="5dp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnSeReservasjonsinfo"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/boks"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimaryDark"
+        android:fontFamily="sans-serif-medium"
+        android:shadowColor="@color/colorText"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:textColor="@color/colorText2"
+        android:textSize="20dp"
+        android:text="Registrer" />
+
+    <Button
+        android:id="@+id/btnTilbake"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSeReservasjonsinfo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@color/colorPrimaryDark"
+        android:fontFamily="sans-serif-medium"
+        android:shadowColor="@color/colorText"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:textColor="@color/colorText2"
+        android:textSize="20dp"
+        android:text="Avbryt" />
+
+
+</RelativeLayout>

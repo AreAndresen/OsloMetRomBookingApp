@@ -44,7 +44,7 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="9"
-        android:text="Se grupperom"
+        android:text="Se alle grupperom"
         android:textColor="@color/colorText2"
         android:textSize="20sp" />
 
@@ -63,7 +63,7 @@
         android:shadowRadius="9"
         android:layout_below="@id/seRomKnapp"
         android:textSize="20sp"
-        android:text="Registrer rom" />
+        android:text="Registrer nytt rom" />
 
     <Button
         android:id="@+id/reserverRomKnapp"
