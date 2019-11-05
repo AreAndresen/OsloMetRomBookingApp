@@ -1,7 +1,6 @@
 package com.skole.s304114mappe3;
 
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     //--------KNAPPER-------
-    Button seRomKnapp, vennerKnapp, bestillingKnapp, innstillingerKnapp;
+    Button seRomKnapp, registrerRomKnapp, reserverRomKnapp, innstillingerKnapp;
 
 
     @Override
@@ -22,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         //--------KNAPPER--------
         seRomKnapp = findViewById(R.id.seRomKnapp);
-        vennerKnapp = findViewById(R.id.vennerKnapp);
-        bestillingKnapp = findViewById(R.id.bestillingerKnapp);
+        registrerRomKnapp = findViewById(R.id.registrerRomKnapp);
+        reserverRomKnapp = findViewById(R.id.reserverRomKnapp);
         innstillingerKnapp = findViewById(R.id.innstillingerKnapp);
 
 
@@ -39,16 +38,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //KLIKK VENNER
-        vennerKnapp.setOnClickListener(new View.OnClickListener() {
+        registrerRomKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent_statistikk = new Intent (MainActivity.this, Venner.class);
-                //startActivity(intent_statistikk);
+                Intent intent_statistikk = new Intent (MainActivity.this, RegistrerRom.class);
+                startActivity(intent_statistikk);
             }
         });
 
         //KLIKK BESTILLINGER
-        bestillingKnapp.setOnClickListener(new View.OnClickListener() {
+        reserverRomKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Intent intent_preferanser = new Intent (MainActivity.this, Bestillinger.class);

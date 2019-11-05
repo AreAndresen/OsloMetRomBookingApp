@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -176,6 +177,13 @@ public class Kart extends FragmentActivity implements OnMapReadyCallback, Google
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+    }
 
+    //-------TILBAKE KNAPP - FORHINDRER STACK---------
+    @Override
+    public void onBackPressed() {
+        Intent intent_tilbake = new Intent (Kart.this, MainActivity.class);
+        startActivity(intent_tilbake);
+        finish();
     }
 }
