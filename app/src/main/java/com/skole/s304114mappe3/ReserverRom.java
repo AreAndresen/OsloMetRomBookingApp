@@ -218,8 +218,8 @@ public class ReserverRom extends AppCompatActivity {
     private void populerSpinSlutt() {
 
         //GENERERER ARRAYADAPTER TIL LISTVIEWET
-        final ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.klokkeslett, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.klokkeslett, R.layout.farge_spinner);
+        adapter2.setDropDownViewResource(R.layout.spinner_design);
 
         spinSlutt.setAdapter(adapter2);
 

@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="110dp"
+                android:layout_marginLeft="117dp"
                 android:layout_toRightOf="@+id/start"
                 android:textAlignment="center"
                 android:textColorHint="@color/colorText"
@@ -118,9 +118,8 @@
 
             <Spinner
                 android:id="@+id/spinSlutt"
-                android:layout_width="match_parent"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp" />
