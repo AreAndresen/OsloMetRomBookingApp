@@ -12,10 +12,11 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="131dp"
-        android:layout_height="112dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="115dp"
+        android:layout_height="85dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/toolbar"
         android:src="@drawable/logo" />
 
     <TextView

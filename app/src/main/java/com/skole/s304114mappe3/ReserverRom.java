@@ -7,16 +7,21 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 
 public class ReserverRom extends AppCompatActivity {
@@ -36,7 +41,7 @@ public class ReserverRom extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Avbrutt bestilling",Toast.LENGTH_LONG).show();
         return;
     }*/
-
+    private ImageView logo;
 
     //--------KNAPPER--------
     private Button btnTilbake, btnLeggTilVenn, btnSeReservasjonsinfo;
@@ -49,6 +54,8 @@ public class ReserverRom extends AppCompatActivity {
 
     //--------VERDIER--------
     private String dato, tid;
+
+    private String tidStart, tidSlutt;
 
     //--------OBJEKTER--------
     //private Venn valgtVenn, valgtVennSlett;
@@ -72,6 +79,15 @@ public class ReserverRom extends AppCompatActivity {
         setContentView(R.layout.activity_reserver_rom);
 
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.minmeny);
+        //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
+        //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
+        setActionBar(toolbar);
+
+
+        logo = findViewById(R.id.logo2);
+
         //--------KNAPPER--------
         btnTilbake = (Button) findViewById(R.id.btnTilbake);
         //btnLeggTilVenn = (Button) findViewById(R.id.btnLeggTilVenn);
@@ -88,6 +104,8 @@ public class ReserverRom extends AppCompatActivity {
         spinStart = (Spinner) findViewById(R.id.spinStart);
         spinSlutt = (Spinner) findViewById(R.id.spinSlutt);
 
+        populerSpinStart();
+        populerSpinSlutt();
 
         //--------DB HANDLER--------
         //db = new DBhandler(this);
@@ -162,30 +180,91 @@ public class ReserverRom extends AppCompatActivity {
 
 
 
-    /*--------POPULERER VENNERLISTVIEWET - MULIGHET FOR LESTTING DIREKTE--------
-    private void populerListView() {
+    //--------POPULERER VENNERLISTVIEWET - MULIGHET FOR LESTTING DIREKTE--------
+    private void populerSpinStart() {
 
         //GENERERER ARRAYADAPTER TIL LISTVIEWET
-        final ArrayAdapter<Venn> adapter = new ArrayAdapter<Venn>(this, android.R.layout.simple_list_item_1, valgteVenner);
-        vennerListView.setAdapter(adapter);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.klokkeslett,  R.layout.farge_spinner);
+        adapter.setDropDownViewResource(R.layout.spinner_design);
 
+        spinStart.setAdapter(adapter);
 
-        //VED KLIKK PÅ VENN FRA LISTVIEWET
-        vennerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinStart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String text = adapterView.getItemAtPosition(i).toString();
+                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+            }
 
-                //GIR VALGTVENNSLETT VERDIEN TIL VALGT OBJEKT FRA LISTVIEWET
-                valgtVennSlett = (Venn) vennerListView.getItemAtPosition(i);
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-                //sletter valgt venn direkte fra listviewet ved trykk
-                adapter.remove(valgtVennSlett);
-
-                //OPPDATERER ADAPTERARRAYET FORTLØPENDE
-                adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    /*@Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String text = adapterView.getItemAtPosition(i).toString();
+        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }*/
+
+    //--------POPULERER VENNERLISTVIEWET - MULIGHET FOR LESTTING DIREKTE--------
+    private void populerSpinSlutt() {
+
+        //GENERERER ARRAYADAPTER TIL LISTVIEWET
+        final ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.klokkeslett, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinSlutt.setAdapter(adapter2);
+
+        spinSlutt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+
+                //GIR VALGTRESTURANT VERDIEN TIL VALGT OBJEKT FRA SPINNER
+                tidSlutt = parent.getItemAtPosition(i).toString();
+
+                tidSlutt = (String) parent.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+
+    //--------GENERERER SPINNER MED ALLE RESTURATENE SOM ER LAGT TIL I DB--------
+    /*private void populerSpinSlutt2() {
+
+        //LEGGER ALLE RESTURANTER I RESTURANT-ARRAY - HENTET FRA DB
+        ArrayList<Resturant> resturanter = db.finnAlleResturanter();
+
+        //GENERERER ARRAYADAPTER TIL SPINNER
+        final ArrayAdapter<Resturant> adapterRes = new ArrayAdapter<Resturant>(this, android.R.layout.simple_list_item_1, resturanter);
+        adapterRes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerResturanter.setAdapter(adapterRes);
+
+        //VED VALG/KLIKK AV RESTURANT I SPINNEREN
+        spinnerResturanter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                //GIR VALGTRESTURANT VERDIEN TIL VALGT OBJEKT FRA SPINNER
+                valgtResturant = (Resturant) parent.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }*/
+
 
 
     /*--------OPPRETTER SEBESTILLINGSINFODIALOG--------
@@ -385,6 +464,39 @@ public class ReserverRom extends AppCompatActivity {
     }
     */
 
+    //En metode for å lage To o l b a rfra minmeny.xml
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.minmeny, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.seRom:
+                Intent intent_startspill = new Intent (ReserverRom.this, Kart.class);
+                startActivity(intent_startspill);
+                finish();
+                break;
+            case R.id.registrerRom:
+                Intent intent_statistikk = new Intent (ReserverRom.this, RegistrerRom.class);
+                startActivity(intent_statistikk);
+                break;
+            case R.id.reserverRom:
+                Intent intent_preferanser = new Intent (ReserverRom.this, ReserverRom.class);
+                startActivity(intent_preferanser);
+                finish();
+                break;
+            default:
+                // If wegothere, theuser'saction wasnot recognized
+                // Invokethesuperclassto handle it.
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
 
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override
@@ -393,4 +505,6 @@ public class ReserverRom extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
 }
