@@ -12,7 +12,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toolbar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -35,15 +40,37 @@ public class Kart extends FragmentActivity implements OnMapReadyCallback, Google
 
     private GoogleMap mMap;
 
+    private ImageView logo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kart);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.minmeny);
+        //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
+        //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
+        setActionBar(toolbar);
+
+
+        logo = findViewById(R.id.logo2);
+        
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent_startspill = new Intent (Kart.this, MainActivity.class);
+                startActivity(intent_startspill);
+                finish();
+            }
+        });
 
 
         //NYTT GPS
@@ -59,6 +86,7 @@ public class Kart extends FragmentActivity implements OnMapReadyCallback, Google
                 .setFastestInterval(1 * 1000); // 1 second, in milliseconds
 
     }
+
 
 
     /**
@@ -178,6 +206,43 @@ public class Kart extends FragmentActivity implements OnMapReadyCallback, Google
         mMap = googleMap;
 
     }
+
+
+
+    //En metode for å lage To o l b a rfra minmeny.xml
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.minmeny, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.seRom:
+                Intent intent_startspill = new Intent (Kart.this, Kart.class);
+                startActivity(intent_startspill);
+                finish();
+                break;
+            case R.id.registrerRom:
+                Intent intent_statistikk = new Intent (Kart.this, RegistrerRom.class);
+                startActivity(intent_statistikk);
+                break;
+            case R.id.reserverRom:
+                Intent intent_preferanser = new Intent (Kart.this, ReserverRom.class);
+                startActivity(intent_preferanser);
+                finish();
+                break;
+            default:
+                // If wegothere, theuser'saction wasnot recognized
+                // Invokethesuperclassto handle it.
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+
 
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override

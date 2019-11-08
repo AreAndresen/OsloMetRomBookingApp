@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <item
+        android:id="@+id/seRom"
+        android:icon="@drawable/ic_control_point_black_24dp"
+        app:showAsAction="never"
+        android:title="Se alle rom"/>
+    <item
+        android:id="@+id/registrerRom"
+        app:showAsAction="never"
+        android:title="Registrer rom"/>
+    <item
+        android:id="@+id/reserverRom"
+        app:showAsAction="never"
+        android:title="Reserver rom"/>
+</menu>
