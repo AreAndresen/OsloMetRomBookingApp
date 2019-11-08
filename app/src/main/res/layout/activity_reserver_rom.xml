@@ -110,10 +110,11 @@
 
             <Spinner
                 android:id="@+id/spinStart"
-                android:layout_width="145dp"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp" />
+                android:textAlignment="center" />
 
             <Spinner
                 android:id="@+id/spinSlutt"
@@ -146,9 +147,10 @@
             android:layout_below="@+id/tlf"
             android:layout_gravity="center"
             android:layout_marginTop="-1dp"
-            android:hint="Velg dato*"
             android:background="@color/colorText2"
+            android:hint="Velg dato*"
             android:padding="5dp"
+            android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textColorHint="@color/colorText"
             android:textSize="20sp" />
