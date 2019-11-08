@@ -48,7 +48,7 @@
         android:layout_marginTop="5dp"
         android:background="@color/colorAccent"
         android:orientation="vertical"
-        android:padding="15dp"
+        android:padding="25dp"
         tools:context=".RegistrerRom">
 
         <TextView
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="117dp"
+                android:layout_marginLeft="126dp"
                 android:layout_toRightOf="@+id/start"
                 android:textAlignment="center"
                 android:textColorHint="@color/colorText"
@@ -120,7 +120,7 @@
                 android:id="@+id/spinSlutt"
                 android:layout_width="155dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp" />
 
@@ -145,7 +145,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tlf"
             android:layout_gravity="center"
-            android:layout_marginTop="-1dp"
             android:background="@color/colorText2"
             android:hint="Velg dato*"
             android:padding="5dp"
@@ -167,7 +166,7 @@
 
         <Spinner
             android:id="@+id/typeResturant"
-            android:layout_width="156dp"
+            android:layout_width="180dp"
             android:layout_height="35dp"
             android:layout_below="@+id/type"
             android:layout_marginBottom="5dp"
@@ -176,39 +175,51 @@
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnSeReservasjonsinfo"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/boks"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorPrimary"
-        android:fontFamily="sans-serif-medium"
-        android:shadowColor="@color/colorText"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="9"
-        android:textColor="@color/colorText2"
-        android:textSize="20dp"
-        android:text="Registrer" />
 
-    <Button
-        android:id="@+id/btnTilbake"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnSeReservasjonsinfo"
+    <LinearLayout
+        android:id="@+id/boks3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:background="@color/colorPrimary"
-        android:fontFamily="sans-serif-medium"
-        android:shadowColor="@color/colorText"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="9"
-        android:textColor="@color/colorText2"
-        android:textSize="20dp"
-        android:text="Avbryt" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:padding="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/boks"
+        >
+
+        <Button
+            android:id="@+id/btnTilbake"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/btnSeReservasjonsinfo"
+            android:background="@color/colorPrimary"
+            android:fontFamily="sans-serif-medium"
+            android:shadowColor="@color/colorText"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="9"
+            android:text="Avbryt"
+            android:textColor="@color/colorText2"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/btnSeReservasjonsinfo"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/btnTilbake"
+            android:background="@color/colorPrimary"
+            android:fontFamily="sans-serif-medium"
+            android:shadowColor="@color/colorText"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="9"
+            android:textColor="@color/colorText2"
+            android:textSize="20dp"
+            android:text="Registrer" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>
