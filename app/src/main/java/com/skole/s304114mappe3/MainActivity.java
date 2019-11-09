@@ -23,12 +23,16 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -39,6 +43,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationRequest mLocationRequest;
 
     private GoogleMap mMap;
+    ArrayList<LatLng> markorer = new ArrayList<LatLng>();
+
+    LatLng PH360 = new LatLng(59.919566, 10.734934);
+    LatLng PH373 = new LatLng(59.919458, 10.735091);
+    LatLng PH351 = new LatLng(59.919466, 10.734803);
+    LatLng N020117 = new LatLng(59.920152, 10.735870);
+
 
     private ImageView logo;
 
@@ -48,6 +59,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kart);
 
+        //TOOLBAR
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.minmeny);
         //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
@@ -55,13 +67,20 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setActionBar(toolbar);
 
 
-        logo = findViewById(R.id.logo2);
-
+        //GPS
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        markorer.add(PH360);
+        markorer.add(PH373);
+        markorer.add(PH351);
+        markorer.add(N020117);
 
+
+
+        //LOGO
+        logo = findViewById(R.id.logo2);
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,13 +138,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        LatLng latLng = new LatLng(59.919958, 10.735353); //currentLatitude, currentLongitude
 
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
                 .title("Jeg er her!");
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         mMap.addMarker(options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 5000, null);
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
 
     }
@@ -153,7 +174,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             handleNewLocation(location);
         }
-        ;
+
 
     }
 
@@ -203,7 +224,23 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
+
+        //løkke gjennom koordinat arrayet og setter alle markørene på kartet
+        for(int i = 0; i<markorer.size(); i++) {
+            mMap.addMarker(new MarkerOptions().position(markorer.get(i)).title("Rominfo fra klasse"));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(markorer.get(i)));
+        }
+
+
+        // Add a marker in Sydney and move the camera
+        //LatLng sydney = new LatLng(-34, 151);
+        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        //mMap = googleMap;
 
     }
 
