@@ -103,31 +103,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)        // 10 seconds, in milliseconds
                 .setFastestInterval(1 * 1000); // 1 second, in milliseconds
-
     }
 
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
-    //NY METODE FRA GPS - SE UNDER
-    /*@Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }*/
 
 
 
@@ -138,6 +117,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
+
+        //Manipulerer utgangspunktet for posisjonen
         LatLng latLng = new LatLng(59.919958, 10.735353); //currentLatitude, currentLongitude
 
         MarkerOptions options = new MarkerOptions()
@@ -210,8 +191,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onPause() {
         super.onPause();
         if (mGoogleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            mGoogleApiClient.disconnect();
+            //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            //mGoogleApiClient.disconnect();
         }
 
     }
@@ -222,6 +203,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -258,13 +248,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.seRom:
-                Intent intent_startspill = new Intent (MainActivity.this, Kart.class);
-                startActivity(intent_startspill);
-                finish();
+                //Intent intent_startspill = new Intent (MainActivity.this, Kart.class);
+                //startActivity(intent_startspill);
+                //finish();
                 break;
             case R.id.registrerRom:
                 Intent intent_statistikk = new Intent (MainActivity.this, RegistrerRom.class);
                 startActivity(intent_statistikk);
+                finish();
                 break;
             case R.id.reserverRom:
                 Intent intent_preferanser = new Intent (MainActivity.this, ReserverRom.class);

@@ -476,8 +476,8 @@ public class ReserverRom extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.seRom:
-                Intent intent_startspill = new Intent (ReserverRom.this, Kart.class);
-                startActivity(intent_startspill);
+                Intent intent = new Intent (ReserverRom.this, MainActivity.class);
+                startActivity(intent);
                 finish();
                 break;
             case R.id.registrerRom:

@@ -147,8 +147,8 @@ public class RegistrerRom extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.seRom:
-                Intent intent_startspill = new Intent (RegistrerRom.this, Kart.class);
-                startActivity(intent_startspill);
+                Intent intent = new Intent (RegistrerRom.this, MainActivity.class);
+                startActivity(intent);
                 finish();
                 break;
             case R.id.registrerRom:
