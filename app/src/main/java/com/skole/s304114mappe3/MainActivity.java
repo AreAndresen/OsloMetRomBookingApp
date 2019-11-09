@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toolbar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,7 +33,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.skole.s304114mappe3.klasser.Rom;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -44,14 +55,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     ArrayList<LatLng> markorer = new ArrayList<LatLng>();
+    ArrayList<Rom> markorerNy = new ArrayList<Rom>();
 
-    LatLng PH360 = new LatLng(59.919566, 10.734934);
-    LatLng PH373 = new LatLng(59.919458, 10.735091);
-    LatLng PH351 = new LatLng(59.919466, 10.734803);
-    LatLng N020117 = new LatLng(59.920152, 10.735870);
+    // LatLng PH360 = new LatLng(59.919566, 10.734934);
+    LatLng PH373Koord = new LatLng(59.919458, 10.735091);
+    Rom PH373 = new Rom("PH373",PH373Koord);
+
+
+    LatLng PH360Koord = new LatLng(59.919566, 10.734934);
+    Rom PH360 = new Rom("PH360",PH360Koord);
+    //LatLng PH351 = new LatLng(59.919466, 10.734803);
+    //LatLng N020117 = new LatLng(59.920152, 10.735870);
 
 
     private ImageView logo;
+
+    TextView textView;
 
 
     @Override
@@ -72,11 +91,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        markorer.add(PH360);
-        markorer.add(PH373);
-        markorer.add(PH351);
-        markorer.add(N020117);
+        //markorer.add(PH360);
+        markorerNy.add(PH373);
+        //markorer.add(PH351);
+        //markorer.add(N020117);
 
+
+        //JSON GREIER
+        //textView = (TextView) findViewById(R.id.jasontekst);
+        getJSON task = new getJSON();
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
 
 
         //LOGO
@@ -218,10 +242,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         //løkke gjennom koordinat arrayet og setter alle markørene på kartet
-        for(int i = 0; i<markorer.size(); i++) {
-            mMap.addMarker(new MarkerOptions().position(markorer.get(i)).title("Rominfo fra klasse"));
+        for(int i = 0; i<markorerNy.size(); i++) {
+            mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getBeskrivelse()));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(markorer.get(i)));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
         }
 
 
@@ -269,6 +293,85 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return true;
     }
+
+
+
+
+    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL
+    private class getJSON extends AsyncTask<String, Void,String> {
+        JSONObject jsonObject;
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String retur = "";
+            String s = "";
+            String output = "";
+            for (String url : urls) {
+                try{
+                    URL urlen = new URL(urls[0]);
+                    HttpURLConnection conn = (HttpURLConnection)urlen.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setRequestProperty("Accept", "application/json");
+                    if(conn.getResponseCode() != 200) {
+                        throw new RuntimeException("Failed: HTTP errorcode: "+ conn.getResponseCode());
+                    }
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+                    System.out.println("Output from Server .... \n");
+                    while((s = br.readLine()) != null) {
+                        output = output + s;
+                    }
+                    conn.disconnect();
+                    try{
+                        JSONArray mat = new JSONArray(output);
+                        for (int i = 0; i < mat.length(); i++) {
+                            JSONObject jsonobject = mat.getJSONObject(i);
+
+                            String beskrivelse = jsonobject.getString("beskrivelse");
+                            String lat = jsonobject.getString("lat");
+                            String len = jsonobject.getString("len");
+                            retur = retur +beskrivelse+": "+lat+ " "+len+"\n";
+
+                            Double latD = Double.parseDouble(lat);
+                            Double lenD = Double.parseDouble(len);
+
+                            LatLng koordinater = new LatLng(latD, lenD);
+
+                            Rom nyttRom = new Rom(beskrivelse,koordinater);
+
+                            //Nye koordinater
+                            //LatLng koordinater = new LatLng(latD, lenD);
+                            //markorer.add(koordinater);
+
+                            markorerNy.add(nyttRom);
+
+                        }
+                        return retur;
+                    }
+                    catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return retur;
+                }
+                catch(Exception e) {
+                    return"Noe gikk feil";
+                }
+            }
+            return retur;
+        }
+
+
+
+        @Override
+        protected void onPostExecute(String ss) {
+            //markorerNy.add(PH360);
+
+
+        }
+    }
+
+
+
 
 
 
