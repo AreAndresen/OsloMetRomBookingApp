@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.skole.s304114mappe3.Dialog.RegistrerRomDialog;
 import com.skole.s304114mappe3.klasser.Rom;
 
 import org.json.JSONArray;
@@ -46,7 +48,20 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, RegistrerRomDialog.DialogClickListener {
+
+    @Override
+    public void bestillClick() {
+
+    }
+
+    @Override
+    public void avbrytClick() {
+        Toast.makeText(getApplicationContext(),"Avbrutt bestilling",Toast.LENGTH_LONG).show();
+        return;
+    }
+
+
 
     public static final String TAG = Kart.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -62,8 +77,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     Rom PH373 = new Rom("PH373",PH373Koord);
 
 
-    LatLng PH360Koord = new LatLng(59.919566, 10.734934);
-    Rom PH360 = new Rom("PH360",PH360Koord);
+   //LatLng PH360Koord = new LatLng(59.919566, 10.734934);
+    //Rom PH360 = new Rom("PH360",PH360Koord);
     //LatLng PH351 = new LatLng(59.919466, 10.734803);
     //LatLng N020117 = new LatLng(59.920152, 10.735870);
 
@@ -296,7 +311,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-
     //METODER FOR Å HENTE JSONOBJEKTENE FRA URL
     private class getJSON extends AsyncTask<String, Void,String> {
         JSONObject jsonObject;
@@ -365,8 +379,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected void onPostExecute(String ss) {
             //markorerNy.add(PH360);
-
-
         }
     }
 

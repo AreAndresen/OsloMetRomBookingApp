@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".ReserverRom"></activity>
+        <activity android:name=".Dialog.RegistrerRomDialog"></activity>
+        <activity android:name=".ReserverRom" />
         <activity android:name=".RegistrerRom" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
