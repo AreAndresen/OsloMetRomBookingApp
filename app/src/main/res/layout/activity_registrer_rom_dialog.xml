@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:padding="10dp"
+    android:background="@color/colorAccent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="115dp"
+        android:layout_height="85dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/toolbar"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/tittelInfo"
+        android:layout_below="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="9"
+        android:text="Registrer nytt rom"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/boks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tittelInfo"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorAccent"
+        android:orientation="vertical"
+        android:padding="15dp"
+        >
+
+        <TextView
+            android:id="@+id/navn"
+            android:textColor="@color/colorText"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Skriv inn romnummer:" />
+
+        <EditText
+            android:id="@+id/navnResturant"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/navn"
+            android:layout_marginTop="3dp"
+            android:background="@color/colorText2"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tlf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/navnResturant"
+            android:layout_marginTop="10dp"
+            android:text="Skriv inn beskrivelse:"
+            android:textColor="@color/colorText"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/tlfResturant"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/tlf"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorText2"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tlfResturant"
+            android:layout_marginTop="10dp"
+            android:text="Skriv inn GPS-koordinater:"
+            android:textColor="@color/colorText"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/typeResturant"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/type"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorText2"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnLeggTil"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/boks"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="sans-serif-medium"
+        android:shadowColor="@color/colorText"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:textColor="@color/colorText2"
+        android:textSize="20dp"
+        android:text="Registrer" />
+
+    <Button
+        android:id="@+id/btnTilbake"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnLeggTil"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="sans-serif-medium"
+        android:shadowColor="@color/colorText"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:textColor="@color/colorText2"
+        android:textSize="20dp"
+        android:text="Avbryt" />
+
+
+</RelativeLayout>
