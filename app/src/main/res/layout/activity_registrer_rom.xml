@@ -183,6 +183,7 @@
             android:shadowColor="@color/colorText"
             android:shadowDx="2"
             android:shadowDy="2"
+
             android:shadowRadius="9"
             android:text="Registrer"
             android:textColor="@color/colorText2"

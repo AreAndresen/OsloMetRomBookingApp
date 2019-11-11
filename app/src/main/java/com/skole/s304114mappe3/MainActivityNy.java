@@ -6,10 +6,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -56,16 +60,17 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void avbrytClick() {
-        Toast.makeText(getApplicationContext(),"Avbrutt bestilling",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Avbrutt bestilling", Toast.LENGTH_LONG).show();
         return;
     }
-
 
 
     public static final String TAG = Kart.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+
+
 
     private GoogleMap mMap;
     ArrayList<LatLng> markorer = new ArrayList<LatLng>();
@@ -93,22 +98,25 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_kart);
 
         //TOOLBAR
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.minmeny);
         //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
         //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
         setActionBar(toolbar);
 
-        //JSON GREIER
-        //textView = (TextView) findViewById(R.id.jasontekst);
-        getJSON task = new getJSON();
-        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
+
 
         //GPS
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        //JSON GREIER
+        //textView = (TextView) findViewById(R.id.jasontekst);
+        getJSON task = new getJSON();
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
 
         //markorer.add(PH360);
         //markorerNy.add(PH373);
@@ -128,24 +136,23 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
                 .setFastestInterval(1 * 1000); // 1 second, in milliseconds
 
 
-
-
-
         //LOGO
         logo = findViewById(R.id.logo2);
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_startspill = new Intent (MainActivityNy.this, MainActivity.class);
+                Intent intent_startspill = new Intent(MainActivityNy.this, MainActivity.class);
                 startActivity(intent_startspill);
                 finish();
             }
         });
 
 
-
     }
+
+
+
 
     //METODER FOR Å HENTE JSONOBJEKTENE FRA URL
     private class getJSON extends AsyncTask<String, Void,String> {
@@ -259,17 +266,16 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
             return;
         }
 
+        //Location location = locationManager.getLastKnownLocation(bestProvider);
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (location == null) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-            handleNewLocation(location);
+            //handleNewLocation(location);
 
         } else {
             handleNewLocation(location);
         }
-
-
     }
 
     @Override
@@ -328,7 +334,6 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-
         mMap = googleMap;
         //løkke gjennom koordinat arrayet og setter alle markørene på kartet
         for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
@@ -336,8 +341,6 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
         }
-
-
 
 
         // Add a marker in Sydney and move the camera
@@ -384,12 +387,6 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
         }
         return true;
     }
-
-
-
-
-
-
 
 
 

@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.skole.s304114mappe3.klasser.Rom;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -32,6 +35,8 @@ public class RegistrerRom extends AppCompatActivity {
 
     //--------DB HANDLER--------
     //DBhandler db;
+
+    Rom nyttRom;
 
     private ImageView logo;
 
@@ -71,8 +76,13 @@ public class RegistrerRom extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                readWebpage();
+                Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
+                startActivity(intent_tilbake);
+                finish();
+
                 //FULLFØRER OPPRETTELSE AV NY RESTURANT
-                fullforRegistrering();
+                //fullforRegistrering();
             }
         });
 
@@ -81,7 +91,7 @@ public class RegistrerRom extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //VIEW OPPDATERES FORTLØPENDE - FORHINDRER STACK
-                Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivity.class);
+                Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
                 startActivity(intent_tilbake);
                 finish();
             }
@@ -101,38 +111,43 @@ public class RegistrerRom extends AppCompatActivity {
 
 
         //INPUTVALIDERING
-        if(!hentRomNr.equals("") && !hentBeskrivelse.equals("") && !hentLat.equals("") && !hentLen.equals("") && hentLat.matches(
-                "[0-9\\+\\-\\ ]{2,15}+") && hentBeskrivelse.matches("[a-zA-ZæøåÆØÅ\\'\\-\\ \\.]{2,40}+")
-                && hentLen.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+") && hentRomNr.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+")){
+        //if(!hentRomNr.equals("") && !hentBeskrivelse.equals("") && !hentLat.equals("") && !hentLen.equals("") && hentLat.matches(
+            //    "[0-9\\+\\-\\ ]{2,15}+") && hentBeskrivelse.matches("[a-zA-ZæøåÆØÅ\\'\\-\\ \\.]{2,40}+")
+          //      && hentLen.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+") && hentRomNr.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+")){
 
 
             //GENERERER OG LEGGER TIL NY RESTURANT I DB - TAR INN VERDIER TIL NY RESTURANT
-            leggtil(hentBeskrivelse, hentLat, hentLen);
+            leggtil(hentRomNr, hentBeskrivelse, hentLat, hentLen);
 
-        } else {
-            //INFOMELDING UT - FEIL INPUT
-            toastMessage("Alle felter må fylles ut og navn og telefonnummer må være på gyldig format");
-        }
+       //} //else {
+            ////INFOMELDING UT - FEIL INPUT
+            //toastMessage("Alle felter må fylles ut og navn og telefonnummer må være på gyldig format");
+        //}
     }
 
 
     //--------METODE FOR OPPRETTE RESTURANT--------
-    public void leggtil(String navn, String tlf, String type) {
+    public void leggtil(String romNummer, String bes, String lat, String len) {
         //OPPRETTER NYTT RESTURANT-OBJEKT
-        // Resturant nyResturant = new Resturant(navn, tlf, type);
+        Double latD = Double.parseDouble(lat);
+        Double lenD = Double.parseDouble(len);
+        LatLng koordinater = new LatLng(latD, lenD);
+
+        nyttRom = new Rom(romNummer, bes, koordinater);
 
         //LEGGER TIL NY RESTURANT I DB
         //db.leggTilResturant(nyResturant);
 
         //NULLSTILLER INPUT
+        romNr.setText("");
         beskrivelse.setText("");
         latKoordinat.setText("");
         lenKoordinat.setText("");
 
         //INFOMELDING UT
-        toastMessage("Resturant lagt til!");
+        toastMessage("Rom lagt til!");
         //MELDING TIL LOGG
-        Log.d("Legg inn: ", "Resturant lagt til");
+        Log.d("Legg inn: ", "Rom lagt til");
 
         //VIEW OPPDATERES FORTLØPENDE - FORHINDRER STACK
         Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivity.class);
@@ -203,9 +218,22 @@ public class RegistrerRom extends AppCompatActivity {
             //textView.setText(ss);
         }
     }
-    public void readWebpage(View view) {
+    public void readWebpage() {
+
         LastSide task = new LastSide();
-        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/LeggTilRom.php"});
+        //lager coztomized url
+        String hentRomNr = romNr.getText().toString();
+        String hentBeskrivelse = beskrivelse.getText().toString();
+        String hentLat = latKoordinat.getText().toString();
+        String hentLen = lenKoordinat.getText().toString();
+
+        //String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&beskrivelse="+hentBeskrivelse+"&lat="+hentLat+"&len="+hentLen;
+
+        //String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=N020117&beskrivelse=Stort&lat=59.920152&len=10.735870";
+
+
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=PH170&beskrivelse=Stoor&lat=59.920152&len=10.735870"});
+        //http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=PH351&beskrivelse=Middels&lat=59.919466&len=10.734803
     }
 
 
