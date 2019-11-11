@@ -76,7 +76,15 @@ public class RegistrerRom extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //legger til rom gjennom url
                 readWebpage();
+
+                //INFOMELDING UT
+                toastMessage("Rom lagt til!");
+                //MELDING TIL LOGG
+                Log.d("Legg inn: ", "Rom lagt til");
+
+
                 Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
                 startActivity(intent_tilbake);
                 finish();
@@ -227,12 +235,14 @@ public class RegistrerRom extends AppCompatActivity {
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();
 
-        //String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&beskrivelse="+hentBeskrivelse+"&lat="+hentLat+"&len="+hentLen;
+        //må fikse denne strengen så den er uten mellomrom og kan brukes i url
+        String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&beskrivelse="+hentBeskrivelse+"&lat="+hentLat+"&len="+hentLen;
 
         //String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=N020117&beskrivelse=Stort&lat=59.920152&len=10.735870";
+        //"http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=PH170&beskrivelse=Stoor&lat=59.920152&len=10.735870"
 
 
-        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=PH170&beskrivelse=Stoor&lat=59.920152&len=10.735870"});
+        task.execute(new String[]{url});
         //http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=PH351&beskrivelse=Middels&lat=59.919466&len=10.734803
     }
 
