@@ -235,7 +235,7 @@ public class RegistrerRom extends AppCompatActivity {
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();
 
-        //må fikse denne strengen så den er uten mellomrom og kan brukes i url
+        //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
         String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&beskrivelse="+hentBeskrivelse+"&lat="+hentLat+"&len="+hentLen;
 
         //String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=N020117&beskrivelse=Stort&lat=59.920152&len=10.735870";
