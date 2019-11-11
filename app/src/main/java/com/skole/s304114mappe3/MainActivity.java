@@ -26,7 +26,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -74,7 +73,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     // LatLng PH360 = new LatLng(59.919566, 10.734934);
     LatLng PH373Koord = new LatLng(59.919458, 10.735091);
-    Rom PH373 = new Rom("PH373",PH373Koord);
+    Rom PH373 = new Rom("PH373","Lite gruppe med 3 sitteplasser.",PH373Koord);
 
 
    //LatLng PH360Koord = new LatLng(59.919566, 10.734934);
@@ -100,6 +99,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
         setActionBar(toolbar);
 
+        //JSON GREIER
+        //textView = (TextView) findViewById(R.id.jasontekst);
+        getJSON task = new getJSON();
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
+
 
         //GPS
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -112,10 +116,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //markorer.add(N020117);
 
 
-        //JSON GREIER
-        //textView = (TextView) findViewById(R.id.jasontekst);
-        getJSON task = new getJSON();
-        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
+
 
 
         //LOGO
@@ -163,9 +164,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
                 .title("Jeg er her!");
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)); //endrer farge på min markør
         mMap.addMarker(options);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 5000, null);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 2000, null);
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
 
@@ -257,8 +258,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         //løkke gjennom koordinat arrayet og setter alle markørene på kartet
-        for(int i = 0; i<markorerNy.size(); i++) {
-            mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getBeskrivelse()));
+        for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
+            mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
         }
@@ -341,6 +342,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         for (int i = 0; i < mat.length(); i++) {
                             JSONObject jsonobject = mat.getJSONObject(i);
 
+                            String romNr = jsonobject.getString("romNr");
                             String beskrivelse = jsonobject.getString("beskrivelse");
                             String lat = jsonobject.getString("lat");
                             String len = jsonobject.getString("len");
@@ -351,7 +353,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                             LatLng koordinater = new LatLng(latD, lenD);
 
-                            Rom nyttRom = new Rom(beskrivelse,koordinater);
+                            Rom nyttRom = new Rom(romNr, beskrivelse, koordinater);
 
                             //Nye koordinater
                             //LatLng koordinater = new LatLng(latD, lenD);

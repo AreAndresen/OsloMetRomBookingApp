@@ -19,12 +19,10 @@ import android.widget.Toolbar;
 public class RegistrerRom extends AppCompatActivity {
 
     //--------KNAPPER--------
-    private Button btnLeggTil, btnTilbake;
+    private Button btnRegistrer, btnTilbake;
 
     //--------TEKST--------
-    private EditText EnavnResturant;
-    private EditText EtlfResturant;
-    private EditText EtypeResturant;
+    private EditText beskrivelse, latKoordinat, lenKoordinat, romNr;
 
     //--------DB HANDLER--------
     //DBhandler db;
@@ -48,13 +46,14 @@ public class RegistrerRom extends AppCompatActivity {
         logo = findViewById(R.id.logo2);
 
         //--------KNAPPER--------
-        btnLeggTil = (Button) findViewById(R.id.btnLeggTil);
-        btnTilbake = (Button) findViewById(R.id.btnTilbake);
+        btnRegistrer = (Button) findViewById(R.id.btnRegistrer);
+        btnTilbake = (Button) findViewById(R.id.btnAvbryt);
 
         //--------INPUTS--------
-        EnavnResturant = (EditText)findViewById(R.id.navnResturant);
-        EtlfResturant = (EditText)findViewById(R.id.tlfResturant);
-        EtypeResturant = (EditText)findViewById(R.id.typeResturant);
+        romNr = (EditText)findViewById(R.id.romNr);
+        beskrivelse = (EditText)findViewById(R.id.beskrivelse);
+        latKoordinat = (EditText)findViewById(R.id.latKoordinat);
+        lenKoordinat = (EditText)findViewById(R.id.lenKoordinat);
 
         //--------DB HANDLER--------
         //db = new DBhandler(this);
@@ -62,12 +61,12 @@ public class RegistrerRom extends AppCompatActivity {
 
         //--------LISTENERS--------
         //KLIKK PÅ LEGG TIL
-        btnLeggTil.setOnClickListener(new View.OnClickListener() {
+        btnRegistrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //FULLFØRER OPPRETTELSE AV NY RESTURANT
-                fullforLeggTilResturant();
+                fullforRegistrering();
             }
         });
 
@@ -88,20 +87,21 @@ public class RegistrerRom extends AppCompatActivity {
 
 
     //--------METODE FOR Å LEGGE TIL OPPRETTET RESTURANT--------
-    private void fullforLeggTilResturant() {
-        String navn = EnavnResturant.getText().toString();
-        String tlf = EtlfResturant.getText().toString();
-        String type = EtypeResturant.getText().toString();
+    private void fullforRegistrering() {
+        String hentRomNr = romNr.getText().toString();
+        String hentBeskrivelse = beskrivelse.getText().toString();
+        String hentLat = latKoordinat.getText().toString();
+        String hentLen = lenKoordinat.getText().toString();
 
 
         //INPUTVALIDERING
-        if(!navn.equals("") && !tlf.equals("") && !type.equals("") && tlf.matches(
-                "[0-9\\+\\-\\ ]{2,15}+") && navn.matches("[a-zA-ZæøåÆØÅ\\'\\-\\ \\.]{2,40}+")
-                && type.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+")){
+        if(!hentRomNr.equals("") && !hentBeskrivelse.equals("") && !hentLat.equals("") && !hentLen.equals("") && hentLat.matches(
+                "[0-9\\+\\-\\ ]{2,15}+") && hentBeskrivelse.matches("[a-zA-ZæøåÆØÅ\\'\\-\\ \\.]{2,40}+")
+                && hentLen.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+") && hentRomNr.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+")){
 
 
             //GENERERER OG LEGGER TIL NY RESTURANT I DB - TAR INN VERDIER TIL NY RESTURANT
-            leggtil(navn, tlf, type);
+            leggtil(hentBeskrivelse, hentLat, hentLen);
 
         } else {
             //INFOMELDING UT - FEIL INPUT
@@ -119,9 +119,9 @@ public class RegistrerRom extends AppCompatActivity {
         //db.leggTilResturant(nyResturant);
 
         //NULLSTILLER INPUT
-        EnavnResturant.setText("");
-        EtlfResturant.setText("");
-        EtypeResturant.setText("");
+        beskrivelse.setText("");
+        latKoordinat.setText("");
+        lenKoordinat.setText("");
 
         //INFOMELDING UT
         toastMessage("Resturant lagt til!");

@@ -6,6 +6,7 @@ public class Rom {
 
     //-------ATTRIBUTTER-------
     //private long ID;
+    private String romNr; //brukes til å slette
     private String beskrivelse;
     //private double lat;
     //private double len;
@@ -13,7 +14,8 @@ public class Rom {
 
 
     //-------KONTRUKSTØR-------
-    public Rom(String beskrivelse, LatLng koordinater) {
+    public Rom(String romNr, String beskrivelse, LatLng koordinater) {
+        this.romNr = romNr;
         this.beskrivelse = beskrivelse;
         //this.lat = lat;
         //this.len = len;
@@ -22,6 +24,13 @@ public class Rom {
 
 
     //-------GET/SET-------
+    public String getRomNr() {
+        return romNr;
+    }
+    public void setRomNr(String romNr) {
+        this.romNr = romNr;
+    }
+
     public String getBeskrivelse() {
         return beskrivelse;
     }

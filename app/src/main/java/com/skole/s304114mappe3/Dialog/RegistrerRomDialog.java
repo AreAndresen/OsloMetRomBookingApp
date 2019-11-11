@@ -59,7 +59,7 @@ public class RegistrerRomDialog extends DialogFragment {
         dialog.setContentView(R.layout.activity_registrer_rom_dialog);
 
         //--------KNAPPER--------
-        btnLeggTil = (Button) dialog.findViewById(R.id.btnLeggTil);
+        btnLeggTil = (Button) dialog.findViewById(R.id.btnAvbryt);
         btnTilbake = (Button) dialog.findViewById(R.id.btnTilbake);
 
         //--------INPUTS--------
