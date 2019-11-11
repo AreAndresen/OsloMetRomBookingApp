@@ -476,7 +476,7 @@ public class ReserverRom extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.seRom:
-                Intent intent = new Intent (ReserverRom.this, MainActivity.class);
+                Intent intent = new Intent (ReserverRom.this, MainActivityNy.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -501,7 +501,7 @@ public class ReserverRom extends AppCompatActivity {
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent (ReserverRom.this, MainActivity.class);
+        Intent intent = new Intent (ReserverRom.this, MainActivityNy.class);
         startActivity(intent);
         finish();
     }

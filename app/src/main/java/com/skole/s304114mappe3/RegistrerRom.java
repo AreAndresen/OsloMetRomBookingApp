@@ -3,6 +3,7 @@ package com.skole.s304114mappe3;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,11 +16,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 
 public class RegistrerRom extends AppCompatActivity {
 
     //--------KNAPPER--------
-    private Button btnRegistrer, btnTilbake;
+    private Button btnRegistrer, btnAvbryt;
 
     //--------TEKST--------
     private EditText beskrivelse, latKoordinat, lenKoordinat, romNr;
@@ -47,7 +53,7 @@ public class RegistrerRom extends AppCompatActivity {
 
         //--------KNAPPER--------
         btnRegistrer = (Button) findViewById(R.id.btnRegistrer);
-        btnTilbake = (Button) findViewById(R.id.btnAvbryt);
+        btnAvbryt = (Button) findViewById(R.id.btnAvbryt);
 
         //--------INPUTS--------
         romNr = (EditText)findViewById(R.id.romNr);
@@ -71,7 +77,7 @@ public class RegistrerRom extends AppCompatActivity {
         });
 
         //KLIKK PÅ TILBAKE
-        btnTilbake.setOnClickListener(new View.OnClickListener() {
+        btnAvbryt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //VIEW OPPDATERES FORTLØPENDE - FORHINDRER STACK
@@ -147,7 +153,7 @@ public class RegistrerRom extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.seRom:
-                Intent intent = new Intent (RegistrerRom.this, MainActivity.class);
+                Intent intent = new Intent (RegistrerRom.this, MainActivityNy.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -169,10 +175,47 @@ public class RegistrerRom extends AppCompatActivity {
     }
 
 
+    //forsøk på å kjøre websiden
+    private class LastSide extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {String s = "";
+        String hele = "";for (String url : urls) {
+            try{
+                URL minurl= new URL(urls[0]);
+                HttpURLConnection con = (HttpURLConnection) minurl.openConnection();
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                while((s = in.readLine()) != null) {
+                    hele = hele + s;
+                }
+                in.close();
+                con.disconnect();
+                return hele;
+            }
+            catch(Exception e) {
+                return"Noe gikk feil";
+            }
+        }
+        return hele;
+        }
+
+        @Override
+        protected void onPostExecute(String ss) {
+            //textView.setText(ss);
+        }
+    }
+    public void readWebpage(View view) {
+        LastSide task = new LastSide();
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/LeggTilRom.php"});
+    }
+
+
+
+
+
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override
     public void onBackPressed() {
-        Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivity.class);
+        Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
         startActivity(intent_tilbake);
         finish();
     }
