@@ -8,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -178,6 +179,17 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
                     //OPPRETTER SEBESTILLINGSINFODIALOG OG VISER VALGT INFO
                     readWebpage();
+
+                    //INFOMELDING UT
+                    toastMessage("Reservasjon registrert!");
+                    //MELDING TIL LOGG
+                    Log.d("Legg inn: ", "Rom lagt til");
+
+
+                    Intent intent_tilbake = new Intent (ReserverRom.this, MainActivityNy.class);
+                    startActivity(intent_tilbake);
+                    finish();
+
                 }
                 else{
                     //INFOMELDING UT - FEIL INPUT
@@ -636,7 +648,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
 
         //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
-        String url = "http://student.cs.hioa.no/~s304114/LeggTilReservasjon.php/?dato="+hentDato+"tidFra="+hentTidFra+"tidTil="+hentTidTil;
+        String url = "http://student.cs.hioa.no/~s304114/LeggTilReservasjon.php/?dato="+hentDato+"&tidFra="+hentTidFra+"&tidTil="+hentTidTil+"&romNr="+hentRomNr;
         //FJERNER MELLOMROM I STRENGEN
         String urlUtenMellomrom = url.replaceAll(" ", "");
 
@@ -687,6 +699,10 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         Intent intent = new Intent (ReserverRom.this, MainActivityNy.class);
         startActivity(intent);
         finish();
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 
 
