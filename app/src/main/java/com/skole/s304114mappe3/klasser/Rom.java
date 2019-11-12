@@ -7,16 +7,18 @@ public class Rom {
     //-------ATTRIBUTTER-------
     //private long ID;
     private String romNr; //brukes til å slette
-    private String beskrivelse;
+    private String bygg;
+    private String antSitteplasser;
     //private double lat;
     //private double len;
     private LatLng koordinater;
 
 
     //-------KONTRUKSTØR-------
-    public Rom(String romNr, String beskrivelse, LatLng koordinater) {
+    public Rom(String romNr, String bygg, String antSitteplasser, LatLng koordinater) {
         this.romNr = romNr;
-        this.beskrivelse = beskrivelse;
+        this.bygg = bygg;
+        this.antSitteplasser = antSitteplasser;
         //this.lat = lat;
         //this.len = len;
         this.koordinater = koordinater;
@@ -31,11 +33,18 @@ public class Rom {
         this.romNr = romNr;
     }
 
-    public String getBeskrivelse() {
-        return beskrivelse;
+    public String getBygg() {
+        return bygg;
     }
-    public void setBeskrivelse(String beskrivelse) {
-        this.beskrivelse = beskrivelse;
+    public void setBygg(String bygg) {
+        this.bygg = bygg;
+    }
+
+    public String getAntSitteplasser() {
+        return antSitteplasser;
+    }
+    public void setAntSitteplasser(String antSitteplasser) {
+        this.antSitteplasser = antSitteplasser;
     }
 
     /*public double getLon() {
@@ -64,7 +73,7 @@ public class Rom {
     //-------TOSTRING BRUKES I LISTVIEW, DERFOR FÆRRE VERDIER FOR RYDDIGHET-------
     @Override
     public String toString() {
-        return getBeskrivelse();
+        return getRomNr();
     }
 }
 

@@ -10,9 +10,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -25,18 +29,26 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-public class RegistrerRom extends AppCompatActivity {
+public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnValueChangeListener{
 
     //--------KNAPPER--------
     private Button btnRegistrer, btnAvbryt;
 
     //--------TEKST--------
-    private EditText beskrivelse, latKoordinat, lenKoordinat, romNr;
+    private EditText latKoordinat, lenKoordinat, romNr;
+
+    //--------SPINNERE--------
+    private Spinner spinBygg;
+    NumberPicker sitteplasser;
 
     //--------DB HANDLER--------
     //DBhandler db;
 
     Rom nyttRom;
+
+    //brukes av tallpicker
+    int antSitteplasser;
+    String bygg;
 
     private ImageView logo;
 
@@ -56,15 +68,30 @@ public class RegistrerRom extends AppCompatActivity {
 
         logo = findViewById(R.id.logo2);
 
+
         //--------KNAPPER--------
         btnRegistrer = (Button) findViewById(R.id.btnRegistrer);
         btnAvbryt = (Button) findViewById(R.id.btnAvbryt);
 
         //--------INPUTS--------
         romNr = (EditText)findViewById(R.id.romNr);
-        beskrivelse = (EditText)findViewById(R.id.beskrivelse);
+        //beskrivelse = (EditText)findViewById(R.id.beskrivelse);
+
+
         latKoordinat = (EditText)findViewById(R.id.latKoordinat);
         lenKoordinat = (EditText)findViewById(R.id.lenKoordinat);
+
+        //--------SPINNERE--------
+        spinBygg = (Spinner) findViewById(R.id.spinBygg);
+
+        //--------TALL PICKER--------
+        sitteplasser = findViewById(R.id.sitteplasser);
+
+        sitteplasser.setMinValue(1);
+        sitteplasser.setMaxValue(10);
+        sitteplasser.setOnValueChangedListener(this);
+
+
 
         //--------DB HANDLER--------
         //db = new DBhandler(this);
@@ -106,14 +133,25 @@ public class RegistrerRom extends AppCompatActivity {
         });
         //--------SLUTT LISTENERS--------
 
+
+        populerSpinBygg();
+
     }//-------CREATE SLUTTER---------
 
 
+    @Override
+    public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+        //tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
+        antSitteplasser = i1;
+        //INFOMELDING UT
+        toastMessage(antSitteplasser+"");
+
+    }
 
     //--------METODE FOR Å LEGGE TIL OPPRETTET RESTURANT--------
     private void fullforRegistrering() {
         String hentRomNr = romNr.getText().toString();
-        String hentBeskrivelse = beskrivelse.getText().toString();
+        //String hentBeskrivelse = beskrivelse.getText().toString();
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();
 
@@ -125,7 +163,7 @@ public class RegistrerRom extends AppCompatActivity {
 
 
             //GENERERER OG LEGGER TIL NY RESTURANT I DB - TAR INN VERDIER TIL NY RESTURANT
-            leggtil(hentRomNr, hentBeskrivelse, hentLat, hentLen);
+            //leggtil(hentRomNr, hentBeskrivelse, hentLat, hentLen);
 
        //} //else {
             ////INFOMELDING UT - FEIL INPUT
@@ -134,21 +172,51 @@ public class RegistrerRom extends AppCompatActivity {
     }
 
 
+    //--------POPULERER VENNERLISTVIEWET - MULIGHET FOR LESTTING DIREKTE--------
+    private void populerSpinBygg() {
+
+        //GENERERER ARRAYADAPTER TIL LISTVIEWET
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.bygg,  R.layout.farge_spinner);
+        adapter.setDropDownViewResource(R.layout.spinner_design);
+
+        spinBygg.setAdapter(adapter);
+
+        spinBygg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                //bygg = adapterView.getItemAtPosition(i).toString();
+
+
+                bygg = (String) spinBygg.getItemAtPosition(i);
+
+                Toast.makeText(adapterView.getContext(), bygg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+
+
     //--------METODE FOR OPPRETTE RESTURANT--------
-    public void leggtil(String romNummer, String bes, String lat, String len) {
+    public void leggtil(String romNummer, String bygg, String antallSitteplasser, String lat, String len) {
         //OPPRETTER NYTT RESTURANT-OBJEKT
         Double latD = Double.parseDouble(lat);
         Double lenD = Double.parseDouble(len);
         LatLng koordinater = new LatLng(latD, lenD);
 
-        nyttRom = new Rom(romNummer, bes, koordinater);
+        nyttRom = new Rom(romNummer,bygg, antallSitteplasser, koordinater);
 
         //LEGGER TIL NY RESTURANT I DB
         //db.leggTilResturant(nyResturant);
 
         //NULLSTILLER INPUT
         romNr.setText("");
-        beskrivelse.setText("");
+       // beskrivelse.setText("");
         latKoordinat.setText("");
         lenKoordinat.setText("");
 
@@ -232,7 +300,8 @@ public class RegistrerRom extends AppCompatActivity {
 
         //lager stringer til url url
         String hentRomNr = romNr.getText().toString();
-        String hentBeskrivelse = beskrivelse.getText().toString();
+        String hentBygg = bygg;;//beskrivelse.getText().toString();
+        String hentAntSitteplasser = antSitteplasser+"";
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();
 
@@ -242,7 +311,7 @@ public class RegistrerRom extends AppCompatActivity {
 
 
         //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
-        String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&beskrivelse="+hentBeskrivelse+"&lat="+hentLat+"&len="+hentLen;
+        String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&bygg="+hentBygg+"&antSitteplasser="+hentAntSitteplasser+"&lat="+hentLat+"&len="+hentLen;
 
 
         task.execute(new String[]{url});

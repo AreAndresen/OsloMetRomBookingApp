@@ -193,7 +193,8 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
                             JSONObject jsonobject = mat.getJSONObject(i);
 
                             String romNr = jsonobject.getString("romNr");
-                            String beskrivelse = jsonobject.getString("beskrivelse");
+                            String bygg = jsonobject.getString("bygg");
+                            String antSitteplasser = jsonobject.getString("antSitteplasser");
                             String lat = jsonobject.getString("lat");
                             String len = jsonobject.getString("len");
                             //retur = retur +beskrivelse+": "+lat+ " "+len+"\n";
@@ -203,7 +204,7 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
 
                             LatLng koordinater = new LatLng(latD, lenD);
 
-                            Rom nyttRom = new Rom(romNr, beskrivelse, koordinater);
+                            Rom nyttRom = new Rom(romNr, bygg, antSitteplasser, koordinater);
 
                             jsonArray.add(nyttRom);
                         }

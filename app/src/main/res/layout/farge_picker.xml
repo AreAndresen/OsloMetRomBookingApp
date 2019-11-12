@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Androchunk"
-    android:textColor="@color/colorText"
-    android:paddingLeft="10dp"
+    android:paddingLeft="20dp"
     android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:textColor="@color/colorText"
     android:background="@color/colorText2"
     android:textSize="20sp">
-    <!--android:textAlignment="center"-->
 
-</TextView>
+</CheckedTextView>

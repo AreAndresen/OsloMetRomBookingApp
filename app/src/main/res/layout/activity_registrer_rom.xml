@@ -12,22 +12,15 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="115dp"
-        android:layout_height="85dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/toolbar"
-        android:src="@drawable/logo" />
+
 
     <TextView
         android:id="@+id/tittelInfo"
-        android:layout_below="@+id/logo"
+        android:layout_below="@+id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:shadowColor="@color/colorAccent"
         android:shadowDx="3"
         android:shadowDy="3"
@@ -44,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tittelInfo"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:background="@color/colorAccent"
         android:orientation="vertical"
         android:padding="15dp"
@@ -53,7 +46,7 @@
         <TextView
             android:id="@+id/tittelRomNr"
             android:textColor="@color/colorText"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +54,7 @@
 
         <EditText
             android:id="@+id/romNr"
-            android:layout_width="match_parent"
+            android:layout_width="205dp"
             android:layout_height="35dp"
             android:layout_below="@+id/tittelRomNr"
             android:layout_marginTop="3dp"
@@ -70,89 +63,181 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tittelBeskrivelse"
+            android:id="@+id/beskrivelse"
             android:textColor="@color/colorText"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_below="@+id/romNr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Skriv inn beskrivelse:" />
+            android:text="Beskrivelse:" />
 
-        <EditText
-            android:id="@+id/beskrivelse"
+        <LinearLayout
+            android:id="@+id/boks1"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_below="@+id/tittelBeskrivelse"
-            android:layout_marginTop="3dp"
-            android:background="@color/colorText2"
-            android:textColor="@color/colorText"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/beskrivelse"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:weightSum="100">
+            >
+
+            <TextView
+                android:id="@+id/bygg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/slutt"
+                android:text="Bygg:"
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorText"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/slutt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="152dp"
+                android:layout_toRightOf="@+id/start"
+                android:textAlignment="center"
+                android:textColorHint="@color/colorText"
+                android:text="Sitteplasser:"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/boks2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/boks1"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:layout_marginTop="-1dp"
+            android:weightSum="100">
+
+            <Spinner
+                android:id="@+id/spinBygg"
+                android:layout_width="195dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/sitteplasser"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textAlignment="center" />
+
+            <NumberPicker
+                android:id="@+id/sitteplasser"
+                android:layout_width="168dp"
+                android:layout_height="114dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@+id/spinBygg"
+
+                android:theme="@style/NumberPickerTheme" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tittelKoordinater"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/beskrivelse"
+            android:layout_below="@+id/boks2"
             android:layout_marginTop="10dp"
             android:text="Skriv inn gps-koordinater:"
             android:textColor="@color/colorText"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tittelLat"
+        <LinearLayout
+            android:id="@+id/boks3"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tittelKoordinater"
-            android:layout_marginTop="10dp"
-            android:text="Lat-koordinat:"
-            android:textColor="@color/colorText"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="1dp"
+            android:weightSum="100">
 
-        <EditText
-            android:id="@+id/latKoordinat"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_below="@+id/tittelLat"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorText2"
-            android:textColor="@color/colorText"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/tittelLat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/tittelLen"
+                android:text="Lat-koordinat:"
+                android:textColor="@color/colorText"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tittelLen"
+            <TextView
+                android:id="@+id/tittelLen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="80dp"
+                android:layout_toRightOf="@+id/tittelLat"
+                android:text="Len-koordinat:"
+                android:textColor="@color/colorText"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/boks4"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/latKoordinat"
-            android:layout_marginTop="10dp"
-            android:text="Len-koordinat:"
-            android:textColor="@color/colorText"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_below="@+id/boks3"
+            android:layout_marginTop="-1dp"
+            android:weightSum="100">
 
-        <EditText
-            android:id="@+id/lenKoordinat"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_below="@+id/tittelLen"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorText2"
-            android:textColor="@color/colorText"
-            android:textSize="18sp" />
+            <EditText
+                android:id="@+id/latKoordinat"
+                android:layout_width="175dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/lenKoordinat"
+                android:background="@color/colorText2"
+                android:textColor="@color/colorText"
+                android:textSize="18sp" />
+
+
+            <EditText
+                android:id="@+id/lenKoordinat"
+                android:layout_width="175dp"
+                android:layout_height="35dp"
+                android:layout_below="@+id/tittelLen"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@+id/latKoordinat"
+                android:background="@color/colorText2"
+                android:textColor="@color/colorText"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/boks3"
+        android:id="@+id/boks5"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:weightSum="100"
         android:padding="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="100dp"
         android:layout_below="@+id/boks"
         >
 

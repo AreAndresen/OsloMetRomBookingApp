@@ -71,7 +71,23 @@
         <item>21:30</item>
         <item>21:45</item>
         <item>22:00</item>
+    </string-array>
 
-
+    <string-array name="bygg">
+        <item>Pilestredet 32</item>
+        <item>p32</item>
+        <item>Pilestredet 35</item>
+        <item>Pilestredet 40</item>
+        <item>Pilestredet 42</item>
+        <item>Pilestredet 44</item>
+        <item>Pilestredet 46</item>
+        <item>Pilestredet 48</item>
+        <item>Pilestredet 50</item>
+        <item>Pilestredet 52</item>
+        <item>Pilestredet park 33</item>
+        <item>Pilestredet park 35</item>
+        <item>Stensberggata 26-28</item>
+        <item>Stensberggata 29</item>
+        <item>Storsalen</item>
     </string-array>
 </resources>
