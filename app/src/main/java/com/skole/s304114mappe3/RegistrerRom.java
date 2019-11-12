@@ -269,8 +269,10 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
     //forsøk på å kjøre websiden
     private class LastSide extends AsyncTask<String, Void, String> {
         @Override
-        protected String doInBackground(String... urls) {String s = "";
-        String hele = "";for (String url : urls) {
+        protected String doInBackground(String... urls) {
+            String s = "";
+            String hele = "";
+            for (String url : urls) {
             try{
                 URL minurl= new URL(urls[0]);
                 HttpURLConnection con = (HttpURLConnection) minurl.openConnection();
@@ -305,16 +307,17 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();
 
-
         //String noSpaceStr = str.replaceAll("\\s", ""); // using built in method
         //System.out.println(noSpaceStr);
 
 
         //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
         String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&bygg="+hentBygg+"&antSitteplasser="+hentAntSitteplasser+"&lat="+hentLat+"&len="+hentLen;
+        //FJERNER MELLOMROM I STRENGEN
+        String urlUtenMellomrom = url.replaceAll(" ", "");
 
 
-        task.execute(new String[]{url});
+        task.execute(new String[]{urlUtenMellomrom});
     }
 
 
