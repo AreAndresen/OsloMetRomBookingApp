@@ -376,9 +376,9 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.seRom:
-                //Intent intent_startspill = new Intent (MainActivity.this, Kart.class);
-                //startActivity(intent_startspill);
-                //finish();
+                Intent intent_startspill = new Intent (MainActivityNy.this, MainActivity.class);
+                startActivity(intent_startspill);
+                finish();
                 break;
             case R.id.registrerRom:
                 Intent intent_statistikk = new Intent (MainActivityNy.this, RegistrerRom.class);

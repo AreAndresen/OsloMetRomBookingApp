@@ -476,7 +476,7 @@ public class ReserverRom extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.seRom:
-                Intent intent = new Intent (ReserverRom.this, MainActivityNy.class);
+                Intent intent = new Intent (ReserverRom.this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;

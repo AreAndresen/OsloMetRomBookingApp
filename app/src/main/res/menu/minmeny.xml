@@ -10,7 +10,7 @@
         android:id="@+id/seRom"
         android:icon="@drawable/ic_control_point_black_24dp"
         app:showAsAction="never"
-        android:title="Se alle rom"/>
+        android:title="Velg sted"/>
     <item
         android:id="@+id/registrerRom"
         app:showAsAction="never"
