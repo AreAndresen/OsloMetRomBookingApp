@@ -6,6 +6,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,8 +24,22 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.skole.s304114mappe3.klasser.Rom;
 
-public class ReserverRom extends AppCompatActivity {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+
+
+public class ReserverRom extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
 //public class ReserverRom extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
   //      TimePickerDialog.OnTimeSetListener, SeBestillingsInfoDialog.DialogClickListener {
@@ -44,18 +59,21 @@ public class ReserverRom extends AppCompatActivity {
     private ImageView logo;
 
     //--------KNAPPER--------
-    private Button btnTilbake, btnLeggTilVenn, btnSeReservasjonsinfo;
+    private Button btnAvbryt, btnLeggTilVenn, btnReserver;
 
     //--------TEKST--------
-    private TextView visDato, visTid;
+    private TextView visDato;
 
     //--------SPINNERE--------
-    private Spinner spinStart, spinSlutt;
+    private Spinner spinStart, spinSlutt, spinnerRomNr;
 
     //--------VERDIER--------
     private String dato, tid;
 
-    private String tidStart, tidSlutt;
+    private String tidFra, tidTil;
+
+    ArrayList<Rom> alleRom = new ArrayList<Rom>();
+    Rom valgtRom;
 
     //--------OBJEKTER--------
     //private Venn valgtVenn, valgtVennSlett;
@@ -85,13 +103,15 @@ public class ReserverRom extends AppCompatActivity {
         //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
         setActionBar(toolbar);
 
+        kjorJson();
+
 
         logo = findViewById(R.id.logo2);
 
         //--------KNAPPER--------
-        btnTilbake = (Button) findViewById(R.id.btnTilbake);
+        btnAvbryt = (Button) findViewById(R.id.btnAvbryt);
         //btnLeggTilVenn = (Button) findViewById(R.id.btnLeggTilVenn);
-        btnSeReservasjonsinfo = (Button) findViewById(R.id.btnSeReservasjonsinfo);
+        btnReserver = (Button) findViewById(R.id.btnReserver);
 
 
         //--------TEKST--------
@@ -103,9 +123,11 @@ public class ReserverRom extends AppCompatActivity {
         //--------SPINNERE--------
         spinStart = (Spinner) findViewById(R.id.spinStart);
         spinSlutt = (Spinner) findViewById(R.id.spinSlutt);
+        spinnerRomNr = (Spinner) findViewById(R.id.spinnerRomNr);
 
         populerSpinStart();
         populerSpinSlutt();
+        lagRomSpinner();
 
         //--------DB HANDLER--------
         //db = new DBhandler(this);
@@ -124,7 +146,7 @@ public class ReserverRom extends AppCompatActivity {
                 //LEGGER TIL VALGT VENN I valgteVenner ARRAYET
                 leggTilValgtVenn();
             }
-        });
+        });*/
 
         //KLIKK PÅ VELG DATO
         visDato.setOnClickListener(new View.OnClickListener() {
@@ -146,37 +168,123 @@ public class ReserverRom extends AppCompatActivity {
             }
         });*/
 
-        /*KLIKK PÅ UTFØR BESTILLING
-        btnSeBestillingsinfo.setOnClickListener(new View.OnClickListener() {
+        //KLIKK PÅ UTFØR BESTILLING
+        btnReserver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //KONTROLLERER AT ALLE FELTER SOM ER OBLIGATORISKE ER BENYTTET
-                if (!visDato.getText().toString().equals("") && !visTid.getText().toString().equals("")) {
+                if (!visDato.getText().toString().equals("")) {
 
                     //OPPRETTER SEBESTILLINGSINFODIALOG OG VISER VALGT INFO
-                    visBestillingsinfo();
+                    readWebpage();
                 }
                 else{
                     //INFOMELDING UT - FEIL INPUT
-                    Toast.makeText(ReserverRom.this, "Tid og dato for bestilling må være fylt ut.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReserverRom.this, "Dato for reservasjon må være fylt ut.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         //KLIKK PÅ TILBAKE
-        btnTilbake.setOnClickListener(new View.OnClickListener() {
+        btnAvbryt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (ReserverRom.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
         //--------SLUTT LISTENERS--------
 
-    }//-------CREATE SLUTTER---------
 
+
+
+    }
+
+    public void kjorJson(){
+        //JSON GREIER
+        //textView = (TextView) findViewById(R.id.jasontekst);
+        getJSON task = new getJSON();
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
+    }
+
+
+
+    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
+    private class getJSON extends AsyncTask<String, Void, ArrayList<Rom>> {
+        JSONObject jsonObject;
+        ArrayList<Rom> jsonArray = new ArrayList<>();
+
+        //kjører i bakgrunnen - heavy work
+        @Override
+        protected ArrayList<Rom> doInBackground(String... urls) {
+            //String retur = "";
+
+            String s = "";
+            String output = "";
+
+            for (String url : urls) {
+                try{
+                    URL urlen = new URL(urls[0]);
+                    HttpURLConnection conn = (HttpURLConnection)urlen.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setRequestProperty("Accept", "application/json");
+                    if(conn.getResponseCode() != 200) {
+                        throw new RuntimeException("Failed: HTTP errorcode: "+ conn.getResponseCode());
+                    }
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+                    System.out.println("Output from Server .... \n");
+                    while((s = br.readLine()) != null) {
+                        output = output + s;
+                    }
+                    conn.disconnect();
+                    try{
+                        JSONArray mat = new JSONArray(output);
+
+                        for (int i = 0; i < mat.length(); i++) {
+                            //henter alle json objectene
+                            JSONObject jsonobject = mat.getJSONObject(i);
+
+                            String romNr = jsonobject.getString("romNr");
+                            String bygg = jsonobject.getString("bygg");
+                            String antSitteplasser = jsonobject.getString("antSitteplasser");
+                            String lat = jsonobject.getString("lat");
+                            String len = jsonobject.getString("len");
+                            //retur = retur +beskrivelse+": "+lat+ " "+len+"\n";
+
+                            Double latD = Double.parseDouble(lat);
+                            Double lenD = Double.parseDouble(len);
+
+                            LatLng koordinater = new LatLng(latD, lenD);
+
+                            Rom nyttRom = new Rom(romNr, bygg, antSitteplasser, koordinater);
+
+                            jsonArray.add(nyttRom);
+                        }
+                        return jsonArray;
+                    }
+                    catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return jsonArray;
+                }
+                catch(Exception e) {
+                    //return "Noe gikk feil";
+                    e.printStackTrace();
+                }
+            }
+            return jsonArray;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Rom> jsonArray) {
+            alleRom = jsonArray;
+
+            lagRomSpinner();
+        }
+    }
 
 
 
@@ -193,7 +301,10 @@ public class ReserverRom extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String text = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+
+                tidFra = (String) spinStart.getItemAtPosition(i);
+
+                Toast.makeText(adapterView.getContext(), tidFra, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -225,18 +336,47 @@ public class ReserverRom extends AppCompatActivity {
 
         spinSlutt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int i, long id) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
 
                 //GIR VALGTRESTURANT VERDIEN TIL VALGT OBJEKT FRA SPINNER
-                tidSlutt = parent.getItemAtPosition(i).toString();
+                tidTil = (String) spinSlutt.getItemAtPosition(i);
 
-                tidSlutt = (String) parent.getSelectedItem();
+                Toast.makeText(adapterView.getContext(), tidTil, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
+
+
+
+    //--------GENERERER SPINNER MED ALLE RESTURATENE SOM ER LAGT TIL I DB--------
+    private void lagRomSpinner() {
+
+        //LEGGER ALLE RESTURANTER I RESTURANT-ARRAY - HENTET FRA DB
+        ArrayList<Rom> alleRomNy = alleRom;
+
+        //GENERERER ARRAYADAPTER TIL SPINNER
+        final ArrayAdapter<Rom> adapterRes = new ArrayAdapter<Rom>(this, R.layout.spinner_design, alleRomNy);
+        adapterRes.setDropDownViewResource(R.layout.spinner_design);
+
+        spinnerRomNr.setAdapter(adapterRes);
+
+        //VED VALG/KLIKK AV RESTURANT I SPINNEREN
+        spinnerRomNr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                //GIR VALGTRESTURANT VERDIEN TIL VALGT OBJEKT FRA SPINNER
+                valgtRom = (Rom) parent.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
 
 
     //--------GENERERER SPINNER MED ALLE RESTURATENE SOM ER LAGT TIL I DB--------
@@ -281,7 +421,7 @@ public class ReserverRom extends AppCompatActivity {
     }*/
 
 
-    /*--------INNEBYGD METODE FOR SETTING AV DATO--------
+    //--------INNEBYGD METODE FOR SETTING AV DATO--------
     @Override
     public void onDateSet(DatePicker view, int aar, int mnd, int dag) {
 
@@ -289,26 +429,11 @@ public class ReserverRom extends AppCompatActivity {
         mnd++;
 
         //GENERERER STRING PÅ 22/10/2019 FORMAT
-        dato = dag+"/"+mnd+"/"+aar;
+        dato = dag+"."+mnd+"."+aar;
         visDato.setText(dato);
     }
 
 
-    //--------INNEBYGD METODE FOR SETTING AV TIDSPUNKT--------
-    @Override
-    public void onTimeSet(TimePicker view, int time, int min) {
-
-        tid = "Kl: " + time + ":";
-        //SØRGER FOR AT DET STÅR f.eks 10:05 ISTEDEN FOR 10:5
-        if(min < 10) {
-            tid += "0";
-        }
-
-        //GENERERER STRING PÅ KL: 16:35 FORMAT
-        tid += min;
-
-        visTid.setText(tid);
-    }
 
 
 
@@ -463,6 +588,64 @@ public class ReserverRom extends AppCompatActivity {
         db.leggTilBestilling(bestilling, indeksen);
     }
     */
+
+
+    //forsøk på å kjøre websiden
+    private class LastSide extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            String s = "";
+            String hele = "";
+            for (String url : urls) {
+                try{
+                    URL minurl= new URL(urls[0]);
+                    HttpURLConnection con = (HttpURLConnection) minurl.openConnection();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    while((s = in.readLine()) != null) {
+                        hele = hele + s;
+                    }
+                    in.close();
+                    con.disconnect();
+                    return hele;
+                }
+                catch(Exception e) {
+                    return"Noe gikk feil";
+                }
+            }
+            return hele;
+        }
+
+        @Override
+        protected void onPostExecute(String ss) {
+            //textView.setText(ss);
+        }
+    }
+    public void readWebpage() {
+
+        LastSide task = new LastSide();
+
+        //lager stringer til url url
+        String hentDato = dato;
+        String hentTidFra = tidFra;;//beskrivelse.getText().toString();
+        String hentTidTil = tidTil;;//beskrivelse.getText().toString();
+        String hentRomNr = valgtRom.getRomNr();
+
+
+        //String noSpaceStr = str.replaceAll("\\s", ""); // using built in method
+        //System.out.println(noSpaceStr);
+
+
+        //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
+        String url = "http://student.cs.hioa.no/~s304114/LeggTilReservasjon.php/?dato="+hentDato+"tidFra="+hentTidFra+"tidTil="+hentTidTil;
+        //FJERNER MELLOMROM I STRENGEN
+        String urlUtenMellomrom = url.replaceAll(" ", "");
+
+
+        task.execute(new String[]{urlUtenMellomrom});
+    }
+
+
+
 
     //En metode for å lage To o l b a rfra minmeny.xml
     @Override

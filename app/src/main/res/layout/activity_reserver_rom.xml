@@ -165,12 +165,11 @@
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/typeResturant"
+            android:id="@+id/spinnerRomNr"
             android:layout_width="180dp"
             android:layout_height="35dp"
             android:layout_below="@+id/type"
             android:layout_marginBottom="5dp"
-            android:background="@color/colorText2"
             android:layout_marginTop="5dp" />
 
     </RelativeLayout>
@@ -188,7 +187,7 @@
         >
 
         <Button
-            android:id="@+id/btnTilbake"
+            android:id="@+id/btnAvbryt"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -204,7 +203,7 @@
             android:textSize="20dp" />
 
         <Button
-            android:id="@+id/btnSeReservasjonsinfo"
+            android:id="@+id/btnReserver"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

@@ -296,6 +296,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
             //textView.setText(ss);
         }
     }
+
     public void readWebpage() {
 
         LastSide task = new LastSide();
@@ -306,9 +307,6 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
         String hentAntSitteplasser = antSitteplasser+"";
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();
-
-        //String noSpaceStr = str.replaceAll("\\s", ""); // using built in method
-        //System.out.println(noSpaceStr);
 
 
         //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
