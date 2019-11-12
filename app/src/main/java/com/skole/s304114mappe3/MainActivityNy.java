@@ -1,18 +1,13 @@
 package com.skole.s304114mappe3;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,12 +63,13 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
     public static final String TAG = Kart.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
+    //spør om posisjon
     private LocationRequest mLocationRequest;
 
 
 
     private GoogleMap mMap;
-    ArrayList<LatLng> markorer = new ArrayList<LatLng>();
+    //ArrayList<LatLng> markorer = new ArrayList<LatLng>();
     ArrayList<Rom> markorerNy = new ArrayList<Rom>();
 
     // LatLng PH360 = new LatLng(59.919566, 10.734934);
@@ -105,18 +101,15 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
         setActionBar(toolbar);
 
 
-
         //GPS
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
+        //HUSK GETMAPASYNC ER EN ASYNC OGSÅ, MÅ SEPARERE DENNE MED JSON HENTING ASYNC
         mapFragment.getMapAsync(this);
 
 
-        //JSON GREIER
-        //textView = (TextView) findViewById(R.id.jasontekst);
-        getJSON task = new getJSON();
-        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
 
         //markorer.add(PH360);
         //markorerNy.add(PH373);
@@ -130,6 +123,7 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
                 .addApi(LocationServices.API)
                 .build();
 
+        //henter lokajon
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)        // 10 seconds, in milliseconds
@@ -148,21 +142,33 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
             }
         });
 
+        kjorJson();
 
+
+    }
+
+    public void kjorJson(){
+        //JSON GREIER
+        //textView = (TextView) findViewById(R.id.jasontekst);
+        getJSON task = new getJSON();
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
     }
 
 
 
-
-    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL
-    private class getJSON extends AsyncTask<String, Void,String> {
+    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
+    private class getJSON extends AsyncTask<String, Void, ArrayList<Rom>> {
         JSONObject jsonObject;
+        ArrayList<Rom> jsonArray = new ArrayList<>();
 
+        //kjører i bakgrunnen - heavy work
         @Override
-        protected String doInBackground(String... urls) {
-            String retur = "";
+        protected ArrayList<Rom> doInBackground(String... urls) {
+            //String retur = "";
+
             String s = "";
             String output = "";
+
             for (String url : urls) {
                 try{
                     URL urlen = new URL(urls[0]);
@@ -181,14 +187,16 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
                     conn.disconnect();
                     try{
                         JSONArray mat = new JSONArray(output);
+
                         for (int i = 0; i < mat.length(); i++) {
+                            //henter alle json objectene
                             JSONObject jsonobject = mat.getJSONObject(i);
 
                             String romNr = jsonobject.getString("romNr");
                             String beskrivelse = jsonobject.getString("beskrivelse");
                             String lat = jsonobject.getString("lat");
                             String len = jsonobject.getString("len");
-                            retur = retur +beskrivelse+": "+lat+ " "+len+"\n";
+                            //retur = retur +beskrivelse+": "+lat+ " "+len+"\n";
 
                             Double latD = Double.parseDouble(lat);
                             Double lenD = Double.parseDouble(len);
@@ -197,32 +205,32 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
 
                             Rom nyttRom = new Rom(romNr, beskrivelse, koordinater);
 
-                            //Nye koordinater
-                            //LatLng koordinater = new LatLng(latD, lenD);
-                            //markorer.add(koordinater);
-
-                            markorerNy.add(nyttRom);
+                            jsonArray.add(nyttRom);
                         }
-                        return retur;
+                        return jsonArray;
                     }
                     catch(JSONException e) {
                         e.printStackTrace();
                     }
-                    return retur;
+                    return jsonArray;
                 }
                 catch(Exception e) {
-                    return"Noe gikk feil";
+                    //return "Noe gikk feil";
+                    e.printStackTrace();
                 }
             }
-            return retur;
+            return jsonArray;
         }
 
-
-
         @Override
-        protected void onPostExecute(String ss) {
-            //markorerNy.add(PH360);
+        protected void onPostExecute(ArrayList<Rom> jsonArray) {
+            markorerNy = jsonArray;
 
+            for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
+                mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()));
+                //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+                //mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
+            }
         }
     }
 
@@ -247,6 +255,8 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)); //endrer farge på min markør
         mMap.addMarker(options);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 2000, null);
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
 
@@ -318,6 +328,10 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void onLocationChanged(Location location) {
+
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+
         handleNewLocation(location);
 
     }
@@ -336,11 +350,7 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
 
         mMap = googleMap;
         //løkke gjennom koordinat arrayet og setter alle markørene på kartet
-        for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
-            mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
-        }
+
 
 
         // Add a marker in Sydney and move the camera

@@ -229,21 +229,23 @@ public class RegistrerRom extends AppCompatActivity {
     public void readWebpage() {
 
         LastSide task = new LastSide();
-        //lager coztomized url
+
+        //lager stringer til url url
         String hentRomNr = romNr.getText().toString();
         String hentBeskrivelse = beskrivelse.getText().toString();
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();
 
+
+        //String noSpaceStr = str.replaceAll("\\s", ""); // using built in method
+        //System.out.println(noSpaceStr);
+
+
         //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
         String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&beskrivelse="+hentBeskrivelse+"&lat="+hentLat+"&len="+hentLen;
 
-        //String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=N020117&beskrivelse=Stort&lat=59.920152&len=10.735870";
-        //"http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=PH170&beskrivelse=Stoor&lat=59.920152&len=10.735870"
-
 
         task.execute(new String[]{url});
-        //http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr=PH351&beskrivelse=Middels&lat=59.919466&len=10.734803
     }
 
 
