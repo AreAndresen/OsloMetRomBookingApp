@@ -63,13 +63,15 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     private Button btnAvbryt, btnLeggTilVenn, btnReserver;
 
     //--------TEKST--------
-    private TextView visDato;
+    private TextView visDato,visRomNr;
 
     //--------SPINNERE--------
     private Spinner spinStart, spinSlutt, spinnerRomNr;
 
     //--------VERDIER--------
     private String dato, tid;
+
+    private String valgtRomNr;
 
     private String tidFra, tidTil;
 
@@ -117,6 +119,14 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
         //--------TEKST--------
         visDato = (TextView) findViewById(R.id.visDato);
+        visRomNr = (TextView) findViewById(R.id.visRomNr);
+
+        //--------SETTER OUTPUT--------
+
+        ////--------HENTER ID TIL BESTILLINGEN SOM SKAL VISES FRA MINNE - DEFINERT I SEBESTILLINGER OG I NOTIFIKASJON/SERVICE--------
+        valgtRomNr = getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("ROMNR", ""); //putString("ROMNR", valgtRomNr).apply();
+
+        visRomNr.setText(valgtRomNr);;
         //visTid = (TextView) findViewById(R.id.visTid);
         //vennerListView = (ListView) findViewById(R.id.list);
 
@@ -124,11 +134,11 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         //--------SPINNERE--------
         spinStart = (Spinner) findViewById(R.id.spinStart);
         spinSlutt = (Spinner) findViewById(R.id.spinSlutt);
-        spinnerRomNr = (Spinner) findViewById(R.id.spinnerRomNr);
+        //spinnerRomNr = (Spinner) findViewById(R.id.spinnerRomNr);
 
         populerSpinStart();
         populerSpinSlutt();
-        lagRomSpinner();
+        //lagRomSpinner();
 
         //--------DB HANDLER--------
         //db = new DBhandler(this);
@@ -193,7 +203,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         btnAvbryt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (ReserverRom.this, MainActivity.class);
+                Intent intent = new Intent (ReserverRom.this, MainActivityNy.class);
                 startActivity(intent);
                 finish();
             }
@@ -364,9 +374,9 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         final ArrayAdapter<Rom> adapterRes = new ArrayAdapter<Rom>(this, R.layout.spinner_design, alleRomNy);
         adapterRes.setDropDownViewResource(R.layout.spinner_design);
 
-        spinnerRomNr.setAdapter(adapterRes);
+        //spinnerRomNr.setAdapter(adapterRes);
 
-        //VED VALG/KLIKK AV RESTURANT I SPINNEREN
+        /*VED VALG/KLIKK AV RESTURANT I SPINNEREN
         spinnerRomNr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -377,7 +387,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        });*/
     }
 
 

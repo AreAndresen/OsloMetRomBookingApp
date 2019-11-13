@@ -1,9 +1,12 @@
 package com.skole.s304114mappe3;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -15,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +36,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.skole.s304114mappe3.Dialog.RegistrerRomDialog;
+import com.skole.s304114mappe3.Dialog.reserverRomDialog;
 import com.skole.s304114mappe3.klasser.Rom;
 
 import org.json.JSONArray;
@@ -49,8 +56,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivityNy extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, RegistrerRomDialog.DialogClickListener {
+public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnMarkerClickListener, DatePickerDialog.OnDateSetListener {
 
     @Override
     public void bestillClick() {
@@ -76,6 +83,8 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
     //ArrayList<LatLng> markorer = new ArrayList<LatLng>();
     ArrayList<Rom> markorerNy = new ArrayList<Rom>();
 
+    String valgtRomNr;
+
     // LatLng PH360 = new LatLng(59.919566, 10.734934);
     //LatLng PH373Koord = new LatLng(59.919458, 10.735091);
     //Rom PH373 = new Rom("PH373","Lite gruppe med 3 sitteplasser.",PH373Koord);
@@ -90,6 +99,8 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
     String datoIdag;
 
     private ImageView logo;
+
+    private Button reserverRom;
 
     TextView textView;
 
@@ -138,6 +149,8 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
 
         //LOGO
         logo = findViewById(R.id.logo2);
+        reserverRom = findViewById(R.id.reserverRom);
+
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,9 +161,36 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
             }
         });
 
+        reserverRom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //visBestillingsinfo();
+
+                //INTENT TIL SEBESTILLINGSINFOFRAGMENT
+                Intent intent_preferanser = new Intent (MainActivityNy.this, ReserverRom.class);
+                startActivity(intent_preferanser);
+                finish();
+
+            }
+        });
+
         kjorJson();
 
 
+    }//utenfor create
+
+
+    //--------OPPRETTER SEBESTILLINGSINFODIALOG--------
+    private void visBestillingsinfo()  {
+
+        //OPPRETTER NYTT DIALOGFRAGMENT
+        reserverRomDialog rFragment = new reserverRomDialog();
+
+        //OVERFØRER BESTILLINGSINFO TIL FRAGMENTET MED METODE FRA FRAGMENTET
+        rFragment.hentInfo(valgtRomNr);
+
+        //VISER DIALOGVINDUET
+        rFragment.show(getSupportFragmentManager(), "Bestillingsinfo");
     }
 
     public void kjorJson(){
@@ -160,6 +200,20 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        valgtRomNr = marker.getTitle();
+
+        //LAGRER ID I MINNET - BENYTTES TIL I SEBESTILLINGSINFODIALOGFRAGMENT OG I MINSERVICE/NOTIFIKASJON FOR VISNING
+        getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("ROMNR", valgtRomNr).apply();
+
+        return false;
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+    }
 
 
     //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
@@ -390,6 +444,8 @@ public class MainActivityNy extends FragmentActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+
+        mMap.setOnMarkerClickListener(this);
         //løkke gjennom koordinat arrayet og setter alle markørene på kartet
 
 
