@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tittelReservasjoner"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@color/colorText"
         android:textSize="16sp" />
 
