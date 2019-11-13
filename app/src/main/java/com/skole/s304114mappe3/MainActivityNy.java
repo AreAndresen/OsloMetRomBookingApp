@@ -6,7 +6,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -40,6 +42,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.skole.s304114mappe3.Dialog.RegistrerRomDialog;
 import com.skole.s304114mappe3.Dialog.reserverRomDialog;
+import com.skole.s304114mappe3.klasser.Reservasjon;
 import com.skole.s304114mappe3.klasser.Rom;
 
 import org.json.JSONArray;
@@ -57,7 +60,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnMarkerClickListener, DatePickerDialog.OnDateSetListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
     @Override
     public void bestillClick() {
@@ -82,6 +85,8 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
     private GoogleMap mMap;
     //ArrayList<LatLng> markorer = new ArrayList<LatLng>();
     ArrayList<Rom> markorerNy = new ArrayList<Rom>();
+
+    ArrayList<Reservasjon> reservasjoner = new ArrayList<Reservasjon>();
 
     String valgtRomNr;
 
@@ -174,13 +179,14 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
-        kjorJson();
+        kjorJsonAlleRom();
+        kjorJsonAlleReservasjoner();
 
 
     }//utenfor create
 
 
-    //--------OPPRETTER SEBESTILLINGSINFODIALOG--------
+    /*--------OPPRETTER SEBESTILLINGSINFODIALOG--------
     private void visBestillingsinfo()  {
 
         //OPPRETTER NYTT DIALOGFRAGMENT
@@ -191,15 +197,25 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
         //VISER DIALOGVINDUET
         rFragment.show(getSupportFragmentManager(), "Bestillingsinfo");
-    }
+    }*/
 
-    public void kjorJson(){
+    public void kjorJsonAlleRom(){
         //JSON GREIER
         //textView = (TextView) findViewById(R.id.jasontekst);
-        getJSON task = new getJSON();
+        getJsonAlleRom task = new getJsonAlleRom();
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
     }
 
+    public void kjorJsonAlleReservasjoner(){
+        //JSON GREIER
+        //textView = (TextView) findViewById(R.id.jasontekst);
+        getJsonAlleReservasjoner task = new getJsonAlleReservasjoner();
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentReservasjoner.php"});
+    }
+
+
+
+    //OVERFØRER TITELEN TIL MARKØREN TIL MINNET FOR BRUK VED RESERVASJON
     @Override
     public boolean onMarkerClick(Marker marker) {
         valgtRomNr = marker.getTitle();
@@ -207,17 +223,30 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         //LAGRER ID I MINNET - BENYTTES TIL I SEBESTILLINGSINFODIALOGFRAGMENT OG I MINSERVICE/NOTIFIKASJON FOR VISNING
         getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("ROMNR", valgtRomNr).apply();
 
+        /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(marker.getSnippet())
+                .setCancelable(true)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();*/
+
         return false;
     }
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-    }
 
 
     //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
-    private class getJSON extends AsyncTask<String, Void, ArrayList<Rom>> {
+    private class getJsonAlleRom extends AsyncTask<String, Void, ArrayList<Rom>> {
         JSONObject jsonObject;
         ArrayList<Rom> jsonArray = new ArrayList<>();
 
@@ -321,8 +350,13 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                 //HVIS DATO ER I DAG
                 if((dato2.compareTo(dato4) == 0)) {}*/
 
+                String info = "Se reservasjoner for i dag.";
 
-                mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()));
+                /*else {
+                    String info = "Ingen reservasjoner i dag";
+                }*/
+
+                mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()).snippet(info));
                 //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
                 //mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
             }
@@ -330,6 +364,72 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
+    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
+    private class getJsonAlleReservasjoner extends AsyncTask<String, Void, ArrayList<Reservasjon>> {
+        JSONObject jsonObject;
+        ArrayList<Reservasjon> jsonArray = new ArrayList<>();
+
+        //kjører i bakgrunnen - heavy work
+        @Override
+        protected ArrayList<Reservasjon> doInBackground(String... urls) {
+            //String retur = "";
+
+            String s = "";
+            String output = "";
+
+            for (String url : urls) {
+                try{
+                    URL urlen = new URL(urls[0]);
+                    HttpURLConnection conn = (HttpURLConnection)urlen.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setRequestProperty("Accept", "application/json");
+                    if(conn.getResponseCode() != 200) {
+                        throw new RuntimeException("Failed: HTTP errorcode: "+ conn.getResponseCode());
+                    }
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+                    System.out.println("Output from Server .... \n");
+                    while((s = br.readLine()) != null) {
+                        output = output + s;
+                    }
+                    conn.disconnect();
+                    try{
+                        JSONArray mat = new JSONArray(output);
+
+                        for (int i = 0; i < mat.length(); i++) {
+                            //henter alle json objectene
+                            JSONObject jsonobject = mat.getJSONObject(i);
+
+                            String dato = jsonobject.getString("dato");
+                            String tidFra = jsonobject.getString("tidFra");
+                            String tidTil = jsonobject.getString("tidTil");
+                            String romNr = jsonobject.getString("romNr");
+
+
+                            Reservasjon nyReservasjon = new Reservasjon(dato, tidFra, tidTil, romNr);
+
+                            jsonArray.add(nyReservasjon);
+                        }
+                        return jsonArray;
+                    }
+                    catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return jsonArray;
+                }
+                catch(Exception e) {
+                    //return "Noe gikk feil";
+                    e.printStackTrace();
+                }
+            }
+            return jsonArray;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Reservasjon> jsonArray) {
+            reservasjoner = jsonArray;
+        }
+    }
 
 
 
@@ -444,6 +544,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+        mMap.setOnInfoWindowClickListener(this);
 
         mMap.setOnMarkerClickListener(this);
         //løkke gjennom koordinat arrayet og setter alle markørene på kartet
@@ -458,6 +559,80 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         //mMap = googleMap;
 
     }
+
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        if(marker.getTitle().equals("Jeg er her!")){
+            //marker.hideInfoWindow();
+        }
+        else{
+            String romNr = marker.getTitle();
+
+            String reservasjonerTekst = "";
+
+            for(Reservasjon r : reservasjoner) {
+                if(romNr == r.getRomNr()) {
+
+                    //--------HENTER DAGENS DATO I RIKTIG FORMAT TIL SAMMENLIGNING AV DET SOM LIGGER I DB--------
+                    Calendar c = Calendar.getInstance();
+                    int aar = c.get(Calendar.YEAR);
+                    int mnd = c.get(Calendar.MONTH);
+                    int dag = c.get(Calendar.DAY_OF_MONTH);
+
+                    mnd++;
+                    datoIdag = dag+"."+mnd+"."+aar;
+
+                    //HENTER DATO FRA BESTILLINGEN
+                    String dato1 = r.getDato();
+
+
+                    //--------FORMATERER DATOENE FOR SAMMENLIGNING--------
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                    Date dato2 = null;
+                    Date dato4 = null;
+
+                    try {
+                        dato2 = sdf.parse(dato1);
+                        dato4 = sdf.parse(datoIdag);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    //--------SAMMENLIGNINGER AV FORMATERTE DATOER--------
+                    //HVIS DATO ER I DAG
+                    if((dato2.compareTo(dato4) == 0)) {
+
+                        reservasjonerTekst += "Kl: " + r.getTidFra() + "-" + r.getTidTil() + ".\n";
+                    }
+                }
+            }
+
+            if(reservasjonerTekst == ""){
+                reservasjonerTekst = "Ingen aktive reservasjoner i dag.";
+            }
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Reservasjoner i dag")
+                    .setMessage(reservasjonerTekst)
+                    .setCancelable(true)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    /*.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });*/
+            final AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
+
 
 
 

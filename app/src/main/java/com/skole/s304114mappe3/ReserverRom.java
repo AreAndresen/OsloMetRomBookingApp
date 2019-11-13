@@ -106,7 +106,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
         setActionBar(toolbar);
 
-        kjorJson();
+        //kjorJson();
 
 
         logo = findViewById(R.id.logo2);
@@ -215,16 +215,16 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
     }
 
-    public void kjorJson(){
+    /*public void kjorJson(){
         //JSON GREIER
         //textView = (TextView) findViewById(R.id.jasontekst);
         getJSON task = new getJSON();
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
-    }
+    }*/
 
 
 
-    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
+    /*METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
     private class getJSON extends AsyncTask<String, Void, ArrayList<Rom>> {
         JSONObject jsonObject;
         ArrayList<Rom> jsonArray = new ArrayList<>();
@@ -297,7 +297,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
             lagRomSpinner();
         }
-    }
+    }*/
 
 
 
@@ -603,7 +603,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     */
 
 
-    //forsøk på å kjøre websiden
+    //REGISTRERER RESERVASJON
     private class LastSide extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -641,7 +641,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         String hentDato = dato;
         String hentTidFra = tidFra;;//beskrivelse.getText().toString();
         String hentTidTil = tidTil;;//beskrivelse.getText().toString();
-        String hentRomNr = valgtRom.getRomNr();
+        String hentRomNr = valgtRomNr;
 
 
         //String noSpaceStr = str.replaceAll("\\s", ""); // using built in method
