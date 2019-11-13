@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:padding="10dp"
+    android:background="@color/colorAccent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dinBestilling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Reservasjoner i dag"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="9"
+        android:layout_marginTop="10dp"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tittelReservasjoner"
+        android:textColor="@color/colorText"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:layout_marginTop="15dp"
+        android:textSize="18sp"
+        android:layout_below="@+id/dinBestilling"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reservasjoner:"/>
+    <TextView
+        android:id="@+id/reservasjonerTekst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tittelReservasjoner"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorText"
+        android:textSize="16sp" />
+
+
+
+    <LinearLayout
+        android:id="@+id/boks"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:layout_marginTop="1dp"
+        android:layout_below="@+id/reservasjonerTekst">
+
+        <Button
+            android:id="@+id/btnTilbake"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/typeResturant"
+            android:layout_marginRight="7dp"
+            android:layout_toLeftOf="@+id/btnTilReservering"
+            android:background="@color/colorPrimaryDark"
+            android:shadowColor="@color/colorText"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="9"
+            android:text="Tilbake"
+            android:textColor="@color/colorText2"
+            android:textSize="16sp"  />
+
+        <Button
+            android:id="@+id/btnTilReservering"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/typeResturant"
+            android:layout_marginLeft="7dp"
+            android:layout_toRightOf="@+id/btnTilbake"
+            android:background="@color/colorPrimaryDark"
+            android:shadowColor="@color/colorText"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="9"
+            android:text="Reserver"
+            android:textColor="@color/colorText2"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

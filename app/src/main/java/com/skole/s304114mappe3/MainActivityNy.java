@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.skole.s304114mappe3.Dialog.RegistrerRomDialog;
+import com.skole.s304114mappe3.Dialog.SeReservasjonerDialog;
 import com.skole.s304114mappe3.Dialog.reserverRomDialog;
 import com.skole.s304114mappe3.klasser.Reservasjon;
 import com.skole.s304114mappe3.klasser.Rom;
@@ -60,13 +61,25 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener,
+        SeReservasjonerDialog.DialogClickListener {
 
+    //--------DIALOG KNAPPER TIL FULLFORTSPILLDIALOGFRAGMENT--------
     @Override
     public void bestillClick() {
 
     }
 
+    //denne
+    @Override
+    public void reserverClick() {
+        //INTENT TIL SEBESTILLINGSINFOFRAGMENT
+        Intent intent_preferanser = new Intent (MainActivityNy.this, ReserverRom.class);
+        startActivity(intent_preferanser);
+        finish();
+    }
+
+    //denne
     @Override
     public void avbrytClick() {
         Toast.makeText(getApplicationContext(), "Avbrutt bestilling", Toast.LENGTH_LONG).show();
@@ -180,7 +193,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         });
 
         kjorJsonAlleRom();
-        kjorJsonAlleReservasjoner();
+
 
 
     }//utenfor create
@@ -316,6 +329,8 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         protected void onPostExecute(ArrayList<Rom> jsonArray) {
             markorerNy = jsonArray;
 
+            kjorJsonAlleReservasjoner();
+
             for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
 
 
@@ -359,6 +374,8 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                 mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()).snippet(info));
                 //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
                 //mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
+
+
             }
         }
     }
@@ -571,17 +588,47 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
             String reservasjonerTekst = "";
 
+            String tilToast = "";
+
+            //--------HENTER DAGENS DATO I RIKTIG FORMAT TIL SAMMENLIGNING AV DET SOM LIGGER I DB--------
+            Calendar c = Calendar.getInstance();
+            int aar = c.get(Calendar.YEAR);
+            int mnd = c.get(Calendar.MONTH);
+            int dag = c.get(Calendar.DAY_OF_MONTH);
+
+            mnd++;
+            datoIdag = dag+"."+mnd+"."+aar;
+
+
             for(Reservasjon r : reservasjoner) {
-                if(romNr == r.getRomNr()) {
 
-                    //--------HENTER DAGENS DATO I RIKTIG FORMAT TIL SAMMENLIGNING AV DET SOM LIGGER I DB--------
-                    Calendar c = Calendar.getInstance();
-                    int aar = c.get(Calendar.YEAR);
-                    int mnd = c.get(Calendar.MONTH);
-                    int dag = c.get(Calendar.DAY_OF_MONTH);
+                /*tilToast += romNr+": "+datoIdag+" MOT "+r.getDato()+": "+r.getTidFra()+" til  "+r.getTidTil()+"\n";
+                //HENTER DATO FRA BESTILLINGEN
+                String dato10 = r.getDato();*/
 
-                    mnd++;
-                    datoIdag = dag+"."+mnd+"."+aar;
+
+                /*--------FORMATERER DATOENE FOR SAMMENLIGNING--------
+                SimpleDateFormat sdf0 = new SimpleDateFormat("dd.MM.yyyy");
+                Date dato20 = null;
+                Date dato40 = null;
+
+                try {
+                    dato20 = sdf0.parse(dato10);
+                    dato40 = sdf0.parse(datoIdag);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                //--------SAMMENLIGNINGER AV FORMATERTE DATOER--------
+                //HVIS DATO ER I DAG
+                if((dato20.compareTo(dato40) == 0)) {
+                    tilToast+= "DATOEN ER LIKE";
+                }*/
+
+
+                if(r.getRomNr().equals(romNr)) {
+
 
                     //HENTER DATO FRA BESTILLINGEN
                     String dato1 = r.getDato();
@@ -609,11 +656,15 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                 }
             }
 
-            if(reservasjonerTekst == ""){
+            //Toast.makeText(this, tilToast, Toast.LENGTH_SHORT).show();
+
+            if(reservasjonerTekst.equals("")){
                 reservasjonerTekst = "Ingen aktive reservasjoner i dag.";
             }
 
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            visBestillingsinfo(reservasjonerTekst);
+
+            /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Reservasjoner i dag")
                     .setMessage(reservasjonerTekst)
                     .setCancelable(true)
@@ -626,10 +677,23 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                         public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                             dialog.cancel();
                         }
-                    });*/
+                    });
             final AlertDialog alert = builder.create();
-            alert.show();
+            alert.show();*/
         }
+    }
+
+    //--------OPPRETTER SEBESTILLINGSINFODIALOG--------
+    private void visBestillingsinfo(String reservasjoner)  {
+
+        //OPPRETTER NYTT DIALOGFRAGMENT
+        SeReservasjonerDialog rFragment = new SeReservasjonerDialog();
+
+        //OVERFØRER BESTILLINGSINFO TIL FRAGMENTET MED METODE FRA FRAGMENTET
+        rFragment.hentReservasjoner(reservasjoner);
+
+        //VISER DIALOGVINDUET
+        rFragment.show(getFragmentManager(), "Reservasjoner");
     }
 
 
