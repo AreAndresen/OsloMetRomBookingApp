@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toolbar;
 import com.google.android.gms.common.ConnectionResult;
@@ -42,6 +43,8 @@ public class Kart extends FragmentActivity implements OnMapReadyCallback, Google
 
     private ImageView logo;
 
+    private Button reserverRom;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,8 @@ public class Kart extends FragmentActivity implements OnMapReadyCallback, Google
 
 
         logo = findViewById(R.id.logo2);
+
+        reserverRom = findViewById(R.id.reserverRom);
         
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

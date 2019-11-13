@@ -159,15 +159,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
             }
         });
 
-        /*KLIKK PÅ VELG TID
-        visTid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //OPPRETTER TIDFRAGMENTET FOR SETTING AV TID
-                DialogFragment tidValg = new TidFragment();
-                tidValg.show(getSupportFragmentManager(), "tid valg");
-            }
-        });*/
 
         //KLIKK PÅ UTFØR BESTILLING
         btnReserver.setOnClickListener(new View.OnClickListener() {
