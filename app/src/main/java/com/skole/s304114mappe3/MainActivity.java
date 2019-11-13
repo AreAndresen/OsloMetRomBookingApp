@@ -45,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
         resturanterKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //koordinater til Pilestredet
+                String sLat = "59.919958";
+                String sLen = "10.735353";
+
+                getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLAT", sLat).apply();
+                getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLEN", sLen).apply();
+
                 Intent intent_startspill = new Intent (MainActivity.this, MainActivityNy.class);
                 startActivity(intent_startspill);
                 finish();
@@ -55,7 +63,15 @@ public class MainActivity extends AppCompatActivity {
         vennerKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_statistikk = new Intent (MainActivity.this, RegistrerRom.class);
+
+                //koordinater til kjeller
+                String sLat = "59.976427";
+                String sLen = "11.044555";
+
+                getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLAT", sLat).apply();
+                getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLEN", sLen).apply();
+
+                Intent intent_statistikk = new Intent (MainActivity.this, MainActivityNy.class);
                 startActivity(intent_statistikk);
             }
         });

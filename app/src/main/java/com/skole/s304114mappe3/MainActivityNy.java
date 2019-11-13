@@ -192,25 +192,33 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
+
+
         kjorJsonAlleRom();
+
+        kjorJsonAlleReservasjoner();
 
 
 
     }//utenfor create
 
 
-    /*--------OPPRETTER SEBESTILLINGSINFODIALOG--------
-    private void visBestillingsinfo()  {
 
-        //OPPRETTER NYTT DIALOGFRAGMENT
-        reserverRomDialog rFragment = new reserverRomDialog();
+    //må få zoomet uten aktiv gps
+    public void zoomTilSted() {
 
-        //OVERFØRER BESTILLINGSINFO TIL FRAGMENTET MED METODE FRA FRAGMENTET
-        rFragment.hentInfo(valgtRomNr);
+        //Manipulerer utgangspunktet for posisjonen
+        ////--------HENTER ID TIL BESTILLINGEN SOM SKAL VISES FRA MINNE - DEFINERT I SEBESTILLINGER OG I NOTIFIKASJON/SERVICE--------
+        Double lat = Double.parseDouble(getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("STEDLAT", ""));
+        Double len = Double.parseDouble(getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("STEDLEN", ""));
 
-        //VISER DIALOGVINDUET
-        rFragment.show(getSupportFragmentManager(), "Bestillingsinfo");
-    }*/
+
+        LatLng latLng = new LatLng(lat, len); //currentLatitude, currentLongitude 59.919958, 10.735353
+                                                                    //AVSTAN   //HASTIGHT PÅ ZOOM
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17), 1500, null);
+    }
+
+
 
     public void kjorJsonAlleRom(){
         //JSON GREIER
@@ -329,7 +337,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         protected void onPostExecute(ArrayList<Rom> jsonArray) {
             markorerNy = jsonArray;
 
-            kjorJsonAlleReservasjoner();
+            //kjorJsonAlleReservasjoner();
 
             for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
 
@@ -466,7 +474,15 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                 .title("Jeg er her!");
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)); //endrer farge på min markør
         mMap.addMarker(options);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 2000, null);
+
+        //MÅ LEGGE TILBAKE DENNE FOR Å FÅ ZOOM TIL POSISJONEN MIN
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 2000, null);
+
+        //ZOOMER TIL VALGT STED FRA MAIN
+        zoomTilSted();
+
+
+
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
