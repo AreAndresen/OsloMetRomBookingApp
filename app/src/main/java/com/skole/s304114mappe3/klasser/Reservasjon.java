@@ -13,26 +13,28 @@ public class Reservasjon {
 
 
     //-------KONSTRUKTØRER-------
-    public Reservasjon() {
+    /*public Reservasjon() {
         this.id = id;
-    }
+    }*/
 
     //-------KONTRUKSTØR-------
-    public Reservasjon(String dato, String tidFra, String tidTil, String romNr) {
-        this.dato = dato;
-        this.tidFra = tidFra;
-        this.tidTil = tidTil;
-        this.romNr = romNr;
-
-    }
-
     public Reservasjon(int id, String dato, String tidFra, String tidTil, String romNr) {
+        this.id = id;
         this.dato = dato;
         this.tidFra = tidFra;
         this.tidTil = tidTil;
         this.romNr = romNr;
-        this.id = id;
+
     }
+
+    /*public Reservasjon(int id, String dato, String tidFra, String tidTil, String romNr) {
+        this.id = id;
+        this.dato = dato;
+        this.tidFra = tidFra;
+        this.tidTil = tidTil;
+        this.romNr = romNr;
+
+    }*/
 
 
 

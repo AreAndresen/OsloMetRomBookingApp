@@ -159,13 +159,14 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                             //henter alle json objectene
                             JSONObject jsonobject = mat.getJSONObject(i);
 
+                            int id = jsonobject.getInt("id");
                             String dato = jsonobject.getString("dato");
                             String tidFra = jsonobject.getString("tidFra");
                             String tidTil = jsonobject.getString("tidTil");
                             String romNr = jsonobject.getString("romNr");
 
 
-                            Reservasjon nyReservasjon = new Reservasjon(dato, tidFra, tidTil, romNr);
+                            Reservasjon nyReservasjon = new Reservasjon(id, dato, tidFra, tidTil, romNr);
 
                             jsonArray.add(nyReservasjon);
                         }
