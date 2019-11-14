@@ -2,10 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
     android:background="@color/colorAccent"
     android:layout_height="match_parent">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:id="@+id/boks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@color/colorAccent"
+        android:orientation="vertical"
+        android:padding="15dp"
+        >
 
     <TextView
         android:id="@+id/tittelResInfo"
@@ -16,18 +31,19 @@
         android:textAlignment="center"
         android:textColor="@color/colorText"
         android:layout_marginTop="20dp"
-        android:textSize="26sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tittelResDato"
         android:textColor="@color/colorText"
         android:shadowColor="@color/colorAccent"
+        android:textStyle="bold"
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="9"
-        android:layout_marginTop="15dp"
-        android:textSize="18sp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
         android:layout_below="@+id/tittelResInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,11 +55,8 @@
         android:layout_below="@+id/tittelResDato"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorText"
-        android:shadowColor="#EE020202"
-        android:shadowDx="1"
-        android:shadowDy="1"
         android:shadowRadius="9"
-        android:textSize="16sp"/>
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/tittelResTidFra"
@@ -51,9 +64,10 @@
         android:shadowColor="@color/colorAccent"
         android:shadowDx="2"
         android:shadowDy="2"
+        android:textStyle="bold"
         android:shadowRadius="9"
-        android:layout_marginTop="5dp"
-        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
         android:layout_below="@+id/resDato"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,11 +79,8 @@
         android:layout_below="@+id/tittelResTidFra"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorText"
-        android:shadowColor="#EE020202"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="9"
-        android:textSize="16sp"  />
+
+        android:textSize="18sp"  />
 
     <TextView
         android:id="@+id/tittelResTidTil"
@@ -77,9 +88,10 @@
         android:shadowColor="@color/colorAccent"
         android:shadowDx="2"
         android:shadowDy="2"
+        android:textStyle="bold"
         android:shadowRadius="9"
-        android:layout_marginTop="5dp"
-        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
         android:layout_below="@+id/resTidFra"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,11 +103,8 @@
         android:layout_below="@+id/tittelResTidTil"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorText"
-        android:shadowColor="#EE020202"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="9"
-        android:textSize="16sp"/>
+
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/tittelResRomNr"
@@ -103,9 +112,10 @@
         android:shadowColor="@color/colorAccent"
         android:shadowDx="2"
         android:shadowDy="2"
+        android:textStyle="bold"
         android:shadowRadius="9"
-        android:layout_marginTop="5dp"
-        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
         android:layout_below="@+id/resTidTil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -117,22 +127,21 @@
         android:layout_below="@+id/tittelResRomNr"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorText"
-        android:shadowColor="#EE020202"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="9"
-        android:textSize="16sp"/>
 
+
+        android:textSize="18sp"/>
+
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/boks"
+        android:id="@+id/boks2"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:weightSum="100"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:padding="5dp"
-        android:layout_below="@+id/resRomNr">
+        android:layout_below="@+id/boks">
 
         <Button
             android:id="@+id/btnAvbestill"
@@ -142,12 +151,12 @@
             android:layout_marginRight="15dp"
             android:layout_toRightOf="@+id/btnSlett"
             android:background="@color/colorPrimaryDark"
-            android:shadowColor="@color/colorAccent"
+            android:shadowColor="@color/colorText"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="9"
+            android:textColor="@color/colorText2"
             android:text="Avbestill"
-            android:textColor="@color/colorText"
             android:textSize="20sp"  />
 
         <Button
@@ -158,12 +167,12 @@
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/btnSlett"
             android:background="@color/colorPrimaryDark"
-            android:shadowColor="@color/colorAccent"
+            android:shadowColor="@color/colorText"
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="9"
+            android:textColor="@color/colorText2"
             android:text="OK"
-            android:textColor="@color/colorText"
             android:textSize="20sp" />
     </LinearLayout>
 </RelativeLayout>
