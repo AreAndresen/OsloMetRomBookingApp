@@ -16,11 +16,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
         android:background="@color/colorAccent"
         android:orientation="vertical"
         android:padding="15dp"
         >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="115dp"
+            android:layout_height="85dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/logo" />
 
     <TextView
         android:id="@+id/tittelResInfo"
@@ -29,6 +36,7 @@
         android:layout_centerHorizontal="true"
         android:text="Reservasjonssinfo"
         android:textAlignment="center"
+        android:layout_below="@+id/logo"
         android:textColor="@color/colorText"
         android:layout_marginTop="20dp"
         android:textSize="30sp"
@@ -42,7 +50,7 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="9"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:textSize="20sp"
         android:layout_below="@+id/tittelResInfo"
         android:layout_width="match_parent"

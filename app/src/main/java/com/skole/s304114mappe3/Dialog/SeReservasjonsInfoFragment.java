@@ -43,6 +43,7 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
 
     //--------VERDIER--------
     int ID;
+    String dato, tidFra, tidTil, romNr;
     //--------OBJEKT--------
     Reservasjon reservasjon;
 
@@ -56,6 +57,12 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
         ////--------HENTER ID TIL BESTILLINGEN SOM SKAL VISES FRA MINNE - DEFINERT I SEBESTILLINGER OG I NOTIFIKASJON/SERVICE--------
         ID = getSharedPreferences("APP_INFO",MODE_PRIVATE).getInt("VISNINGSID", 0);
 
+        dato = getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("VISNINGSDATO", "");
+        tidFra = getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("VISNINGSTIDFRA", "");
+        tidTil = getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("VISNINGSTIDTIL", "");
+        romNr = getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("VISNINGSROMNR", "");
+
+
 
         //--------KJØRER SEBESTILLINGSINFO FRAGMENTET--------
         getFragmentManager().beginTransaction().replace(android.R.id.content,
@@ -66,6 +73,19 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
 
 
     //-----------------------METODER TIL HOVEDKLASSE-----------------------------
+    //-------HENTER BESTILLINGEN FRA HOVEDKLASSEN - BENYTTES I FRAGMENTET---------
+    public String getDato() {
+        return dato;
+    }
+    public String getTidFra() {
+        return tidFra;
+    }
+    public String getTidTil() {
+        return tidTil;
+    }
+    public String getRomNr() {
+        return romNr;
+    }
 
 
     //-------FULLFØRER AVBESTILLING - BENYTTES INNAD I jaClick() TIL visAvbestillDialog()---------
@@ -152,9 +172,11 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
 
 
             //BENYTTER METODENE FRA HOVEDKLASSEN TIL Å HENTE BESTILLING, RETURANT OG STRENG MED DELTAKELSER
-            //final Bestilling bestilling = ((SeBestillingsInfoFragment)getActivity()).getBestiling();
-            //final Resturant resturanten = ((SeBestillingsInfoFragment)getActivity()).getResturant();
-            //String visVenner = ((SeBestillingsInfoFragment)getActivity()).visDeltakelser();
+            final String dato = ((SeReservasjonsInfoFragment)getActivity()).getDato();
+            final String tidFra = ((SeReservasjonsInfoFragment)getActivity()).getTidFra();
+            final String tidTil = ((SeReservasjonsInfoFragment)getActivity()).getTidTil();
+            final String romNr = ((SeReservasjonsInfoFragment)getActivity()).getRomNr();
+
 
 
             //--------TEKST--------
@@ -164,10 +186,10 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
             resRomNr = v.findViewById(R.id.resRomNr);
 
             //--------SETTER TEKST MED HENTET RESTURANT, BESTILLING OG DELTAKELSR--------
-            resDato.setText("14.11.2019");
-            resTidFra.setText("10.00");
-            resTidTil.setText("14.00");
-            resRomNr.setText("PH360");
+            resDato.setText(dato);
+            resTidFra.setText(tidFra);
+            resTidTil.setText(tidTil);
+            resRomNr.setText(romNr);
 
 
             //--------KNAPPER--------

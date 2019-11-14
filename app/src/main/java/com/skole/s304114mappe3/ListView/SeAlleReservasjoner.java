@@ -99,9 +99,19 @@ public class SeAlleReservasjoner extends AppCompatActivity {
 
                 //HENTER OG PARSER ID FRA BESTILLINGEN
                 int ID = (int) valgtReservasjon.getId();
+                String dato = (String) valgtReservasjon.getDato();
+                String tidFra = (String) valgtReservasjon.getTidFra();
+                String tidTil = (String) valgtReservasjon.getTidFra();
+                String romNr = (String) valgtReservasjon.getRomNr();
+
 
                 //LAGRER ID I MINNET - BENYTTES TIL I SEBESTILLINGSINFODIALOGFRAGMENT OG I MINSERVICE/NOTIFIKASJON FOR VISNING
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putInt("VISNINGSID", ID).apply();
+                getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("VISNINGSDATO", dato).apply();
+                getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("VISNINGSTIDFRA", tidFra).apply();
+                getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("VISNINGSTIDTIL", tidTil).apply();
+                getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("VISNINGSROMNR", romNr).apply();
+
 
                 toastMessage(ID+""+valgtReservasjon.getRomNr());
 
