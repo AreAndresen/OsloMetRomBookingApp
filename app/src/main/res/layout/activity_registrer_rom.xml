@@ -13,7 +13,6 @@
         layout="@layout/toolbar" />
 
 
-
     <TextView
         android:id="@+id/tittelInfo"
         android:layout_below="@+id/toolbar"
@@ -37,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tittelInfo"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="1dp"
         android:background="@color/colorAccent"
         android:orientation="vertical"
         android:padding="15dp"
@@ -122,22 +121,21 @@
 
             <Spinner
                 android:id="@+id/spinBygg"
-                android:layout_width="195dp"
+                android:layout_width="215dp"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/sitteplasser"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+
+
                 android:textAlignment="center" />
 
             <NumberPicker
                 android:id="@+id/sitteplasser"
-                android:layout_width="168dp"
+                android:layout_width="wrap_content"
                 android:layout_height="114dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="35dp"
+
                 android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@+id/spinBygg"
 
                 android:theme="@style/NumberPickerTheme" />
@@ -247,7 +245,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/btnSeReservasjonsinfo"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:fontFamily="sans-serif-medium"
             android:shadowColor="@color/colorText"
             android:shadowDx="2"
@@ -263,12 +261,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/btnTilbake"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:fontFamily="sans-serif-medium"
             android:shadowColor="@color/colorText"
             android:shadowDx="2"
             android:shadowDy="2"
-
             android:shadowRadius="9"
             android:text="Registrer"
             android:textColor="@color/colorText2"

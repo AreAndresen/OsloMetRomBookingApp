@@ -78,7 +78,7 @@ public class Reservasjon {
     //-------TOSTRING BRUKES I LISTVIEW, DERFOR FÆRRE VERDIER FOR RYDDIGHET-------
     @Override
     public String toString() {
-        return getDato()+". Kl: "+getTidFra()+" til "+getTidTil()+". Romnr: "+getRomNr();
+        return "Dato: "+getDato()+". Romnr: "+getRomNr()+"."; // Kl: "+getTidFra()+"-"+getTidTil()+"
     }
 }
 

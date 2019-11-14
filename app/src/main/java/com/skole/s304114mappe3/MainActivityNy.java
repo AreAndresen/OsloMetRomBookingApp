@@ -722,6 +722,8 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override
     public void onBackPressed() {
+        Intent intent = new Intent (MainActivityNy.this, MainActivity.class);
+        startActivity(intent);
         finish();
     }
 }

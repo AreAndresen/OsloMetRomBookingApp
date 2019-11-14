@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent_statistikk = new Intent (MainActivity.this, MainActivityNy.class);
                 startActivity(intent_statistikk);
+                finish();
             }
         });
 
