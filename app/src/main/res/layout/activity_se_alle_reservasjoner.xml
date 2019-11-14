@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android= "http://schemas.android.com/apk/res/android"
+    xmlns:tools= "http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    android:background="@color/colorAccent"
+    android:layout_gravity="center"
+    >
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <TextView
+        android:id="@+id/tittelBes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Reservasjoner"
+        android:layout_below="@id/toolbar"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="30dp"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/hintBes"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tittelBes"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="9"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="25dp"
+        android:text="Trykk på reservasjoner for å se mer info"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/boksList"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hintBes"
+        android:background="@color/colorAccent"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:weightSum="100">
+        <LinearLayout
+            android:id="@+id/boksList2"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hintBes"
+            android:layout_marginTop="5dp"
+            android:weightSum="100">
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="318dp"
+            android:theme="@style/ListTheme">
+        </ListView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnTilbake"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorText2"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium"
+        android:shadowColor="@color/colorText"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/boksList"
+        android:text="Tilbake" />
+
+</RelativeLayout>

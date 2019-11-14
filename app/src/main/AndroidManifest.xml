@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".Dialog.SeReservasjonerDialog"></activity>
+        <activity android:name=".Dialog.SeReservasjonsInfoFragment"></activity>
+        <activity android:name=".ListView.SeAlleReservasjoner" />
+        <activity android:name=".Dialog.SeReservasjonerDialog" />
         <activity android:name=".Dialog.reserverRomDialog" />
         <activity android:name=".Dialog.RegistrerRomDialog" />
         <activity android:name=".ReserverRom" />

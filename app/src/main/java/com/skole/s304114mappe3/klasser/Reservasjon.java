@@ -4,13 +4,18 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Reservasjon {
     //-------ATTRIBUTTER-------
-    //private long ID;
+    private long id;
     private String dato;
     private String tidFra;
     private String tidTil;
     private String romNr;
 
 
+
+    //-------KONSTRUKTØRER-------
+    public Reservasjon() {
+        this.id = id;
+    }
 
     //-------KONTRUKSTØR-------
     public Reservasjon(String dato, String tidFra, String tidTil, String romNr) {
@@ -21,8 +26,24 @@ public class Reservasjon {
 
     }
 
+    public Reservasjon(long id, String dato, String tidFra, String tidTil, String romNr) {
+        this.dato = dato;
+        this.tidFra = tidFra;
+        this.tidTil = tidTil;
+        this.romNr = romNr;
+        this.id = id;
+    }
+
+
 
     //-------GET/SET-------
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getDato() {
         return dato;
     }
@@ -55,7 +76,7 @@ public class Reservasjon {
     //-------TOSTRING BRUKES I LISTVIEW, DERFOR FÆRRE VERDIER FOR RYDDIGHET-------
     @Override
     public String toString() {
-        return getRomNr();
+        return getDato()+". Kl: "+getTidFra()+" til "+getTidTil()+". Romnr: "+getRomNr();
     }
 }
 

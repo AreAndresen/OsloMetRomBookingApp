@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@color/colorAccent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tittelResInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Reservasjonssinfo"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="20dp"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tittelResDato"
+        android:textColor="@color/colorText"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:layout_marginTop="15dp"
+        android:textSize="18sp"
+        android:layout_below="@+id/tittelResInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dato:"/>
+    <TextView
+        android:id="@+id/resDato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tittelResDato"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorText"
+        android:shadowColor="#EE020202"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="9"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tittelResTidFra"
+        android:textColor="@color/colorText"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:layout_marginTop="5dp"
+        android:textSize="18sp"
+        android:layout_below="@+id/resDato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fra kl:" />
+    <TextView
+        android:id="@+id/resTidFra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tittelResTidFra"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorText"
+        android:shadowColor="#EE020202"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="9"
+        android:textSize="16sp"  />
+
+    <TextView
+        android:id="@+id/tittelResTidTil"
+        android:textColor="@color/colorText"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:layout_marginTop="5dp"
+        android:textSize="18sp"
+        android:layout_below="@+id/resTidFra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Til kl:"/>
+    <TextView
+        android:id="@+id/resTidTil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tittelResTidTil"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorText"
+        android:shadowColor="#EE020202"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="9"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tittelResRomNr"
+        android:textColor="@color/colorText"
+        android:shadowColor="@color/colorAccent"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="9"
+        android:layout_marginTop="5dp"
+        android:textSize="18sp"
+        android:layout_below="@+id/resTidTil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Romnummer:"/>
+    <TextView
+        android:id="@+id/resRomNr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tittelResRomNr"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorText"
+        android:shadowColor="#EE020202"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="9"
+        android:textSize="16sp"/>
+
+
+    <LinearLayout
+        android:id="@+id/boks"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:layout_below="@+id/resRomNr">
+
+        <Button
+            android:id="@+id/btnAvbestill"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/typeResturant"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/btnSlett"
+            android:background="@color/colorPrimaryDark"
+            android:shadowColor="@color/colorAccent"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="9"
+            android:text="Avbestill"
+            android:textColor="@color/colorText"
+            android:textSize="20sp"  />
+
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/typeResturant"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/btnSlett"
+            android:background="@color/colorPrimaryDark"
+            android:shadowColor="@color/colorAccent"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="9"
+            android:text="OK"
+            android:textColor="@color/colorText"
+            android:textSize="20sp" />
+    </LinearLayout>
+</RelativeLayout>

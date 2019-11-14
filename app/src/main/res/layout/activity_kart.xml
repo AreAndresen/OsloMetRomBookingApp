@@ -13,14 +13,11 @@
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="100"
-
-        >
+        android:weightSum="100">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
-
     </LinearLayout>
 
     <LinearLayout

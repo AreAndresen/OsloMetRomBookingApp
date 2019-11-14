@@ -16,7 +16,7 @@
         app:showAsAction="never"
         android:title="Registrer rom"/>
     <item
-        android:id="@+id/reserverRom"
+        android:id="@+id/SeAlleReservasjoner"
         app:showAsAction="never"
-        android:title="Reserver rom"/>
+        android:title="Se alle reservasjoner"/>
 </menu>

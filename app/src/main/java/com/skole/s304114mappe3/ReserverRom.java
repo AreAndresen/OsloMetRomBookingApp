@@ -27,6 +27,7 @@ import android.widget.Toolbar;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 import com.skole.s304114mappe3.klasser.Rom;
 
 import org.json.JSONArray;
@@ -680,8 +681,8 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 Intent intent_statistikk = new Intent (ReserverRom.this, RegistrerRom.class);
                 startActivity(intent_statistikk);
                 break;
-            case R.id.reserverRom:
-                Intent intent_preferanser = new Intent (ReserverRom.this, ReserverRom.class);
+            case R.id.SeAlleReservasjoner:
+                Intent intent_preferanser = new Intent (ReserverRom.this, SeAlleReservasjoner.class);
                 startActivity(intent_preferanser);
                 finish();
                 break;

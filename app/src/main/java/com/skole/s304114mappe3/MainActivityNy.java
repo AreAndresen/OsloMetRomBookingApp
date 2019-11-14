@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.skole.s304114mappe3.Dialog.RegistrerRomDialog;
 import com.skole.s304114mappe3.Dialog.SeReservasjonerDialog;
 import com.skole.s304114mappe3.Dialog.reserverRomDialog;
+import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 import com.skole.s304114mappe3.klasser.Reservasjon;
 import com.skole.s304114mappe3.klasser.Rom;
 
@@ -188,7 +189,6 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                 Intent intent_preferanser = new Intent (MainActivityNy.this, ReserverRom.class);
                 startActivity(intent_preferanser);
                 finish();
-
             }
         });
 
@@ -196,7 +196,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
         kjorJsonAlleRom();
 
-        kjorJsonAlleReservasjoner();
+        //kjorJsonAlleReservasjoner();
 
 
 
@@ -337,7 +337,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         protected void onPostExecute(ArrayList<Rom> jsonArray) {
             markorerNy = jsonArray;
 
-            //kjorJsonAlleReservasjoner();
+            kjorJsonAlleReservasjoner();
 
             for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
 
@@ -453,6 +453,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         @Override
         protected void onPostExecute(ArrayList<Reservasjon> jsonArray) {
             reservasjoner = jsonArray;
+            zoomTilSted();
         }
     }
 
@@ -737,8 +738,8 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                 startActivity(intent_statistikk);
                 finish();
                 break;
-            case R.id.reserverRom:
-                Intent intent_preferanser = new Intent (MainActivityNy.this, ReserverRom.class);
+            case R.id.SeAlleReservasjoner:
+                Intent intent_preferanser = new Intent (MainActivityNy.this, SeAlleReservasjoner.class);
                 startActivity(intent_preferanser);
                 finish();
                 break;

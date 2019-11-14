@@ -21,6 +21,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 import com.skole.s304114mappe3.klasser.Rom;
 
 import java.io.BufferedReader;
@@ -252,8 +253,8 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
                 Intent intent_statistikk = new Intent (RegistrerRom.this, RegistrerRom.class);
                 startActivity(intent_statistikk);
                 break;
-            case R.id.reserverRom:
-                Intent intent_preferanser = new Intent (RegistrerRom.this, ReserverRom.class);
+            case R.id.SeAlleReservasjoner:
+                Intent intent_preferanser = new Intent (RegistrerRom.this, SeAlleReservasjoner.class);
                 startActivity(intent_preferanser);
                 finish();
                 break;
