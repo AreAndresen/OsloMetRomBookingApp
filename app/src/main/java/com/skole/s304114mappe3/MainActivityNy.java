@@ -342,42 +342,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
             for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
 
 
-
-                /*--------HENTER DAGENS DATO I RIKTIG FORMAT TIL SAMMENLIGNING AV DET SOM LIGGER I DB--------
-                Calendar c = Calendar.getInstance();
-                int aar = c.get(Calendar.YEAR);
-                int mnd = c.get(Calendar.MONTH);
-                int dag = c.get(Calendar.DAY_OF_MONTH);
-
-                mnd++;
-                datoIdag = dag+"/"+mnd+"/"+aar;
-
-                //HENTER DATO FRA BESTILLINGEN
-                //String dato1 = reservasjon.getDato();
-
-
-                //--------FORMATERER DATOENE FOR SAMMENLIGNING--------
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                Date dato2 = null;
-                Date dato4 = null;
-
-                try {
-                    dato2 = sdf.parse(dato1);
-                    dato4 = sdf.parse(datoIdag);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-
-                //--------SAMMENLIGNINGER AV FORMATERTE DATOER--------
-                //HVIS DATO ER I DAG
-                if((dato2.compareTo(dato4) == 0)) {}*/
-
                 String info = "Se reservasjoner for i dag.";
-
-                /*else {
-                    String info = "Ingen reservasjoner i dag";
-                }*/
 
                 mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()).snippet(info));
                 //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));

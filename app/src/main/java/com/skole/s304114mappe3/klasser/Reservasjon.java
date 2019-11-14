@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Reservasjon {
     //-------ATTRIBUTTER-------
-    private long id;
+    private int id;
     private String dato;
     private String tidFra;
     private String tidTil;
@@ -26,7 +26,7 @@ public class Reservasjon {
 
     }
 
-    public Reservasjon(long id, String dato, String tidFra, String tidTil, String romNr) {
+    public Reservasjon(int id, String dato, String tidFra, String tidTil, String romNr) {
         this.dato = dato;
         this.tidFra = tidFra;
         this.tidTil = tidTil;
@@ -37,10 +37,10 @@ public class Reservasjon {
 
 
     //-------GET/SET-------
-    public long getId() {
+    public int getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

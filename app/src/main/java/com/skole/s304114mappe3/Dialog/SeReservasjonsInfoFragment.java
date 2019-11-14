@@ -42,7 +42,7 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
     }
 
     //--------VERDIER--------
-    Integer ID;
+    int ID;
     //--------OBJEKT--------
     Reservasjon reservasjon;
 
@@ -120,12 +120,12 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
 
         LastSide task = new LastSide();
 
-        //String sID = ID+"";
-        String sID = 1+"";
+        // int sID = ID+"";
+        //String sID = 1+"";
 
 
         //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
-        String url = "http://student.cs.hioa.no/~s304114/SlettReservasjon.php/?id="+sID;
+        String url = "http://student.cs.hioa.no/~s304114/SlettReservasjon.php/?id="+ID;
         //FJERNER MELLOMROM I STRENGEN
         String urlUtenMellomrom = url.replaceAll(" ", "");
 

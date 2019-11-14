@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.skole.s304114mappe3.Dialog.SeReservasjonsInfoFragment;
 import com.skole.s304114mappe3.MainActivityNy;
@@ -97,10 +98,12 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                 valgtReservasjon = (Reservasjon) reservasjonerListView.getItemAtPosition(i);
 
                 //HENTER OG PARSER ID FRA BESTILLINGEN
-                Integer ID = (int) valgtReservasjon.getId();
+                int ID = (int) valgtReservasjon.getId();
 
                 //LAGRER ID I MINNET - BENYTTES TIL I SEBESTILLINGSINFODIALOGFRAGMENT OG I MINSERVICE/NOTIFIKASJON FOR VISNING
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putInt("VISNINGSID", ID).apply();
+
+                toastMessage(ID+""+valgtReservasjon.getRomNr());
 
                 //INTENT TIL SEBESTILLINGSINFOFRAGMENT
                 Intent intentet = new Intent(SeAlleReservasjoner.this, SeReservasjonsInfoFragment.class);
@@ -215,6 +218,10 @@ public class SeAlleReservasjoner extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
     }*/
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
 
 
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
