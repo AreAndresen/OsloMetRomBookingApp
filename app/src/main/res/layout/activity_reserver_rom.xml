@@ -13,22 +13,15 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="115dp"
-        android:layout_height="85dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/toolbar"
-        android:src="@drawable/logo" />
+
 
     <TextView
         android:id="@+id/tittelInfo"
-        android:layout_below="@+id/logo"
+        android:layout_below="@+id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:shadowColor="@color/colorAccent"
         android:shadowDx="3"
         android:shadowDy="3"
@@ -169,7 +162,7 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tittelRomnr"
-            android:layout_marginTop="3dp"
+            android:textAlignment="center"
             android:background="@color/colorText2"
             android:text="Rom"
             android:padding="5dp"
