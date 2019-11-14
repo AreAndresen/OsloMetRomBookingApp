@@ -139,7 +139,7 @@
             android:layout_below="@+id/tlf"
             android:layout_gravity="center"
             android:background="@color/colorText2"
-            android:hint="Velg dato*"
+            android:hint="Trykk for dato*"
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/colorText"

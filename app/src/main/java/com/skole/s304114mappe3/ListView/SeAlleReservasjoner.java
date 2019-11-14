@@ -113,7 +113,7 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                 int ID = (int) valgtReservasjon.getId();
                 String dato = (String) valgtReservasjon.getDato();
                 String tidFra = (String) valgtReservasjon.getTidFra();
-                String tidTil = (String) valgtReservasjon.getTidFra();
+                String tidTil = (String) valgtReservasjon.getTidTil();
                 String romNr = (String) valgtReservasjon.getRomNr();
 
 
