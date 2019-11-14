@@ -342,7 +342,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
             for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
 
 
-                String info = "Se reservasjoner for i dag.";
+                String info = "Trykk for å reservere eller se dagens reservasjoner.";
 
                 mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()).snippet(info));
                 //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
