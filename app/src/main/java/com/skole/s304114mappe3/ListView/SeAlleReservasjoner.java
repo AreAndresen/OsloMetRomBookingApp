@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,8 +17,10 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.skole.s304114mappe3.Dialog.SeReservasjonsInfoFragment;
+import com.skole.s304114mappe3.MainActivity;
 import com.skole.s304114mappe3.MainActivityNy;
 import com.skole.s304114mappe3.R;
+import com.skole.s304114mappe3.RegistrerRom;
 import com.skole.s304114mappe3.klasser.Reservasjon;
 import com.skole.s304114mappe3.klasser.Rom;
 
@@ -236,6 +241,39 @@ public class SeAlleReservasjoner extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
     }*/
+
+    //En metode for å lage To o l b a rfra minmeny.xml
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.minmeny, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.seRom:
+                Intent intent = new Intent (SeAlleReservasjoner.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.registrerRom:
+                Intent intent_statistikk = new Intent (SeAlleReservasjoner.this, RegistrerRom.class);
+                startActivity(intent_statistikk);
+                break;
+            case R.id.SeAlleReservasjoner:
+                Intent intent_preferanser = new Intent (SeAlleReservasjoner.this, SeAlleReservasjoner.class);
+                startActivity(intent_preferanser);
+                finish();
+                break;
+            default:
+                // If wegothere, theuser'saction wasnot recognized
+                // Invokethesuperclassto handle it.
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
     private void toastMessage(String message){
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
