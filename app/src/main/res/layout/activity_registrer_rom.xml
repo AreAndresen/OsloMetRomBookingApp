@@ -63,13 +63,14 @@
 
         <TextView
             android:id="@+id/beskrivelse"
-            android:textColor="@color/colorText"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_below="@+id/romNr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Beskrivelse:" />
+            android:layout_below="@+id/romNr"
+            android:layout_marginTop="5dp"
+            android:text="Beskrivelse:"
+            android:textColor="@color/colorText"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/boks1"
@@ -121,20 +122,19 @@
 
             <Spinner
                 android:id="@+id/spinBygg"
-                android:layout_width="215dp"
+                android:layout_width="225dp"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/sitteplasser"
                 android:layout_height="wrap_content"
-
-
+                android:layout_marginTop="3dp"
                 android:textAlignment="center" />
 
             <NumberPicker
                 android:id="@+id/sitteplasser"
                 android:layout_width="wrap_content"
                 android:layout_height="114dp"
-                android:layout_marginLeft="35dp"
-
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="5dp"
                 android:layout_toRightOf="@+id/spinBygg"
 
@@ -167,7 +167,7 @@
                 android:id="@+id/tittelLat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/tittelLen"
                 android:text="Lat-koordinat:"
@@ -179,8 +179,8 @@
                 android:id="@+id/tittelLen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="80dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="65dp"
                 android:layout_toRightOf="@+id/tittelLat"
                 android:text="Len-koordinat:"
                 android:textColor="@color/colorText"
@@ -201,7 +201,7 @@
 
             <EditText
                 android:id="@+id/latKoordinat"
-                android:layout_width="175dp"
+                android:layout_width="150dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="5dp"
                 android:layout_toLeftOf="@+id/lenKoordinat"
@@ -212,11 +212,11 @@
 
             <EditText
                 android:id="@+id/lenKoordinat"
-                android:layout_width="175dp"
+                android:layout_width="150dp"
                 android:layout_height="35dp"
                 android:layout_below="@+id/tittelLen"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="35dp"
                 android:layout_toRightOf="@+id/latKoordinat"
                 android:background="@color/colorText2"
                 android:textColor="@color/colorText"

@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.skole.s304114mappe3.Dialog.SeReservasjonsInfoFragment;
 import com.skole.s304114mappe3.MainActivityNy;
@@ -48,6 +49,12 @@ public class SeAlleReservasjoner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_se_alle_reservasjoner);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.minmeny);
+        //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
+        //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
+        setActionBar(toolbar);
 
         //--------KNAPPER--------
         btnTilbake = (Button) findViewById(R.id.btnTilbake);
