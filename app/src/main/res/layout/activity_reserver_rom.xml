@@ -47,7 +47,7 @@
         <TextView
             android:id="@+id/tid"
             android:textColor="@color/colorText"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorText"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/slutt"
@@ -88,7 +88,7 @@
                 android:textColorHint="@color/colorText"
                 android:text="Slutt:"
                 android:textColor="@color/colorText"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -128,7 +128,7 @@
             android:text="Dato:"
 
             android:textColor="@color/colorText"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
 
@@ -144,7 +144,7 @@
             android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textColorHint="@color/colorText"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tittelRomnr"
@@ -154,7 +154,7 @@
             android:layout_marginTop="10dp"
             android:text="Rom:"
             android:textColor="@color/colorText"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -167,7 +167,7 @@
             android:text="Rom"
             android:padding="5dp"
             android:textColor="@color/colorText"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <!--<Spinner
             android:id="@+id/spinnerRomNr"

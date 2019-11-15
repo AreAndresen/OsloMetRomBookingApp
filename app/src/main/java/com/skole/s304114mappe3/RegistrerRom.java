@@ -118,21 +118,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
             @Override
             public void onClick(View v) {
 
-                //legger til rom gjennom url
-                readWebpage();
-
-                //INFOMELDING UT
-                toastMessage("Rom lagt til!");
-                //MELDING TIL LOGG
-                Log.d("Legg inn: ", "Rom lagt til");
-
-
-                Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
-                startActivity(intent_tilbake);
-                finish();
-
-                //FULLFØRER OPPRETTELSE AV NY RESTURANT
-                //fullforRegistrering();
+                fullforRegistrering();
             }
         });
 
@@ -166,29 +152,29 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
     //FIKS INPUTVALIDERING HER
     //--------METODE FOR Å LEGGE TIL OPPRETTET RESTURANT--------
     private void fullforRegistrering() {
-        String hentRomNr = romNr.getText().toString();
-        //String hentBeskrivelse = beskrivelse.getText().toString();
-        String hentLat = latKoordinat.getText().toString();
-        String hentLen = lenKoordinat.getText().toString();
 
+        String hentRomNr = romNr.getText().toString();
 
         //INPUTVALIDERING
-        //if(!hentRomNr.equals("") && !hentBeskrivelse.equals("") && !hentLat.equals("") && !hentLen.equals("") && hentLat.matches(
-            //    "[0-9\\+\\-\\ ]{2,15}+") && hentBeskrivelse.matches("[a-zA-ZæøåÆØÅ\\'\\-\\ \\.]{2,40}+")
-          //      && hentLen.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+") && hentRomNr.matches("[a-zA-ZæøåÆØÅ0-9\\'\\-\\ \\.]{2,30}+")){
+        if(!hentRomNr.equals("") && hentRomNr.matches("[a-zA-Z0-9\\-\\ \\.]{2,20}+")) {
 
-
-            //GENERERER OG LEGGER TIL NY RESTURANT I DB - TAR INN VERDIER TIL NY RESTURANT
-            //leggtil(hentRomNr, hentBeskrivelse, hentLat, hentLen);
-
-            //legger til rom gjennom url
             readWebpage();
 
+            //INFOMELDING UT
+            toastMessage("Rom lagt til!");
+            //MELDING TIL LOGG
+            Log.d("Legg inn: ", "Rom lagt til");
 
-       //} //else {
+
+            Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
+            startActivity(intent_tilbake);
+            finish();
+
+       }
+       else {
             ////INFOMELDING UT - FEIL INPUT
-            //toastMessage("Alle felter må fylles ut og navn og telefonnummer må være på gyldig format");
-        //}
+            toastMessage("Romnummer må være på riktig format (Tips: PH360 eller FI10.117");
+        }
     }
 
 

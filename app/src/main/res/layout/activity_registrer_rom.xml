@@ -58,6 +58,8 @@
             android:layout_below="@+id/tittelRomNr"
             android:layout_marginTop="3dp"
             android:padding="5dp"
+            android:hint="f.eks PH360"
+            android:textColorHint="@color/colorText"
             android:background="@color/colorText2"
             android:textColor="@color/colorText"
             android:textSize="17sp" />
@@ -101,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="152dp"
+                android:layout_marginLeft="180dp"
                 android:layout_toRightOf="@+id/start"
                 android:textAlignment="center"
                 android:textColorHint="@color/colorText"

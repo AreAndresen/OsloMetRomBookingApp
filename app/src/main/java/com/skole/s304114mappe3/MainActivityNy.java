@@ -228,6 +228,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         return false;
     }
 
+    //Ved klikk på kartet blir bruker ledet til registrer rom med koordinater
     @Override
     public void onMapClick(LatLng latLng) {
 
