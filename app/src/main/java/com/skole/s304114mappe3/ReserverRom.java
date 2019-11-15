@@ -38,7 +38,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class ReserverRom extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
@@ -70,7 +74,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     private Spinner spinStart, spinSlutt, spinnerRomNr;
 
     //--------VERDIER--------
-    private String dato, tid;
+    private String dato, datoIdag;
 
     private String valgtRomNr;
 
@@ -142,24 +146,14 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         populerSpinSlutt();
         //lagRomSpinner();
 
-        //--------DB HANDLER--------
-        //db = new DBhandler(this);
+        //--------HENTER DAGENS DATO I RIKTIG FORMAT TIL SAMMENLIGNING AV DET SOM LIGGER I DB--------
+        Calendar c = Calendar.getInstance();
+        int aarD = c.get(Calendar.YEAR);
+        int mndD = c.get(Calendar.MONTH);
+        int dagD = c.get(Calendar.DAY_OF_MONTH);
 
-
-        //--------OPPRETTER OG POPULERER SPINNERE--------
-        //lagResturantSpinner();
-        //lagVennerSpinner();
-
-
-        //--------LISTENERS--------
-        /*KLIKK PÅ LEGG TIL
-        btnLeggTilVenn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //LEGGER TIL VALGT VENN I valgteVenner ARRAYET
-                leggTilValgtVenn();
-            }
-        });*/
+        mndD++;
+        datoIdag = dagD+"/"+mndD+"/"+aarD;
 
         //KLIKK PÅ VELG DATO
         visDato.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +162,30 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 //OPPRETTER DATOFRAGMENTET FOR SETTING AV DATO
                 DialogFragment datoValg = new DatoFragment();
                 datoValg.show(getSupportFragmentManager(), "dato valg");
+
+
+                //--------FORMATERER DATOENE FOR SAMMENLIGNING--------
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Date dato2 = null;
+                Date dato4 = null;
+
+                //------------------FIKS DENNE INSTANSIERINGEN AV DATOER FEIL VED DATOMETODEN MÅ INSTANSIERES FØRST ------------------------------------->>>>
+
+                try {
+                    dato2 = sdf.parse("01/01/2017");
+                    dato4 = sdf.parse("01/04/2017");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                //--------SAMMENLIGNINGER AV FORMATERTE DATOER--------
+                //HVIS DATO ER I DAG
+                if(dato2.after(dato4)) {
+                    visDato.setText(dato);
+                }
+                else{
+                    Toast.makeText(ReserverRom.this, "Det er ikke mulig å bestille rom tilbake i tid.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -332,8 +350,8 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 int tidTilInt = Integer.parseInt(sTidTil);
 
                 if(tidFraInt > tidTilInt) {
-                    Toast.makeText(adapterView.getContext(), "Tid fra kan ikke være etter tid til.", Toast.LENGTH_SHORT).show();
-                }
+                    Toast.makeText(adapterView.getContext(), "Starttid fra kan ikke være etter tid til.", Toast.LENGTH_SHORT).show();
+            }
 
 
                 Toast.makeText(adapterView.getContext(), tidFra, Toast.LENGTH_SHORT).show();
@@ -436,7 +454,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
         //GENERERER STRING PÅ 22/10/2019 FORMAT
         dato = dag+"."+mnd+"."+aar;
-        visDato.setText(dato);
+
     }
 
 
