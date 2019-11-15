@@ -63,7 +63,7 @@ import java.util.Date;
 
 public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener,
-        SeReservasjonerDialog.DialogClickListener {
+        SeReservasjonerDialog.DialogClickListener, GoogleMap.OnMapClickListener { //onMapClickListener
 
     //--------DIALOG KNAPPER TIL FULLFORTSPILLDIALOGFRAGMENT--------
     @Override
@@ -162,8 +162,10 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         //henter lokajon
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+
+                //ENDRE OPPDATERINGS
+                .setInterval(60 * 10000)        // 10 seconds, in milliseconds
+                .setFastestInterval(60 * 10000); // 1 second, in milliseconds
 
 
         //LOGO
@@ -194,7 +196,6 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
 
 
-        kjorJsonAlleRom();
 
         //kjorJsonAlleReservasjoner();
 
@@ -220,6 +221,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
 
 
+    //ASYNC NR 1 (ETTER ASYNC MAP)
     public void kjorJsonAlleRom(){
         //JSON GREIER
         //textView = (TextView) findViewById(R.id.jasontekst);
@@ -227,6 +229,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
     }
 
+    //ASYNC NR 2
     public void kjorJsonAlleReservasjoner(){
         //JSON GREIER
         //textView = (TextView) findViewById(R.id.jasontekst);
@@ -263,7 +266,21 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         return false;
     }
 
+    @Override
+    public void onMapClick(LatLng latLng) {
 
+        Intent intent = new Intent (MainActivityNy.this, RegistrerRom.class);
+
+        //
+        intent.putExtra("LAT",latLng.latitude);
+        intent.putExtra("LONG",latLng.longitude);
+        startActivity(intent);
+        finish();
+
+
+
+        Toast.makeText(this,"Lat: "+latLng.latitude+","+"Long: "+latLng.longitude, Toast.LENGTH_SHORT).show();
+    }
 
 
     //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
@@ -548,10 +565,12 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         mMap = googleMap;
         mMap.setOnInfoWindowClickListener(this);
 
+        mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
         //løkke gjennom koordinat arrayet og setter alle markørene på kartet
 
 
+        kjorJsonAlleRom();
 
         // Add a marker in Sydney and move the camera
         //LatLng sydney = new LatLng(-34, 151);
