@@ -163,6 +163,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
 
     }
 
+    //FIKS INPUTVALIDERING HER
     //--------METODE FOR Å LEGGE TIL OPPRETTET RESTURANT--------
     private void fullforRegistrering() {
         String hentRomNr = romNr.getText().toString();
@@ -179,6 +180,10 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
 
             //GENERERER OG LEGGER TIL NY RESTURANT I DB - TAR INN VERDIER TIL NY RESTURANT
             //leggtil(hentRomNr, hentBeskrivelse, hentLat, hentLen);
+
+            //legger til rom gjennom url
+            readWebpage();
+
 
        //} //else {
             ////INFOMELDING UT - FEIL INPUT
