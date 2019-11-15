@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -36,7 +37,8 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
     private Button btnRegistrer, btnAvbryt;
 
     //--------TEKST--------
-    private EditText latKoordinat, lenKoordinat, romNr;
+    private EditText romNr;
+    private TextView latKoordinat, lenKoordinat;
 
     //--------SPINNERE--------
     private Spinner spinBygg;
@@ -52,6 +54,8 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
     String bygg;
 
     private ImageView logo;
+
+    private String lat,len;
 
 
     @Override
@@ -79,8 +83,18 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
         //beskrivelse = (EditText)findViewById(R.id.beskrivelse);
 
 
-        latKoordinat = (EditText)findViewById(R.id.latKoordinat);
-        lenKoordinat = (EditText)findViewById(R.id.lenKoordinat);
+        latKoordinat = (TextView) findViewById(R.id.latKoordinat);
+        lenKoordinat = (TextView) findViewById(R.id.lenKoordinat);
+
+
+        //HENTER FRA MAINNY KOORDINATER INTENT
+        lat = getIntent().getStringExtra("LAT");
+        len = getIntent().getStringExtra("LEN");
+
+
+        latKoordinat.setText(lat);
+        lenKoordinat.setText(len);
+
 
         //--------SPINNERE--------
         spinBygg = (Spinner) findViewById(R.id.spinBygg);

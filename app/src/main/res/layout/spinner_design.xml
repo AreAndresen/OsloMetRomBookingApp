@@ -4,10 +4,9 @@
     android:layout_height="wrap_content"
     android:text="Androchunk"
     android:textColor="@color/colorText"
-    android:paddingLeft="10dp"
-    android:paddingTop="5dp"
+    android:padding="5dp"
     android:background="@color/colorText2"
-    android:textSize="20sp">
+    android:textSize="17sp">
     <!--android:textAlignment="center"-->
 
 </TextView>

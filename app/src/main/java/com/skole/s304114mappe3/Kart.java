@@ -31,10 +31,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Kart extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+//public class Kart extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+  //      GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    public static final String TAG = Kart.class.getSimpleName();
+    /*public static final String TAG = Kart.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -113,7 +113,7 @@ public class Kart extends FragmentActivity implements OnMapReadyCallback, Google
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }*/
+    }
 
 
 
@@ -255,5 +255,5 @@ public class Kart extends FragmentActivity implements OnMapReadyCallback, Google
         Intent intent_tilbake = new Intent (Kart.this, MainActivity.class);
         startActivity(intent_tilbake);
         finish();
-    }
-}
+    }*/
+//}

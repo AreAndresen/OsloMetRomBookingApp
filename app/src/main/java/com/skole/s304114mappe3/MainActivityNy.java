@@ -88,7 +88,7 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    public static final String TAG = Kart.class.getSimpleName();
+    public static final String TAG = MainActivityNy.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
     //spør om posisjon
@@ -118,8 +118,6 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
     String datoIdag;
 
     private ImageView logo;
-
-    private Button reserverRom;
 
     TextView textView;
 
@@ -170,7 +168,6 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
         //LOGO
         logo = findViewById(R.id.logo2);
-        reserverRom = findViewById(R.id.reserverRom);
 
 
         logo.setOnClickListener(new View.OnClickListener() {
@@ -181,25 +178,6 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                 finish();
             }
         });
-
-        reserverRom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //visBestillingsinfo();
-
-                //INTENT TIL SEBESTILLINGSINFOFRAGMENT
-                Intent intent_preferanser = new Intent (MainActivityNy.this, ReserverRom.class);
-                startActivity(intent_preferanser);
-                finish();
-            }
-        });
-
-
-
-
-        //kjorJsonAlleReservasjoner();
-
-
 
     }//utenfor create
 
@@ -247,22 +225,6 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         //LAGRER ID I MINNET - BENYTTES TIL I SEBESTILLINGSINFODIALOGFRAGMENT OG I MINSERVICE/NOTIFIKASJON FOR VISNING
         getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("ROMNR", valgtRomNr).apply();
 
-        /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(marker.getSnippet())
-                .setCancelable(true)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();*/
-
         return false;
     }
 
@@ -271,12 +233,14 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
         Intent intent = new Intent (MainActivityNy.this, RegistrerRom.class);
 
+        String lat = latLng.latitude+"";
+        String len = latLng.longitude+"";
+
         //
-        intent.putExtra("LAT",latLng.latitude);
-        intent.putExtra("LONG",latLng.longitude);
+        intent.putExtra("LAT",lat);
+        intent.putExtra("LEN",len);
         startActivity(intent);
         finish();
-
 
 
         Toast.makeText(this,"Lat: "+latLng.latitude+","+"Long: "+latLng.longitude, Toast.LENGTH_SHORT).show();
