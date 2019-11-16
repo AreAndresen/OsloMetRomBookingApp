@@ -89,7 +89,7 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
 
     //-------FULLFØRER AVBESTILLING - BENYTTES INNAD I jaClick() TIL visAvbestillDialog()---------
     public void fullforAvbestilling() {
-        //legger til rom gjennom url
+        //sletter reservasjon gjennom url
         readWebpage();
 
         //INFOMELDING UT

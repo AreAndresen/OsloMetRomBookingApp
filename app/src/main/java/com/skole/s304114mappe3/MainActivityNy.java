@@ -2,12 +2,12 @@ package com.skole.s304114mappe3;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -42,6 +42,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.skole.s304114mappe3.Dialog.RegistrerRomDialog;
 import com.skole.s304114mappe3.Dialog.SeReservasjonerDialog;
+import com.skole.s304114mappe3.Dialog.SeReservasjonsInfoFragment;
+import com.skole.s304114mappe3.Dialog.SlettReservasjonDialog;
 import com.skole.s304114mappe3.Dialog.reserverRomDialog;
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 import com.skole.s304114mappe3.klasser.Reservasjon;
@@ -63,7 +65,28 @@ import java.util.Date;
 
 public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener,
-        SeReservasjonerDialog.DialogClickListener, GoogleMap.OnMapClickListener { //onMapClickListener
+        SeReservasjonerDialog.DialogClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnInfoWindowLongClickListener, SlettReservasjonDialog.DialogClickListener { //onMapClickListener
+
+    @Override
+    public void jaClick() {
+
+        //sletter rommet
+        readWebpage();
+
+        //sletter tilhørende reservasjoner
+        readWebpage2();
+
+        Intent intent_tilbake = new Intent (MainActivityNy.this, MainActivityNy.class);
+        startActivity(intent_tilbake);
+        finish();
+        return;
+    }
+
+    @Override
+    public void neiClick() {
+        return;
+    }
+
 
     //--------DIALOG KNAPPER TIL FULLFORTSPILLDIALOGFRAGMENT--------
     @Override
@@ -228,6 +251,24 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         return false;
     }
 
+    /*@Override
+    public void onInfoWindowLongClick (Marker marker) {
+
+    }*/
+
+
+    //----------------------------------------------------------DENNN NY TEST
+    @Override
+    public void onInfoWindowLongClick(Marker marker) {
+        valgtRomNr = marker.getTitle();
+        Toast.makeText(this,valgtRomNr, Toast.LENGTH_SHORT).show();
+
+        DialogFragment dialog = new SlettReservasjonDialog();
+        dialog.show(getFragmentManager(), "Avslutt");
+    }
+
+
+
     //Ved klikk på kartet blir bruker ledet til registrer rom med koordinater
     @Override
     public void onMapClick(LatLng latLng) {
@@ -246,6 +287,8 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
         Toast.makeText(this,"Lat: "+latLng.latitude+","+"Long: "+latLng.longitude, Toast.LENGTH_SHORT).show();
     }
+
+
 
 
     //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
@@ -532,6 +575,8 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
 
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
+
+        mMap.setOnInfoWindowLongClickListener(this);
         //løkke gjennom koordinat arrayet og setter alle markørene på kartet
 
 
@@ -624,6 +669,79 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
         rFragment.show(getFragmentManager(), "Reservasjoner");
     }
 
+
+
+    //forsøk på å kjøre websiden
+    private class LastSide extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            String s = "";
+            String hele = "";
+            for (String url : urls) {
+                try{
+                    URL minurl= new URL(urls[0]);
+                    HttpURLConnection con = (HttpURLConnection) minurl.openConnection();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    while((s = in.readLine()) != null) {
+                        hele = hele + s;
+                    }
+                    in.close();
+                    con.disconnect();
+                    return hele;
+                }
+                catch(Exception e) {
+                    return"Noe gikk feil";
+                }
+            }
+            return hele;
+        }
+
+        @Override
+        protected void onPostExecute(String ss) {
+            //textView.setText(ss);
+        }
+    }
+
+
+    public void readWebpage() {
+
+        LastSide task = new LastSide();
+
+        // int sID = ID+"";
+        //String sID = 1+"";
+
+
+        //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
+        String url = "http://student.cs.hioa.no/~s304114/SlettRom.php/?romNr="+valgtRomNr;
+
+
+        //FJERNER MELLOMROM I STRENGEN
+        //String urlUtenMellomrom = url.replaceAll(" ", "");
+
+        task.execute(new String[]{url});
+
+
+    }
+
+    public void readWebpage2() {
+
+        LastSide task = new LastSide();
+
+        // int sID = ID+"";
+        //String sID = 1+"";
+
+
+        //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
+        String url = "http://student.cs.hioa.no/~s304114/SlettTilhorendeReservasjoner.php/?romNr="+valgtRomNr;
+
+
+        //FJERNER MELLOMROM I STRENGEN
+        //String urlUtenMellomrom = url.replaceAll(" ", "");
+
+        task.execute(new String[]{url});
+
+
+    }
 
 
 
