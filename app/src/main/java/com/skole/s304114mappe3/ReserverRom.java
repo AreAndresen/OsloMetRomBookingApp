@@ -29,7 +29,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
+import com.skole.s304114mappe3.klasser.Reservasjon;
 import com.skole.s304114mappe3.klasser.Rom;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -75,8 +80,11 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     private String valgtRomNr;
 
     private String tidFra, tidTil;
+    private boolean RiktigTid, RiktigDato, ReservasjonFinnes;
 
     ArrayList<Rom> alleRom = new ArrayList<Rom>();
+
+    ArrayList<Reservasjon> reservasjoner = new ArrayList<Reservasjon>();
     Rom valgtRom;
 
     //--------OBJEKTER--------
@@ -140,6 +148,8 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
         populerSpinStart();
         populerSpinSlutt();
+
+        kjorJsonAlleReservasjoner();
         //lagRomSpinner();
 
         //--------HENTER DAGENS DATO I RIKTIG FORMAT TIL SAMMENLIGNING AV DET SOM LIGGER I DB--------
@@ -165,11 +175,14 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
+
+                readWebpage();
+
                 //KONTROLLERER AT ALLE FELTER SOM ER OBLIGATORISKE ER BENYTTET
-                if (!visDato.getText().toString().equals("")) { // && kontrollerDatoer()
+                if (!visDato.getText().toString().equals("") && RiktigTid && RiktigDato && !ReservasjonFinnes) { // && kontrollerDatoer()
 
                     //OPPRETTER SEBESTILLINGSINFODIALOG OG VISER VALGT INFO
-                    readWebpage();
+
 
                     //INFOMELDING UT
                     toastMessage("Reservasjon registrert!");
@@ -184,7 +197,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 }
                 else{
                     //INFOMELDING UT - FEIL INPUT
-                    Toast.makeText(ReserverRom.this, "Dato for reservasjon må være fylt ut.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReserverRom.this, "Kontroller at alt er fylt ut riktig.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -205,23 +218,24 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
     }
 
-    /*public void kjorJson(){
+    //ASYNC NR 2
+    public void kjorJsonAlleReservasjoner(){
         //JSON GREIER
         //textView = (TextView) findViewById(R.id.jasontekst);
-        getJSON task = new getJSON();
-        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
-    }*/
+        getJsonAlleReservasjoner task = new getJsonAlleReservasjoner();
+        task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentReservasjoner.php"});
+    }
 
 
 
-    /*METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
-    private class getJSON extends AsyncTask<String, Void, ArrayList<Rom>> {
+    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
+    private class getJsonAlleReservasjoner extends AsyncTask<String, Void, ArrayList<Reservasjon>> {
         JSONObject jsonObject;
-        ArrayList<Rom> jsonArray = new ArrayList<>();
+        ArrayList<Reservasjon> jsonArray = new ArrayList<>();
 
         //kjører i bakgrunnen - heavy work
         @Override
-        protected ArrayList<Rom> doInBackground(String... urls) {
+        protected ArrayList<Reservasjon> doInBackground(String... urls) {
             //String retur = "";
 
             String s = "";
@@ -250,21 +264,16 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                             //henter alle json objectene
                             JSONObject jsonobject = mat.getJSONObject(i);
 
+                            int id = jsonobject.getInt("id");
+                            String dato = jsonobject.getString("dato");
+                            String tidFra = jsonobject.getString("tidFra");
+                            String tidTil = jsonobject.getString("tidTil");
                             String romNr = jsonobject.getString("romNr");
-                            String bygg = jsonobject.getString("bygg");
-                            String antSitteplasser = jsonobject.getString("antSitteplasser");
-                            String lat = jsonobject.getString("lat");
-                            String len = jsonobject.getString("len");
-                            //retur = retur +beskrivelse+": "+lat+ " "+len+"\n";
 
-                            Double latD = Double.parseDouble(lat);
-                            Double lenD = Double.parseDouble(len);
 
-                            LatLng koordinater = new LatLng(latD, lenD);
+                            Reservasjon nyReservasjon = new Reservasjon(id, dato, tidFra, tidTil, romNr);
 
-                            Rom nyttRom = new Rom(romNr, bygg, antSitteplasser, koordinater);
-
-                            jsonArray.add(nyttRom);
+                            jsonArray.add(nyReservasjon);
                         }
                         return jsonArray;
                     }
@@ -282,12 +291,11 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Rom> jsonArray) {
-            alleRom = jsonArray;
+        protected void onPostExecute(ArrayList<Reservasjon> jsonArray) {
+            reservasjoner = jsonArray;
 
-            lagRomSpinner();
         }
-    }*/
+    }
 
 
 
@@ -319,10 +327,14 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 int tidFraInt = Integer.parseInt(sTidFra);
                 int tidTilInt = Integer.parseInt(sTidTil);
 
-                if(tidFraInt > tidTilInt) {
+                if(tidFraInt >= tidTilInt) {
                     Toast.makeText(adapterView.getContext(), "Starttid fra kan ikke være etter tid til.", Toast.LENGTH_SHORT).show();
-            }
+                    RiktigTid = false;
 
+                }
+                else{
+                    RiktigTid = true;
+                }
 
                 Toast.makeText(adapterView.getContext(), tidFra, Toast.LENGTH_SHORT).show();
             }
@@ -339,7 +351,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     private void populerSpinSlutt() {
 
         //GENERERER ARRAYADAPTER TIL LISTVIEWET
-        final ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.klokkeslett, R.layout.farge_spinner);
+        final ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.klokkesletttil, R.layout.farge_spinner);
         adapter2.setDropDownViewResource(R.layout.spinner_design);
 
         spinSlutt.setAdapter(adapter2);
@@ -359,7 +371,12 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 int tidTilInt = Integer.parseInt(sTidTil);
 
                 if(tidFraInt > tidTilInt) {
-                    Toast.makeText(adapterView.getContext(), "Tid fra kan ikke være etter tid til.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(adapterView.getContext(), "Starttid fra kan ikke være etter tid til.", Toast.LENGTH_SHORT).show();
+                    RiktigTid = false;
+
+                }
+                else{
+                    RiktigTid = true;
                 }
 
                 Toast.makeText(adapterView.getContext(), tidFraInt+" OG "+tidTilInt+" . "+tidTil, Toast.LENGTH_SHORT).show();
@@ -451,9 +468,10 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
                 if (dato2.after(dato4) || dato2.compareTo(dato4) == 0) {
                     visDato.setText(dato);
-                   // riktigDato = true;
+                    RiktigDato = true; //
                 }
                 else{
+                    RiktigDato = false;
                     Toast.makeText(ReserverRom.this, "Det er ikke mulig å bestille rom tilbake i tid.", Toast.LENGTH_SHORT).show();
                 }
             } catch (ParseException e) {
@@ -497,6 +515,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
             //textView.setText(ss);
         }
     }
+
     public void readWebpage() {
 
         LastSide task = new LastSide();
@@ -507,18 +526,30 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         String hentTidTil = tidTil;;//beskrivelse.getText().toString();
         String hentRomNr = valgtRomNr;
 
+        ReservasjonFinnes = false;
 
+        Reservasjon sjekkOmFinnes = new Reservasjon(999, hentDato, hentTidFra, hentTidTil, hentRomNr);
+
+        for(Reservasjon r : reservasjoner) {
+            if(r.getDato().equals(sjekkOmFinnes.getDato()) && r.getTidFra().equals(sjekkOmFinnes.getTidFra()) &&  r.getTidTil().equals(sjekkOmFinnes.getTidTil())) {
+                ReservasjonFinnes = true;
+            }
+        }
+
+        if(!ReservasjonFinnes) {
+            //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
+            String url = "http://student.cs.hioa.no/~s304114/LeggTilReservasjon.php/?dato="+hentDato+"&tidFra="+hentTidFra+"&tidTil="+hentTidTil+"&romNr="+hentRomNr;
+            //FJERNER MELLOMROM I STRENGEN
+            String urlUtenMellomrom = url.replaceAll(" ", "");
+
+
+            task.execute(new String[]{urlUtenMellomrom});
+        }
+        else {
+            Toast.makeText(ReserverRom.this, "Reservasjonen finnes.", Toast.LENGTH_SHORT).show();
+        }
         //String noSpaceStr = str.replaceAll("\\s", ""); // using built in method
         //System.out.println(noSpaceStr);
-
-
-        //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
-        String url = "http://student.cs.hioa.no/~s304114/LeggTilReservasjon.php/?dato="+hentDato+"&tidFra="+hentTidFra+"&tidTil="+hentTidTil+"&romNr="+hentRomNr;
-        //FJERNER MELLOMROM I STRENGEN
-        String urlUtenMellomrom = url.replaceAll(" ", "");
-
-
-        task.execute(new String[]{urlUtenMellomrom});
     }
 
 
