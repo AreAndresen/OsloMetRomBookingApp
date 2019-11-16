@@ -48,11 +48,9 @@ import com.skole.s304114mappe3.Dialog.reserverRomDialog;
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 import com.skole.s304114mappe3.klasser.Reservasjon;
 import com.skole.s304114mappe3.klasser.Rom;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
