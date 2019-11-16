@@ -25,21 +25,16 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 import com.skole.s304114mappe3.klasser.Rom;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -153,14 +148,15 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         visDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 //OPPRETTER DATOFRAGMENTET FOR SETTING AV DATO
                 DialogFragment datoValg = new DatoFragment();
                 datoValg.show(getSupportFragmentManager(), "dato valg");
+
+                //kontrollerDatoer();
             }
         });
-
-
-
 
 
 
@@ -170,7 +166,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
             public void onClick(View v) {
 
                 //KONTROLLERER AT ALLE FELTER SOM ER OBLIGATORISKE ER BENYTTET
-                if (!visDato.getText().toString().equals("") && kontrollerDatoer(visDato.getText().toString())) {
+                if (!visDato.getText().toString().equals("")) { // && kontrollerDatoer()
 
                     //OPPRETTER SEBESTILLINGSINFODIALOG OG VISER VALGT INFO
                     readWebpage();
@@ -403,22 +399,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     }
 
 
-
-
-    /*--------OPPRETTER SEBESTILLINGSINFODIALOG--------
-    private void visBestillingsinfo()  {
-
-        //OPPRETTER NYTT DIALOGFRAGMENT
-        SeBestillingsInfoDialog bFragment = new SeBestillingsInfoDialog();
-
-        //OVERFØRER BESTILLINGSINFO TIL FRAGMENTET MED METODE FRA FRAGMENTET
-        bFragment.hentInfo(dato, tid, valgtResturant, valgteVenner, db);
-
-        //VISER DIALOGVINDUET
-        bFragment.show(getFragmentManager(), "Bestillingsinfo");
-    }*/
-
-
     //--------INNEBYGD METODE FOR SETTING AV DATO--------
     @Override
     public void onDateSet(DatePicker view, int aar, int mnd, int dag) {
@@ -429,58 +409,60 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         //GENERERER STRING PÅ 22/10/2019 FORMAT
         dato = dag+"."+mnd+"."+aar;
 
-        visDato.setText(dato);
 
-        /*if(!visDato.getText()) {
-            if(kontrollerDatoer(dato)) {
-                visDato.setText(dato);
-            }
-            else {
-                Toast.makeText(ReserverRom.this, "Det er ikke mulig å bestille rom tilbake i tid.", Toast.LENGTH_SHORT).show();
-            }
+        kontrollerDatoer(dato);
+
+        //visDato.setText(dato);
+
+       /* if(kontrollerDatoer()) {
+            Toast.makeText(ReserverRom.this, dato, Toast.LENGTH_SHORT).show();
+            visDato.setText(dato);
+        }
+        else{
+            Toast.makeText(ReserverRom.this, "Det er ikke mulig å bestille rom tilbake i tid.", Toast.LENGTH_SHORT).show();
         }*/
-
     }
 
 
-    public boolean kontrollerDatoer(String dato) {
+    public void kontrollerDatoer(String dato) {
 
-        boolean riktigDato = false;
-
-        Calendar c = Calendar.getInstance();
-        int aarD = c.get(Calendar.YEAR);
-        int mndD = c.get(Calendar.MONTH);
-        int dagD = c.get(Calendar.DAY_OF_MONTH);
-
-        mndD++;
-        String datoIdag = dagD+"/"+mndD+"/"+aarD;
+        //boolean riktigDato = false;
 
         //--------FORMATERER DATOENE FOR SAMMENLIGNING--------
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date dato2 = null;
         Date dato4 = null;
 
         //------------------FIKS DENNE INSTANSIERINGEN AV DATOER FEIL VED DATOMETODEN MÅ INSTANSIERES FØRST ------------------------------------->>>>
+        //if (dato2 == null && dato4 == null) {
+            try {
+                Calendar c = Calendar.getInstance();
+                int aarD = c.get(Calendar.YEAR);
+                int mndD = c.get(Calendar.MONTH);
+                int dagD = c.get(Calendar.DAY_OF_MONTH);
 
-        try {
-            dato2 = sdf.parse(dato); //"01/01/2017"
-            dato4 = sdf.parse(datoIdag); //"01/04/2017"
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+                mndD++;
+                String datoIdag = dagD + "." + mndD + "." + aarD;
 
-        //--------SAMMENLIGNINGER AV FORMATERTE DATOER--------
-        //HVIS DATO ER I DAG
-        if(dato2.after(dato4)) {
-            //visDato.setText(dato);
-            riktigDato = true;
-        }
-        /*else{
-            //Toast.makeText(ReserverRom.this, "Det er ikke mulig å bestille rom tilbake i tid.", Toast.LENGTH_SHORT).show();
-            riktigDato = false;
-        }*/
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-        return riktigDato;
+                dato2 = sdf.parse(dato); //"01/01/2017"
+                dato4 = sdf.parse(datoIdag); //"01/04/2017"
+
+                if (dato2.after(dato4) || dato2.compareTo(dato4) == 0) {
+                    visDato.setText(dato);
+                   // riktigDato = true;
+                }
+                else{
+                    Toast.makeText(ReserverRom.this, "Det er ikke mulig å bestille rom tilbake i tid.", Toast.LENGTH_SHORT).show();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        //}
+        Toast.makeText(ReserverRom.this, dato2+" "+dato4, Toast.LENGTH_SHORT).show();
+
+        //return riktigDato;
     }
 
 
