@@ -178,27 +178,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
                 readWebpage();
 
-                //KONTROLLERER AT ALLE FELTER SOM ER OBLIGATORISKE ER BENYTTET
-                if (!visDato.getText().toString().equals("") && RiktigTid && RiktigDato && !ReservasjonFinnes) { // && kontrollerDatoer()
-
-                    //OPPRETTER SEBESTILLINGSINFODIALOG OG VISER VALGT INFO
-
-
-                    //INFOMELDING UT
-                    toastMessage("Reservasjon registrert!");
-                    //MELDING TIL LOGG
-                    Log.d("Legg inn: ", "Rom lagt til");
-
-
-                    Intent intent_tilbake = new Intent (ReserverRom.this, MainActivityNy.class);
-                    startActivity(intent_tilbake);
-                    finish();
-
-                }
-                else{
-                    //INFOMELDING UT - FEIL INPUT
-                    Toast.makeText(ReserverRom.this, "Kontroller at alt er fylt ut riktig.", Toast.LENGTH_SHORT).show();
-                }
             }
         });
 
@@ -319,7 +298,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 String sTidFra = tidFra.replaceAll(":", "");
 
                 if(tidTil == null) {
-                    tidTil = "07:00";
+                    tidTil = "07:15";
                 }
 
                 String sTidTil = tidTil.replaceAll(":", "");
@@ -327,15 +306,19 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 int tidFraInt = Integer.parseInt(sTidFra);
                 int tidTilInt = Integer.parseInt(sTidTil);
 
-                if(tidFraInt >= tidTilInt) {
-                    Toast.makeText(adapterView.getContext(), "Starttid fra kan ikke være etter tid til.", Toast.LENGTH_SHORT).show();
-                    RiktigTid = false;
+                int sum = tidTilInt - tidFraInt;
 
+                if(tidFraInt > tidTilInt) {
+                    Toast.makeText(adapterView.getContext(), "Starttid må være før sluttid."+sum, Toast.LENGTH_SHORT).show();
+                    RiktigTid = false;
+                }
+                if(sum > 200) {
+                    Toast.makeText(adapterView.getContext(), "Reservasjon kan ikke oversige 2 timer "+sum, Toast.LENGTH_SHORT).show();
+                    RiktigTid = false;
                 }
                 else{
                     RiktigTid = true;
                 }
-
                 Toast.makeText(adapterView.getContext(), tidFra, Toast.LENGTH_SHORT).show();
             }
 
@@ -373,15 +356,18 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 int sum = tidTilInt - tidFraInt;
 
                 if(tidFraInt > tidTilInt) {
-                    Toast.makeText(adapterView.getContext(), "Starttid fra kan ikke være etter tid til. "+sum, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(adapterView.getContext(), "Starttid må være før sluttid."+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
-
+                }
+                if(sum > 200) {
+                    Toast.makeText(adapterView.getContext(), "Reservasjon kan ikke oversige 2 timer "+sum, Toast.LENGTH_SHORT).show();
+                    RiktigTid = false;
                 }
                 else{
                     RiktigTid = true;
                 }
 
-                Toast.makeText(adapterView.getContext(), tidFraInt+" OG "+tidTilInt+" . "+tidTil, Toast.LENGTH_SHORT).show();
+                Toast.makeText(adapterView.getContext(), tidFraInt+" OG "+tidTilInt+" . "+tidTil+" = "+sum, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -530,34 +516,25 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
         ReservasjonFinnes = false;
 
-        Reservasjon sjekkOmFinnes = new Reservasjon(999, hentDato, hentTidFra, hentTidTil, hentRomNr);
 
         for(Reservasjon r : reservasjoner) {
-            if(r.getDato().equals(sjekkOmFinnes.getDato())) {
+            if(r.getDato().equals(dato)) {
 
-                /*String sTidFra = tidFra.replaceAll(":", "");
-                String sTidTil = tidTil.replaceAll(":", "");
-
-                int tidFraInt = Integer.parseInt(sTidFra);
-                int tidTilInt = Integer.parseInt(sTidTil);
-
-                r.getTidFra().replaceAll(":", "");
-                r.getTidTil().replaceAll(":", "");
-
-                int RtidFraInt = Integer.parseInt(sTidFra);
-                int RtidTilInt = Integer.parseInt(sTidTil);*/
-
-                if(r.getTidFra().equals(sjekkOmFinnes.getTidFra()) ||  r.getTidTil().equals(sjekkOmFinnes.getTidTil())) {
+                if(r.getTidFra().equals(tidFra) ||  r.getTidTil().equals(tidTil)) {
                     ReservasjonFinnes = true;
                 }
-
-                /*if(tidFraInt == RtidFraInt && tidTilInt <= RtidTilInt || RtidFraInt <= RtidTilInt && Rtid) {
-                    ReservasjonFinnes = true;
-                }*/
             }
         }
 
-        if(!ReservasjonFinnes) {
+
+        //KONTROLLERER AT ALLE FELTER SOM ER OBLIGATORISKE ER BENYTTET
+        if (visDato.getText().toString().equals("") && !RiktigTid && !RiktigDato) { // && kontrollerDatoer()
+
+            Toast.makeText(ReserverRom.this, "Kontroller at alt er fylt ut riktig.", Toast.LENGTH_SHORT).show();
+
+        }
+
+        if(!visDato.getText().toString().equals("") && RiktigTid && RiktigDato && !ReservasjonFinnes) {
             //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
             String url = "http://student.cs.hioa.no/~s304114/LeggTilReservasjon.php/?dato="+hentDato+"&tidFra="+hentTidFra+"&tidTil="+hentTidTil+"&romNr="+hentRomNr;
             //FJERNER MELLOMROM I STRENGEN
@@ -565,12 +542,21 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
 
             task.execute(new String[]{urlUtenMellomrom});
+
+            //INFOMELDING UT
+            toastMessage("Reservasjon registrert!");
+            //MELDING TIL LOGG
+            Log.d("Legg inn: ", "Rom lagt til");
+
+
+            Intent intent_tilbake = new Intent (ReserverRom.this, MainActivityNy.class);
+            startActivity(intent_tilbake);
+            finish();
+
         }
         else {
             Toast.makeText(ReserverRom.this, "Reservasjonen finnes.", Toast.LENGTH_SHORT).show();
         }
-        //String noSpaceStr = str.replaceAll("\\s", ""); // using built in method
-        //System.out.println(noSpaceStr);
     }
 
 
