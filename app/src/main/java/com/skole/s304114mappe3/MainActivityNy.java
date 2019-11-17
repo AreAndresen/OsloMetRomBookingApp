@@ -629,17 +629,18 @@ public class MainActivityNy extends AppCompatActivity implements OnMapReadyCallb
                     try {
                         dato2 = sdf.parse(dato1);
                         dato4 = sdf.parse(datoIdag);
+
+
+                        //--------SAMMENLIGNINGER AV FORMATERTE DATOER--------
+                        //HVIS DATO ER I DAG
+                        if((dato2.compareTo(dato4) == 0)) {
+
+                            reservasjonerTekst += "Kl: " + r.getTidFra() + "-" + r.getTidTil() + ".\n";
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
-
-                    //--------SAMMENLIGNINGER AV FORMATERTE DATOER--------
-                    //HVIS DATO ER I DAG
-                    if((dato2.compareTo(dato4) == 0)) {
-
-                        reservasjonerTekst += "Kl: " + r.getTidFra() + "-" + r.getTidTil() + ".\n";
-                    }
                 }
             }
 

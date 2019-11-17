@@ -370,8 +370,10 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 int tidFraInt = Integer.parseInt(sTidFra);
                 int tidTilInt = Integer.parseInt(sTidTil);
 
+                int sum = tidTilInt - tidFraInt;
+
                 if(tidFraInt > tidTilInt) {
-                    Toast.makeText(adapterView.getContext(), "Starttid fra kan ikke være etter tid til.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(adapterView.getContext(), "Starttid fra kan ikke være etter tid til. "+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
 
                 }
@@ -531,8 +533,27 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         Reservasjon sjekkOmFinnes = new Reservasjon(999, hentDato, hentTidFra, hentTidTil, hentRomNr);
 
         for(Reservasjon r : reservasjoner) {
-            if(r.getDato().equals(sjekkOmFinnes.getDato()) && r.getTidFra().equals(sjekkOmFinnes.getTidFra()) &&  r.getTidTil().equals(sjekkOmFinnes.getTidTil())) {
-                ReservasjonFinnes = true;
+            if(r.getDato().equals(sjekkOmFinnes.getDato())) {
+
+                /*String sTidFra = tidFra.replaceAll(":", "");
+                String sTidTil = tidTil.replaceAll(":", "");
+
+                int tidFraInt = Integer.parseInt(sTidFra);
+                int tidTilInt = Integer.parseInt(sTidTil);
+
+                r.getTidFra().replaceAll(":", "");
+                r.getTidTil().replaceAll(":", "");
+
+                int RtidFraInt = Integer.parseInt(sTidFra);
+                int RtidTilInt = Integer.parseInt(sTidTil);*/
+
+                if(r.getTidFra().equals(sjekkOmFinnes.getTidFra()) ||  r.getTidTil().equals(sjekkOmFinnes.getTidTil())) {
+                    ReservasjonFinnes = true;
+                }
+
+                /*if(tidFraInt == RtidFraInt && tidTilInt <= RtidTilInt || RtidFraInt <= RtidTilInt && Rtid) {
+                    ReservasjonFinnes = true;
+                }*/
             }
         }
 
