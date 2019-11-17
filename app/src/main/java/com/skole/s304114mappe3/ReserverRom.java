@@ -523,7 +523,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
 
 
-    //En metode for å lage To o l b a rfra minmeny.xml
+    //-------lAGER TOOLBAR---------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -531,17 +531,14 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         return true;
     }
 
+    //-------ULIKE VALG I TOOLBAREN---------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.seRom:
+            case R.id.velgSted:
                 Intent intent = new Intent (ReserverRom.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-                break;
-            case R.id.registrerRom:
-                Intent intent_statistikk = new Intent (ReserverRom.this, RegistrerRom.class);
-                startActivity(intent_statistikk);
                 break;
             case R.id.SeAlleReservasjoner:
                 Intent intent_preferanser = new Intent (ReserverRom.this, SeAlleReservasjoner.class);
@@ -549,8 +546,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 finish();
                 break;
             default:
-                // If wegothere, theuser'saction wasnot recognized
-                // Invokethesuperclassto handle it.
                 return super.onOptionsItemSelected(item);
         }
         return true;

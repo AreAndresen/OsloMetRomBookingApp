@@ -7,14 +7,10 @@
     android:layout_height="match_parent"
     >
     <item
-        android:id="@+id/seRom"
+        android:id="@+id/velgSted"
         android:icon="@drawable/ic_control_point_black_24dp"
         app:showAsAction="never"
         android:title="Velg sted"/>
-    <item
-        android:id="@+id/registrerRom"
-        app:showAsAction="never"
-        android:title="Registrer rom"/>
     <item
         android:id="@+id/SeAlleReservasjoner"
         app:showAsAction="never"

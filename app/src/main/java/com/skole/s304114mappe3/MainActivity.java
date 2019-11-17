@@ -10,18 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.Toolbar;
-
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 
 
 public class MainActivity extends AppCompatActivity {
 
     //--------KNAPPER-------
-    Button resturanterKnapp, vennerKnapp, bestillingKnapp, innstillingerKnapp;
+    Button pilestredetKnapp, kjellerKnapp;
 
-    private ImageView logo;
+    private ImageView logoItoolBar;
 
 
     @Override
@@ -29,95 +27,73 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //--------TOOLBAR--------
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.minmeny);
-        //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
         setActionBar(toolbar);
 
 
-        logo = findViewById(R.id.logo2);
-
-
         //--------KNAPPER--------
-        resturanterKnapp = findViewById(R.id.seRomKnapp);
-        vennerKnapp = findViewById(R.id.registrerRomKnapp);
-        //bestillingKnapp = findViewById(R.id.reserverRomKnapp);
-        //innstillingerKnapp = findViewById(R.id.innstillingerKnapp);
+        pilestredetKnapp = findViewById(R.id.pilestredetKnapp);
+        kjellerKnapp = findViewById(R.id.kjellerKnapp);
+
+        //--------LOGO - FUNGERER SOM KNAPP--------
+        logoItoolBar = findViewById(R.id.logo2);
 
 
         //--------LISTENERS--------
-        //KLIKK RESTURANTER
-        resturanterKnapp.setOnClickListener(new View.OnClickListener() {
+        //KLIKK PILESTREDET
+        pilestredetKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //koordinater til Pilestredet
+                //KOORDINATER TIL Pilestredet
                 String sLat = "59.919958";
                 String sLen = "10.735353";
 
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLAT", sLat).apply();
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLEN", sLen).apply();
 
-                Intent intent_startspill = new Intent (MainActivity.this, Kart.class);
-                startActivity(intent_startspill);
+                Intent intentP = new Intent (MainActivity.this, Kart.class);
+                startActivity(intentP);
                 finish();
             }
         });
 
-        //KLIKK VENNER
-        vennerKnapp.setOnClickListener(new View.OnClickListener() {
+        //KLIKK KJELLER
+        kjellerKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //koordinater til kjeller
+                //KOORDINATER TIL KJELLER
                 String sLat = "59.976427";
                 String sLen = "11.044555";
 
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLAT", sLat).apply();
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLEN", sLen).apply();
 
-                Intent intent_statistikk = new Intent (MainActivity.this, Kart.class);
-                startActivity(intent_statistikk);
+                Intent intentK = new Intent (MainActivity.this, Kart.class);
+                startActivity(intentK);
                 finish();
             }
         });
 
-        /*KLIKK BESTILLINGER
-        bestillingKnapp.setOnClickListener(new View.OnClickListener() {
+        //KLIKK LOGO I TOOLBAR
+        logoItoolBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_preferanser = new Intent (MainActivity.this, ReserverRom.class);
-                startActivity(intent_preferanser);
+                Intent intentS = new Intent (MainActivity.this, MainActivity.class);
+                startActivity(intentS);
                 finish();
             }
         });
-
-        //KLIKK INNSTILLINGER
-        innstillingerKnapp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_preferanser = new Intent (MainActivity.this, Kart.class);
-                startActivity(intent_preferanser);
-            }
-        });*/
         //--------SLUTT LISTENERS--------
-
-        //LOGO
-        logo = findViewById(R.id.logo2);
-
-        logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_startspill = new Intent (MainActivity.this, MainActivity.class);
-                startActivity(intent_startspill);
-                finish();
-            }
-        });
 
     }//-------CREATE SLUTTER---------
 
-    //En metode for å lage To o l b a rfra minmeny.xml
+
+
+    //-------lAGER TOOLBAR---------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -125,37 +101,29 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
+    //-------ULIKE VALG I TOOLBAREN---------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.seRom:
-                Intent intent = new Intent (MainActivity.this, MainActivity.class);
-                startActivity(intent);
+            case R.id.velgSted:
+                Intent intentS = new Intent (MainActivity.this, MainActivity.class);
+                startActivity(intentS);
                 finish();
                 break;
-            case R.id.registrerRom:
-                Intent intent_statistikk = new Intent (MainActivity.this, RegistrerRom.class);
-                startActivity(intent_statistikk);
-                break;
             case R.id.SeAlleReservasjoner:
-                Intent intent_preferanser = new Intent (MainActivity.this, SeAlleReservasjoner.class);
-                startActivity(intent_preferanser);
+                Intent intentSe = new Intent (MainActivity.this, SeAlleReservasjoner.class);
+                startActivity(intentSe);
                 finish();
                 break;
             default:
-                // If wegothere, theuser'saction wasnot recognized
-                // Invokethesuperclassto handle it.
                 return super.onOptionsItemSelected(item);
         }
         return true;
     }
 
-    private void toastMessage(String message){
-        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
-    }
 
-
-    //-------TILBAKE KNAPP - FORHINDRER STACK---------
+    //-------TILBAKE KNAPP - LUKKER APP---------
     @Override
     public void onBackPressed() {
         finish();

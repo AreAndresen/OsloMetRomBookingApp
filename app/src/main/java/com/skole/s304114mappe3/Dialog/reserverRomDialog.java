@@ -24,7 +24,7 @@ public class reserverRomDialog extends DialogFragment implements DatePickerDialo
     private DialogClickListener callback;
 
     //--------KNAPPER--------
-    private Button btnAvbryt, btnLeggTilVenn, btnReserver;
+    private Button btnAvbryt, btnReserver;
 
     //--------TEKST--------
     private TextView visDato, visRomNr;

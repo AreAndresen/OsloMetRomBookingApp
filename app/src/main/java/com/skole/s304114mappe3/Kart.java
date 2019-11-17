@@ -2,7 +2,6 @@ package com.skole.s304114mappe3;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -17,10 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -55,11 +52,12 @@ import java.util.Date;
 
 public class Kart extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener,
-        SeReservasjonerDialog.DialogClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnInfoWindowLongClickListener, SlettReservasjonDialog.DialogClickListener { //onMapClickListener
+        SeReservasjonerDialog.DialogClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnInfoWindowLongClickListener, SlettReservasjonDialog.DialogClickListener {
 
+
+    //DIALOG ETTER LONGCLICK PÅ MARKØR/MESSAGE VED SLETTING AV ROM
     @Override
     public void jaClick() {
-
         //sletter rommet
         readWebpage();
 
@@ -101,38 +99,22 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     }
 
 
+    //--------GOOGLEMAP--------
     public static final String TAG = Kart.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
-    //spør om posisjon
     private LocationRequest mLocationRequest;
-
-
-
     private GoogleMap mMap;
-    //ArrayList<LatLng> markorer = new ArrayList<LatLng>();
-    ArrayList<Rom> markorerNy = new ArrayList<Rom>();
 
+    //--------ARRAYS--------
+    ArrayList<Rom> markorerNy = new ArrayList<Rom>();
     ArrayList<Reservasjon> reservasjoner = new ArrayList<Reservasjon>();
 
-    String valgtRomNr;
-
-    // LatLng PH360 = new LatLng(59.919566, 10.734934);
-    //LatLng PH373Koord = new LatLng(59.919458, 10.735091);
-    //Rom PH373 = new Rom("PH373","Lite gruppe med 3 sitteplasser.",PH373Koord);
-
-
-    //LatLng PH360Koord = new LatLng(59.919566, 10.734934);
-    //Rom PH360 = new Rom("PH360",PH360Koord);
-    //LatLng PH351 = new LatLng(59.919466, 10.734803);
-    //LatLng N020117 = new LatLng(59.920152, 10.735870);
-
     //--------VERDIER--------
-    String datoIdag;
+    String datoIdag, valgtRomNr;
 
     private ImageView logo;
 
-    TextView textView;
 
 
     @Override
@@ -140,49 +122,39 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kart);
 
-        //TOOLBAR
+        //--------TOOLBAR--------
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.minmeny);
-        //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
         setActionBar(toolbar);
 
 
-        //GPS
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        //-------HENTER KARTFRAGMENT---------
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-
-        //HUSK GETMAPASYNC ER EN ASYNC OGSÅ, MÅ SEPARERE DENNE MED JSON HENTING ASYNC
         mapFragment.getMapAsync(this);
 
 
-
-        //markorer.add(PH360);
-        //markorerNy.add(PH373);
-        //markorer.add(PH351);
-        //markorer.add(N020117);
-
-        //NYTT GPS
+        //-------GOOGLE API---------
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
 
-        //henter lokajon
+        //-------HENTER LOKASJON TIL GPS---------
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 
-                //ENDRE OPPDATERINGS
-                .setInterval(60 * 10000)        // 10 seconds, in milliseconds
-                .setFastestInterval(60 * 10000); // 1 second, in milliseconds
+                //ENDRET OPPDATERINGER FOR KART ZOOM
+                .setInterval(60 * 10000)
+                .setFastestInterval(60 * 10000);
 
 
         //LOGO
         logo = findViewById(R.id.logo2);
 
-
+        //--------LISTENERS--------
+        //KLIKK LOGO I TOOLBAR
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,105 +163,91 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                 finish();
             }
         });
+        //--------SLUTT LISTENERS--------
 
-    }//utenfor create
+    }//-------CREATE SLUTTER---------
 
 
 
-    //må få zoomet uten aktiv gps
+    //--------ZOOMER TIL STEDET VALGT I MAIN--------
     public void zoomTilSted() {
 
-        //Manipulerer utgangspunktet for posisjonen
-        ////--------HENTER ID TIL BESTILLINGEN SOM SKAL VISES FRA MINNE - DEFINERT I SEBESTILLINGER OG I NOTIFIKASJON/SERVICE--------
+        //HENTER KOORDINATENE FRA MINNET
         Double lat = Double.parseDouble(getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("STEDLAT", ""));
         Double len = Double.parseDouble(getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("STEDLEN", ""));
 
+        LatLng latLng = new LatLng(lat, len);
 
-        LatLng latLng = new LatLng(lat, len); //currentLatitude, currentLongitude 59.919958, 10.735353
-                                                                    //AVSTAN   //HASTIGHT PÅ ZOOM
+        //BESTEMMER HØYDE OG HASTIGHET PÅ ZOOMET
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17), 1500, null);
     }
 
 
 
-    //ASYNC NR 1 (ETTER ASYNC MAP)
+    //--------ASYNC NR 1 (ETTER ASYNC MAP) - HENTER ALLE ROM--------
     public void kjorJsonAlleRom(){
-        //JSON GREIER
-        //textView = (TextView) findViewById(R.id.jasontekst);
+
         getJsonAlleRom task = new getJsonAlleRom();
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
     }
 
-    //ASYNC NR 2
+    //--------ASYNC NR 2 - HENTER ALLE RESERVASJONER--------
     public void kjorJsonAlleReservasjoner(){
-        //JSON GREIER
-        //textView = (TextView) findViewById(R.id.jasontekst);
+
         getJsonAlleReservasjoner task = new getJsonAlleReservasjoner();
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentReservasjoner.php"});
     }
 
 
 
-    //OVERFØRER TITELEN TIL MARKØREN TIL MINNET FOR BRUK VED RESERVASJON
+    //--------CLICK PÅ MARKØR - SE RESERVASJONER/RESERVER--------
     @Override
     public boolean onMarkerClick(Marker marker) {
+
+        //OVERFØRER TITELEN TIL MARKØREN TIL MINNET
         valgtRomNr = marker.getTitle();
 
-        //LAGRER ID I MINNET - BENYTTES TIL I SEBESTILLINGSINFODIALOGFRAGMENT OG I MINSERVICE/NOTIFIKASJON FOR VISNING
+        //LAGRER ID I MINNET - BENYTTES I RESERVASJON OG SEBESTILLINGSINFODIALOG FRAGMENT
         getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("ROMNR", valgtRomNr).apply();
 
         return false;
     }
 
-    /*@Override
-    public void onInfoWindowLongClick (Marker marker) {
 
-    }*/
-
-
-    //----------------------------------------------------------DENNN NY TEST
+    //--------LONGCLICK PÅ INFOVINDUET TIL MARKØREN FOR ROM - SLETTING AV ROMMET--------
     @Override
     public void onInfoWindowLongClick(Marker marker) {
         valgtRomNr = marker.getTitle();
-        Toast.makeText(this,valgtRomNr, Toast.LENGTH_SHORT).show();
 
+        //STARTER OPP EN DIALOGBOKS FOR EVT SLETTING AV ROM
         DialogFragment dialog = new SlettReservasjonDialog();
-        dialog.show(getFragmentManager(), "Avslutt");
+        dialog.show(getFragmentManager(), "Slett");
     }
 
 
-
-    //Ved klikk på kartet blir bruker ledet til registrer rom med koordinater
+    //--------CLICK PÅ KART--------
     @Override
     public void onMapClick(LatLng latLng) {
-
-        Intent intent = new Intent (Kart.this, RegistrerRom.class);
 
         String lat = latLng.latitude+"";
         String len = latLng.longitude+"";
 
-        //
+        //Ved klikk på kartet blir bruker ledet til registrer rom med koordinater
+        Intent intent = new Intent (Kart.this, RegistrerRom.class);
         intent.putExtra("LAT",lat);
         intent.putExtra("LEN",len);
         startActivity(intent);
         finish();
-
-
-        Toast.makeText(this,"Lat: "+latLng.latitude+","+"Long: "+latLng.longitude, Toast.LENGTH_SHORT).show();
     }
 
 
-
-
-    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
+    //--------HENTER ALLE ROM SOM JSONOBJEKTER FRA WEBSERVICE--------
     private class getJsonAlleRom extends AsyncTask<String, Void, ArrayList<Rom>> {
         JSONObject jsonObject;
         ArrayList<Rom> jsonArray = new ArrayList<>();
 
-        //kjører i bakgrunnen - heavy work
         @Override
         protected ArrayList<Rom> doInBackground(String... urls) {
-            //String retur = "";
 
             String s = "";
             String output = "";
@@ -314,23 +272,26 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                         JSONArray mat = new JSONArray(output);
 
                         for (int i = 0; i < mat.length(); i++) {
-                            //henter alle json objectene
                             JSONObject jsonobject = mat.getJSONObject(i);
 
+                            //HENTER ALLE ROM OG OVERFØRER VERDIENE
                             String romNr = jsonobject.getString("romNr");
                             String bygg = jsonobject.getString("bygg");
                             String antSitteplasser = jsonobject.getString("antSitteplasser");
                             String lat = jsonobject.getString("lat");
                             String len = jsonobject.getString("len");
-                            //retur = retur +beskrivelse+": "+lat+ " "+len+"\n";
 
+                            //PARSER KOORDINATENE TIL DOUBLE
                             Double latD = Double.parseDouble(lat);
                             Double lenD = Double.parseDouble(len);
 
+                            //PRODUSERER KOORDINATENE TIL LATLNG
                             LatLng koordinater = new LatLng(latD, lenD);
 
+                            //OPPRETTER NYTT ROM
                             Rom nyttRom = new Rom(romNr, bygg, antSitteplasser, koordinater);
 
+                            //OVERFØRER ALLE ROM TIL JSONARRAY-ARRAYET
                             jsonArray.add(nyttRom);
                         }
                         return jsonArray;
@@ -341,7 +302,6 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                     return jsonArray;
                 }
                 catch(Exception e) {
-                    //return "Noe gikk feil";
                     e.printStackTrace();
                 }
             }
@@ -352,32 +312,29 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         protected void onPostExecute(ArrayList<Rom> jsonArray) {
             markorerNy = jsonArray;
 
-            kjorJsonAlleReservasjoner(); //RIKTIG ASYNC HER MTP AT HENTING AV ROM KJØRSS FØRST OG SÅ RESERVASJONER HER?-----------------------------------------------------------------------------------<<<
+            //STARTER ASYNC NR 2 HER FOR HENTING ALLE RESERVASJONER
+            kjorJsonAlleReservasjoner();
 
-            for(int i = 0; i<markorerNy.size(); i++) {                                     //LEGGER INN ROMNR SOM DET SOM KOMMER VED TRYKK PÅ MARKØR
+            //LØKKE GJENNOM JSONARRAY-ARRAYET
+            for(int i = 0; i<markorerNy.size(); i++) {
 
-
+                //MELDING PÅ MARKJØR
                 String info = "Trykk for å reservere eller se dagens reservasjoner.";
 
+                //PLASSERER ALLE ROM SOM MARKØRER PÅ KARTET - MED TITTEL(ROMNR) OG INFO
                 mMap.addMarker(new MarkerOptions().position(markorerNy.get(i).getLatLen()).title(markorerNy.get(i).getRomNr()).snippet(info));
-                //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-                //mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
-
-
             }
         }
     }
 
 
-    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
+    //--------HENTER ALLE RESERVASJONER SOM JSONOBJEKTER FRA WEBSERVICE--------
     private class getJsonAlleReservasjoner extends AsyncTask<String, Void, ArrayList<Reservasjon>> {
         JSONObject jsonObject;
         ArrayList<Reservasjon> jsonArray = new ArrayList<>();
 
-        //kjører i bakgrunnen - heavy work
         @Override
         protected ArrayList<Reservasjon> doInBackground(String... urls) {
-            //String retur = "";
 
             String s = "";
             String output = "";
@@ -402,18 +359,20 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                         JSONArray mat = new JSONArray(output);
 
                         for (int i = 0; i < mat.length(); i++) {
-                            //henter alle json objectene
+
                             JSONObject jsonobject = mat.getJSONObject(i);
 
+                            //HENTER ALLE RESERVASJONER OG OVERFØRER VERDIENE
                             int id = jsonobject.getInt("id");
                             String dato = jsonobject.getString("dato");
                             String tidFra = jsonobject.getString("tidFra");
                             String tidTil = jsonobject.getString("tidTil");
                             String romNr = jsonobject.getString("romNr");
 
-
+                            //OPPRETTER NY RESERVASJON
                             Reservasjon nyReservasjon = new Reservasjon(id, dato, tidFra, tidTil, romNr);
 
+                            //OVERFØRER ALLE ROM TIL JSONARRAY-ARRAYET
                             jsonArray.add(nyReservasjon);
                         }
                         return jsonArray;
@@ -424,7 +383,6 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                     return jsonArray;
                 }
                 catch(Exception e) {
-                    //return "Noe gikk feil";
                     e.printStackTrace();
                 }
             }
@@ -435,8 +393,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         protected void onPostExecute(ArrayList<Reservasjon> jsonArray) {
             reservasjoner = jsonArray;
 
-            //RIKTIG ASYNC HER MTP?-----------------------------------------------------------------------------------<<<
-            zoomTilSted();
+            //zoomTilSted();
         }
     }
 
@@ -465,11 +422,6 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         //ZOOMER TIL VALGT STED FRA MAIN
         zoomTilSted();
 
-
-
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(markorerNy.get(i).getLatLen()));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
 
@@ -698,16 +650,8 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
         LastSide task = new LastSide();
 
-        // int sID = ID+"";
-        //String sID = 1+"";
-
-
         //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
         String url = "http://student.cs.hioa.no/~s304114/SlettRom.php/?romNr="+valgtRomNr;
-
-
-        //FJERNER MELLOMROM I STRENGEN
-        //String urlUtenMellomrom = url.replaceAll(" ", "");
 
         task.execute(new String[]{url});
 
@@ -737,7 +681,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
 
 
-    //En metode for å lage To o l b a rfra minmeny.xml
+    //-------lAGER TOOLBAR---------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -745,27 +689,21 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         return true;
     }
 
+    //-------ULIKE VALG I TOOLBAREN---------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.seRom:
-                Intent intent_startspill = new Intent (Kart.this, MainActivity.class);
-                startActivity(intent_startspill);
-                finish();
-                break;
-            case R.id.registrerRom:
-                Intent intent_statistikk = new Intent (Kart.this, RegistrerRom.class);
-                startActivity(intent_statistikk);
+            case R.id.velgSted:
+                Intent intentS = new Intent (Kart.this, MainActivity.class);
+                startActivity(intentS);
                 finish();
                 break;
             case R.id.SeAlleReservasjoner:
-                Intent intent_preferanser = new Intent (Kart.this, SeAlleReservasjoner.class);
-                startActivity(intent_preferanser);
+                Intent intentSe = new Intent (Kart.this, SeAlleReservasjoner.class);
+                startActivity(intentSe);
                 finish();
                 break;
             default:
-                // If wegothere, theuser'saction wasnot recognized
-                // Invokethesuperclassto handle it.
                 return super.onOptionsItemSelected(item);
         }
         return true;

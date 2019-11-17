@@ -5,12 +5,9 @@ import com.google.android.gms.maps.model.LatLng;
 public class Rom {
 
     //-------ATTRIBUTTER-------
-    //private long ID;
-    private String romNr; //brukes til å slette
+    private String romNr;
     private String bygg;
     private String antSitteplasser;
-    //private double lat;
-    //private double len;
     private LatLng koordinater;
 
 
@@ -19,8 +16,6 @@ public class Rom {
         this.romNr = romNr;
         this.bygg = bygg;
         this.antSitteplasser = antSitteplasser;
-        //this.lat = lat;
-        //this.len = len;
         this.koordinater = koordinater;
     }
 
@@ -46,21 +41,6 @@ public class Rom {
     public void setAntSitteplasser(String antSitteplasser) {
         this.antSitteplasser = antSitteplasser;
     }
-
-    /*public double getLon() {
-        return lon;
-    }
-    public void setLon(Double lon) {
-        this.lon = lon;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }*/
-    //-------SLUTT GET/SET-------
 
     public LatLng getLatLen() {
         return koordinater;

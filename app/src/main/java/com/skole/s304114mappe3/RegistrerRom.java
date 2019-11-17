@@ -238,7 +238,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
     }
 
 
-    //En metode for å lage To o l b a rfra minmeny.xml
+    //-------lAGER TOOLBAR---------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -246,17 +246,14 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
         return true;
     }
 
+    //-------ULIKE VALG I TOOLBAREN---------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.seRom:
+            case R.id.velgSted:
                 Intent intent = new Intent (RegistrerRom.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-                break;
-            case R.id.registrerRom:
-                Intent intent_statistikk = new Intent (RegistrerRom.this, RegistrerRom.class);
-                startActivity(intent_statistikk);
                 break;
             case R.id.SeAlleReservasjoner:
                 Intent intent_preferanser = new Intent (RegistrerRom.this, SeAlleReservasjoner.class);
@@ -264,8 +261,6 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
                 finish();
                 break;
             default:
-                // If wegothere, theuser'saction wasnot recognized
-                // Invokethesuperclassto handle it.
                 return super.onOptionsItemSelected(item);
         }
         return true;
@@ -309,7 +304,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
 
         //lager stringer til url url
         String hentRomNr = romNr.getText().toString();
-        String hentBygg = bygg;;//beskrivelse.getText().toString();
+        String hentBygg = bygg;
         String hentAntSitteplasser = antSitteplasser+"";
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();

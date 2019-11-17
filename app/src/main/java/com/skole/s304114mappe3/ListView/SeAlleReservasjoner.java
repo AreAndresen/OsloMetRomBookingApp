@@ -215,33 +215,8 @@ public class SeAlleReservasjoner extends AppCompatActivity {
     }
 
 
-    /*--------GENERERER SPINNER MED ALLE RESTURATENE SOM ER LAGT TIL I DB--------
-    private void lagRomSpinner() {
 
-        //LEGGER ALLE RESTURANTER I RESTURANT-ARRAY - HENTET FRA DB
-        ArrayList<Rom> alleRomNy = alleRom;
-
-        //GENERERER ARRAYADAPTER TIL SPINNER
-        final ArrayAdapter<Rom> adapterRes = new ArrayAdapter<Rom>(this, R.layout.spinner_design, alleRomNy);
-        adapterRes.setDropDownViewResource(R.layout.spinner_design);
-
-        //spinnerRomNr.setAdapter(adapterRes);
-
-        /*VED VALG/KLIKK AV RESTURANT I SPINNEREN
-        spinnerRomNr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                //GIR VALGTRESTURANT VERDIEN TIL VALGT OBJEKT FRA SPINNER
-                valgtRom = (Rom) parent.getSelectedItem();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-    }*/
-
-    //En metode for å lage To o l b a rfra minmeny.xml
+    //-------lAGER TOOLBAR---------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -249,17 +224,14 @@ public class SeAlleReservasjoner extends AppCompatActivity {
         return true;
     }
 
+    //-------ULIKE VALG I TOOLBAREN---------
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.seRom:
+            case R.id.velgSted:
                 Intent intent = new Intent (SeAlleReservasjoner.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-                break;
-            case R.id.registrerRom:
-                Intent intent_statistikk = new Intent (SeAlleReservasjoner.this, RegistrerRom.class);
-                startActivity(intent_statistikk);
                 break;
             case R.id.SeAlleReservasjoner:
                 Intent intent_preferanser = new Intent (SeAlleReservasjoner.this, SeAlleReservasjoner.class);
@@ -267,8 +239,6 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                 finish();
                 break;
             default:
-                // If wegothere, theuser'saction wasnot recognized
-                // Invokethesuperclassto handle it.
                 return super.onOptionsItemSelected(item);
         }
         return true;
