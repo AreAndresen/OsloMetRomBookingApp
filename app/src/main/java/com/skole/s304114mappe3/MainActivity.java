@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLAT", sLat).apply();
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLEN", sLen).apply();
 
-                Intent intent_startspill = new Intent (MainActivity.this, MainActivityNy.class);
+                Intent intent_startspill = new Intent (MainActivity.this, Kart.class);
                 startActivity(intent_startspill);
                 finish();
             }
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLAT", sLat).apply();
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("STEDLEN", sLen).apply();
 
-                Intent intent_statistikk = new Intent (MainActivity.this, MainActivityNy.class);
+                Intent intent_statistikk = new Intent (MainActivity.this, Kart.class);
                 startActivity(intent_statistikk);
                 finish();
             }
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         innstillingerKnapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_preferanser = new Intent (MainActivity.this, MainActivityNy.class);
+                Intent intent_preferanser = new Intent (MainActivity.this, Kart.class);
                 startActivity(intent_preferanser);
             }
         });*/

@@ -17,12 +17,11 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.skole.s304114mappe3.Dialog.SeReservasjonsInfoFragment;
+import com.skole.s304114mappe3.Kart;
 import com.skole.s304114mappe3.MainActivity;
-import com.skole.s304114mappe3.MainActivityNy;
 import com.skole.s304114mappe3.R;
 import com.skole.s304114mappe3.RegistrerRom;
 import com.skole.s304114mappe3.klasser.Reservasjon;
-import com.skole.s304114mappe3.klasser.Rom;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +76,7 @@ public class SeAlleReservasjoner extends AppCompatActivity {
         btnTilbake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (SeAlleReservasjoner.this, MainActivityNy.class);
+                Intent intent = new Intent (SeAlleReservasjoner.this, Kart.class);
                 startActivity(intent);
                 finish();
             }
@@ -283,7 +282,7 @@ public class SeAlleReservasjoner extends AppCompatActivity {
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent (SeAlleReservasjoner.this, MainActivityNy.class);
+        Intent intent = new Intent (SeAlleReservasjoner.this, Kart.class);
         startActivity(intent);
         finish();
     }

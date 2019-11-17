@@ -14,19 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
-import com.skole.s304114mappe3.MainActivityNy;
 import com.skole.s304114mappe3.R;
-import com.skole.s304114mappe3.RegistrerRom;
 import com.skole.s304114mappe3.klasser.Reservasjon;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class SeReservasjonsInfoFragment extends AppCompatActivity implements SlettReservasjonDialog.DialogClickListener{
 
@@ -139,10 +135,6 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
 
         LastSide task = new LastSide();
 
-        // int sID = ID+"";
-        //String sID = 1+"";
-
-
         //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
         String url = "http://student.cs.hioa.no/~s304114/SlettReservasjon.php/?id="+ID;
         //FJERNER MELLOMROM I STRENGEN
@@ -162,8 +154,6 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-
-
         }
 
 

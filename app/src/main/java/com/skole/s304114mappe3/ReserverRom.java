@@ -4,7 +4,6 @@ package com.skole.s304114mappe3;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -185,7 +183,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         btnAvbryt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (ReserverRom.this, MainActivityNy.class);
+                Intent intent = new Intent (ReserverRom.this, Kart.class);
                 startActivity(intent);
                 finish();
             }
@@ -308,16 +306,15 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
                 int sum = tidTilInt - tidFraInt;
 
-                if(tidFraInt > tidTilInt) {
+                RiktigTid = true;
+
+                if(tidFraInt >= tidTilInt) {
                     Toast.makeText(adapterView.getContext(), "Starttid må være før sluttid."+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
                 }
                 if(sum > 200) {
                     Toast.makeText(adapterView.getContext(), "Reservasjon kan ikke oversige 2 timer "+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
-                }
-                else{
-                    RiktigTid = true;
                 }
                 Toast.makeText(adapterView.getContext(), tidFra, Toast.LENGTH_SHORT).show();
             }
@@ -355,7 +352,9 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
                 int sum = tidTilInt - tidFraInt;
 
-                if(tidFraInt > tidTilInt) {
+                RiktigTid = true;
+
+                if(tidFraInt >= tidTilInt) {
                     Toast.makeText(adapterView.getContext(), "Starttid må være før sluttid."+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
                 }
@@ -363,9 +362,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                     Toast.makeText(adapterView.getContext(), "Reservasjon kan ikke oversige 2 timer "+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
                 }
-                else{
-                    RiktigTid = true;
-                }
+
 
                 Toast.makeText(adapterView.getContext(), tidFraInt+" OG "+tidTilInt+" . "+tidTil+" = "+sum, Toast.LENGTH_SHORT).show();
             }
@@ -375,33 +372,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         });
     }
 
-
-
-    //--------GENERERER SPINNER MED ALLE RESTURATENE SOM ER LAGT TIL I DB--------
-    private void lagRomSpinner() {
-
-        //LEGGER ALLE RESTURANTER I RESTURANT-ARRAY - HENTET FRA DB
-        ArrayList<Rom> alleRomNy = alleRom;
-
-        //GENERERER ARRAYADAPTER TIL SPINNER
-        final ArrayAdapter<Rom> adapterRes = new ArrayAdapter<Rom>(this, R.layout.spinner_design, alleRomNy);
-        adapterRes.setDropDownViewResource(R.layout.spinner_design);
-
-        //spinnerRomNr.setAdapter(adapterRes);
-
-        /*VED VALG/KLIKK AV RESTURANT I SPINNEREN
-        spinnerRomNr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                //GIR VALGTRESTURANT VERDIEN TIL VALGT OBJEKT FRA SPINNER
-                valgtRom = (Rom) parent.getSelectedItem();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });*/
-    }
 
 
     //--------INNEBYGD METODE FOR SETTING AV DATO--------
@@ -416,16 +386,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
 
         kontrollerDatoer(dato);
-
-        //visDato.setText(dato);
-
-       /* if(kontrollerDatoer()) {
-            Toast.makeText(ReserverRom.this, dato, Toast.LENGTH_SHORT).show();
-            visDato.setText(dato);
-        }
-        else{
-            Toast.makeText(ReserverRom.this, "Det er ikke mulig å bestille rom tilbake i tid.", Toast.LENGTH_SHORT).show();
-        }*/
     }
 
 
@@ -461,6 +421,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 else{
                     RiktigDato = false;
                     Toast.makeText(ReserverRom.this, "Det er ikke mulig å bestille rom tilbake i tid.", Toast.LENGTH_SHORT).show();
+                    visDato.setText("Ugyldig dato");
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -518,7 +479,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
 
         for(Reservasjon r : reservasjoner) {
-            if(r.getDato().equals(dato)) {
+            if(r.getDato().equals(dato) && r.getRomNr().equals(valgtRomNr)) {
 
                 if(r.getTidFra().equals(tidFra) ||  r.getTidTil().equals(tidTil)) {
                     ReservasjonFinnes = true;
@@ -528,9 +489,9 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
 
         //KONTROLLERER AT ALLE FELTER SOM ER OBLIGATORISKE ER BENYTTET
-        if (visDato.getText().toString().equals("") && !RiktigTid && !RiktigDato) { // && kontrollerDatoer()
+        if (ReservasjonFinnes) { // && kontrollerDatoer()
 
-            Toast.makeText(ReserverRom.this, "Kontroller at alt er fylt ut riktig.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ReserverRom.this, "Reservasjonen finnes.", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -549,13 +510,13 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
             Log.d("Legg inn: ", "Rom lagt til");
 
 
-            Intent intent_tilbake = new Intent (ReserverRom.this, MainActivityNy.class);
+            Intent intent_tilbake = new Intent (ReserverRom.this, Kart.class);
             startActivity(intent_tilbake);
             finish();
 
         }
-        else {
-            Toast.makeText(ReserverRom.this, "Reservasjonen finnes.", Toast.LENGTH_SHORT).show();
+        if(visDato.getText().toString().equals("") || !RiktigTid || !RiktigDato) {
+            Toast.makeText(ReserverRom.this, "Kontroller at alt er fylt ut riktig.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -599,7 +560,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent (ReserverRom.this, MainActivityNy.class);
+        Intent intent = new Intent (ReserverRom.this, Kart.class);
         startActivity(intent);
         finish();
     }

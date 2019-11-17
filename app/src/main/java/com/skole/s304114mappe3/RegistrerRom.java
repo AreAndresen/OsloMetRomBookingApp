@@ -127,7 +127,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
             @Override
             public void onClick(View v) {
                 //VIEW OPPDATERES FORTLØPENDE - FORHINDRER STACK
-                Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
+                Intent intent_tilbake = new Intent (RegistrerRom.this, Kart.class);
                 startActivity(intent_tilbake);
                 finish();
             }
@@ -166,7 +166,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
             Log.d("Legg inn: ", "Rom lagt til");
 
 
-            Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
+            Intent intent_tilbake = new Intent (RegistrerRom.this, Kart.class);
             startActivity(intent_tilbake);
             finish();
 
@@ -331,7 +331,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
     @Override
     public void onBackPressed() {
-        Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivityNy.class);
+        Intent intent_tilbake = new Intent (RegistrerRom.this, Kart.class);
         startActivity(intent_tilbake);
         finish();
     }
