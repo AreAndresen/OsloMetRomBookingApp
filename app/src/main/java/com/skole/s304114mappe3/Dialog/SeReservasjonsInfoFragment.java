@@ -211,7 +211,6 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
     } //SLUTT FRAGMENT
 
 
-
     //-------TILBAKEKNAPP - OPPDATERER INTENT FOR Å OPPDATERE EVENTUELL SLETTING/AVBESTILLING---------
     @Override
     public void onBackPressed() {

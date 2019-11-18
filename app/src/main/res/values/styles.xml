@@ -4,14 +4,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorText</item>
-
-        <!-- Must Add for toolbar  -->
-
     </style>
 
     <style name="NumberPickerTheme" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@android:color/white</item>
-        <!-- To remove divider of the number picker -->
         <item name="colorControlNormal">@color/colorText</item>
         <item name="android:textColorPrimary">@color/colorText</item>
         <item name="android:background">@android:color/white</item>
@@ -20,7 +16,6 @@
 
     <style name="ListTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@android:color/white</item>
-        <!-- To remove divider of the number picker -->
         <item name="colorControlNormal">@color/colorText</item>
         <item name="android:textColorPrimary">@color/colorText</item>
         <item name="android:textSize">18sp</item>

@@ -8,7 +8,6 @@
         android:layout_height="wrap_content">
 
 
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="115dp"
