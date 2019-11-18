@@ -20,8 +20,6 @@
         <activity android:name=".Dialog.SeReservasjonsInfoFragment"></activity>
         <activity android:name=".ListView.SeAlleReservasjoner" />
         <activity android:name=".Dialog.SeReservasjonerDialog" />
-        <activity android:name=".Dialog.reserverRomDialog" />
-        <activity android:name=".Dialog.RegistrerRomDialog" />
         <activity android:name=".ReserverRom" />
         <activity android:name=".RegistrerRom" />
         <activity android:name=".Kart" />

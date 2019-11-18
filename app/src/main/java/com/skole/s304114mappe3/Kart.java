@@ -332,7 +332,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                             //OPPRETTER NY RESERVASJON
                             Reservasjon nyReservasjon = new Reservasjon(id, dato, tidFra, tidTil, romNr);
 
-                            //OVERFØRER ALLE ROM TIL JSONARRAY-ARRAYET
+                            //OVERFØRER ALLE RESERVASJONER TIL JSONARRAY-ARRAYET
                             jsonArray.add(nyReservasjon);
                         }
                         return jsonArray;
@@ -351,6 +351,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
         @Override
         protected void onPostExecute(ArrayList<Reservasjon> jsonArray) {
+            //OVERFØRER ARRAYET TIL ET TILGJENGELIG RESERVASJONER-ARRAY
             reservasjoner = jsonArray;
         }
     }
@@ -629,7 +630,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     }
 
 
-    //--------UTFORMING AV URL OG KJØRING AV DENNE - SLETT RON--------
+    //--------UTFORMING AV URL OG KJØRING AV DENNE - SLETT ROM--------
     public void webSlettRom() {
 
         LastSide task = new LastSide();
