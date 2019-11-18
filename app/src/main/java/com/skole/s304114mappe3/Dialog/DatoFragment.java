@@ -1,4 +1,4 @@
-package com.skole.s304114mappe3;
+package com.skole.s304114mappe3.Dialog;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
