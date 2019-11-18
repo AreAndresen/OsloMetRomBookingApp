@@ -58,10 +58,10 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     //DIALOG ETTER LONGCLICK PÅ MARKØR/MESSAGE VED SLETTING AV ROM
     @Override
     public void jaClick() {
-        //sletter rommet
+        //SLETTER ROMMET
         readWebpage();
 
-        //sletter tilhørende reservasjoner
+        //SLETTER TILHØRENDE RESERVASJONER TIL ROM
         readWebpage2();
 
         Intent intent_tilbake = new Intent (Kart.this, Kart.class);
@@ -232,7 +232,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         String lat = latLng.latitude+"";
         String len = latLng.longitude+"";
 
-        //Ved klikk på kartet blir bruker ledet til registrer rom med koordinater
+        //KLIKK PÅ KART LEDER TIL REGISTRER ROM ACTIVITY MED KOORDINATER FOR TRYKKET PLASSERING
         Intent intent = new Intent (Kart.this, RegistrerRom.class);
         intent.putExtra("LAT",lat);
         intent.putExtra("LEN",len);
@@ -318,7 +318,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
             //LØKKE GJENNOM JSONARRAY-ARRAYET
             for(int i = 0; i<markorerNy.size(); i++) {
 
-                //MELDING PÅ MARKJØR
+                //MELDING PÅ MARKØRER
                 String info = "Trykk for å reservere eller se dagens reservasjoner.";
 
                 //PLASSERER ALLE ROM SOM MARKØRER PÅ KARTET - MED TITTEL(ROMNR) OG INFO
@@ -392,22 +392,21 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         @Override
         protected void onPostExecute(ArrayList<Reservasjon> jsonArray) {
             reservasjoner = jsonArray;
-
-            //zoomTilSted();
         }
     }
 
 
 
-    //HERFRA OG NEDOVER NYTT GPS
+    //--------GPS - HÅNDTERER ENDRING AV PLASSERING--------
     public void handleNewLocation(Location location) {
 
         Log.d(TAG, location.toString());
 
+        //VILLE BENYTTET DISSE KOORDINATENE OPPRINNELIG FOR GPS OG ENDRING
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
 
-        //Manipulerer utgangspunktet for posisjonen
+        //ETTERSOM EMULATOR ER I USA MANIPULERES POSISJON TIL Å VÆRE VED PILESTREDET P32
         LatLng latLng = new LatLng(59.919958, 10.735353); //currentLatitude, currentLongitude 59.919958, 10.735353
 
         MarkerOptions options = new MarkerOptions()
@@ -509,28 +508,22 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-        mMap.setOnInfoWindowClickListener(this);
 
+        //ULIKE ONCLICK-LISTERNERS TIL KARTET
+        mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
-
         mMap.setOnInfoWindowLongClickListener(this);
-        //løkke gjennom koordinat arrayet og setter alle markørene på kartet
 
 
+        //NÅR ASYNC FOR KART ER FERDIG UTFØRES ASYNC FOR Å HENTE ALLE ROM - MAKØRER
         kjorJsonAlleRom();
-
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-        //mMap = googleMap;
-
     }
 
 

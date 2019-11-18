@@ -312,8 +312,8 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                     Toast.makeText(adapterView.getContext(), "Starttid må være før sluttid."+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
                 }
-                if(sum > 200) {
-                    Toast.makeText(adapterView.getContext(), "Reservasjon kan ikke oversige 2 timer "+sum, Toast.LENGTH_SHORT).show();
+                if(sum > 400) {
+                    Toast.makeText(adapterView.getContext(), "Reservasjon kan ikke oversige 4 timer "+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
                 }
                 Toast.makeText(adapterView.getContext(), tidFra, Toast.LENGTH_SHORT).show();
@@ -358,8 +358,8 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                     Toast.makeText(adapterView.getContext(), "Starttid må være før sluttid."+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
                 }
-                if(sum > 200) {
-                    Toast.makeText(adapterView.getContext(), "Reservasjon kan ikke oversige 2 timer "+sum, Toast.LENGTH_SHORT).show();
+                if(sum > 400) {
+                    Toast.makeText(adapterView.getContext(), "Reservasjon kan ikke oversige 4 timer "+sum, Toast.LENGTH_SHORT).show();
                     RiktigTid = false;
                 }
 
