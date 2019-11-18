@@ -7,13 +7,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 
-
-public class SlettReservasjonDialog extends DialogFragment {
+public class SlettRomDialog extends DialogFragment {
     private DialogClickListener callback;
 
     public interface DialogClickListener{
-        void jaClick();
-        void neiClick();
+        void jaClickRom();
+        void neiClickRom();
     }
 
     @Override
@@ -27,18 +26,18 @@ public class SlettReservasjonDialog extends DialogFragment {
         }
     }
 
-    //--------DIALOGBOKS FOR AVBESTILLING--------
+    //--------DIALOGBOKS FOR SLETTING AV ROM--------
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity()).setTitle("Slett/avbestill reservasjon").setMessage("Er du sikker på at du vil slette/avbestille reservasjonen?").
+        return new AlertDialog.Builder(getActivity()).setTitle("Slett rom").setMessage("Er du sikker på at du vil slette valgt rom?").
                 setPositiveButton("Ja", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton){
-                        callback.jaClick();
+                        callback.jaClickRom();
                     }
                 })
                 .setNegativeButton("Nei",new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton){
-                        callback.neiClick();
+                        callback.neiClickRom();
                     }
                 })
                 .create();

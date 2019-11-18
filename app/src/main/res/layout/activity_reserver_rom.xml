@@ -14,7 +14,6 @@
         layout="@layout/toolbar" />
 
 
-
     <TextView
         android:id="@+id/tittelInfo"
         android:layout_below="@+id/toolbar"
@@ -221,7 +220,7 @@
             android:shadowRadius="9"
             android:textColor="@color/colorText2"
             android:textSize="20dp"
-            android:text="Registrer" />
+            android:text="Reserver" />
 
     </LinearLayout>
 

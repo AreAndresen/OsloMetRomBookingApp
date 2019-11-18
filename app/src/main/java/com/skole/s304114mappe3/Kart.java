@@ -33,7 +33,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.skole.s304114mappe3.Dialog.SeReservasjonerDialog;
 import com.skole.s304114mappe3.Dialog.SlettReservasjonDialog;
-import com.skole.s304114mappe3.Dialog.reserverRomDialog;
+import com.skole.s304114mappe3.Dialog.SlettRomDialog;
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 import com.skole.s304114mappe3.klasser.Reservasjon;
 import com.skole.s304114mappe3.klasser.Rom;
@@ -51,18 +51,24 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Kart extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, reserverRomDialog.DialogClickListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener,
-        SeReservasjonerDialog.DialogClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnInfoWindowLongClickListener, SlettReservasjonDialog.DialogClickListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener,
+        GoogleMap.OnInfoWindowClickListener,
+        GoogleMap.OnMarkerClickListener,
+        SeReservasjonerDialog.DialogClickListener,
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnInfoWindowLongClickListener,
+        SlettRomDialog.DialogClickListener {
 
 
     //DIALOG ETTER LONGCLICK PÅ MARKØR/MESSAGE VED SLETTING AV ROM
     @Override
-    public void jaClick() {
+    public void jaClickRom() {
         //SLETTER ROMMET
-        readWebpage();
+        webSlettRom();
 
         //SLETTER TILHØRENDE RESERVASJONER TIL ROM
-        readWebpage2();
+        webSlettTilhorendeReservasjoner();
 
         Intent intent_tilbake = new Intent (Kart.this, Kart.class);
         startActivity(intent_tilbake);
@@ -71,16 +77,12 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     }
 
     @Override
-    public void neiClick() {
+    public void neiClickRom() {
         return;
     }
 
 
     //--------DIALOG KNAPPER TIL FULLFORTSPILLDIALOGFRAGMENT--------
-    @Override
-    public void bestillClick() {
-
-    }
 
     //denne
     @Override
@@ -183,7 +185,6 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     }
 
 
-
     //--------ASYNC NR 1 (ETTER ASYNC MAP) - HENTER ALLE ROM--------
     public void kjorJsonAlleRom(){
 
@@ -191,53 +192,12 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentRom.php"});
     }
 
+
     //--------ASYNC NR 2 - HENTER ALLE RESERVASJONER--------
     public void kjorJsonAlleReservasjoner(){
 
         getJsonAlleReservasjoner task = new getJsonAlleReservasjoner();
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentReservasjoner.php"});
-    }
-
-
-
-    //--------CLICK PÅ MARKØR - SE RESERVASJONER/RESERVER--------
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-
-        //OVERFØRER TITELEN TIL MARKØREN TIL MINNET
-        valgtRomNr = marker.getTitle();
-
-        //LAGRER ID I MINNET - BENYTTES I RESERVASJON OG SEBESTILLINGSINFODIALOG FRAGMENT
-        getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("ROMNR", valgtRomNr).apply();
-
-        return false;
-    }
-
-
-    //--------LONGCLICK PÅ INFOVINDUET TIL MARKØREN FOR ROM - SLETTING AV ROMMET--------
-    @Override
-    public void onInfoWindowLongClick(Marker marker) {
-        valgtRomNr = marker.getTitle();
-
-        //STARTER OPP EN DIALOGBOKS FOR EVT SLETTING AV ROM
-        DialogFragment dialog = new SlettReservasjonDialog();
-        dialog.show(getFragmentManager(), "Slett");
-    }
-
-
-    //--------CLICK PÅ KART--------
-    @Override
-    public void onMapClick(LatLng latLng) {
-
-        String lat = latLng.latitude+"";
-        String len = latLng.longitude+"";
-
-        //KLIKK PÅ KART LEDER TIL REGISTRER ROM ACTIVITY MED KOORDINATER FOR TRYKKET PLASSERING
-        Intent intent = new Intent (Kart.this, RegistrerRom.class);
-        intent.putExtra("LAT",lat);
-        intent.putExtra("LEN",len);
-        startActivity(intent);
-        finish();
     }
 
 
@@ -397,6 +357,47 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
 
 
+    //--------CLICK PÅ MARKØR - SE RESERVASJONER/RESERVER--------
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        //OVERFØRER TITELEN TIL MARKØREN TIL MINNET
+        valgtRomNr = marker.getTitle();
+
+        //LAGRER ID I MINNET - BENYTTES I RESERVASJON OG SEBESTILLINGSINFODIALOG FRAGMENT
+        getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("ROMNR", valgtRomNr).apply();
+
+        return false;
+    }
+
+
+    //--------LONGCLICK PÅ INFOVINDUET TIL MARKØREN FOR ROM - SLETTING AV ROMMET--------
+    @Override
+    public void onInfoWindowLongClick(Marker marker) {
+        valgtRomNr = marker.getTitle();
+
+        //STARTER OPP EN DIALOGBOKS FOR EVT SLETTING AV ROM
+        DialogFragment dialog = new SlettRomDialog();
+        dialog.show(getFragmentManager(), "Slett");
+    }
+
+
+    //--------CLICK PÅ KART--------
+    @Override
+    public void onMapClick(LatLng latLng) {
+
+        String lat = latLng.latitude+"";
+        String len = latLng.longitude+"";
+
+        //KLIKK PÅ KART LEDER TIL REGISTRER ROM ACTIVITY MED KOORDINATER FOR TRYKKET PLASSERING
+        Intent intent = new Intent (Kart.this, RegistrerRom.class);
+        intent.putExtra("LAT",lat);
+        intent.putExtra("LEN",len);
+        startActivity(intent);
+        finish();
+    }
+
+
     //--------GPS - HÅNDTERER ENDRING AV PLASSERING--------
     public void handleNewLocation(Location location) {
 
@@ -424,6 +425,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     }
 
 
+    //--------HÅNDTERER PLASSERINGER OG RETTIGHETER--------
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location services connected.");
@@ -437,12 +439,10 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
             return;
         }
 
-        //Location location = locationManager.getLastKnownLocation(bestProvider);
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (location == null) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-            //handleNewLocation(location);
 
         } else {
             handleNewLocation(location);
@@ -457,11 +457,11 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     }
 
 
+    //--------HÅNDTERER FEIL VED PLASSERINGER OG KART--------
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
             try {
-                // Start an Activity that tries to resolve the error
                 connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
             } catch (IntentSender.SendIntentException e) {
                 e.printStackTrace();
@@ -475,7 +475,6 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     @Override
     protected void onResume() {
         super.onResume();
-        //setUpMapIfNeeded();
         mGoogleApiClient.connect();
     }
 
@@ -489,6 +488,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
     }
 
+    //--------HÅNDTERER ENDRING AV PLASSERING--------
     @Override
     public void onLocationChanged(Location location) {
 
@@ -499,36 +499,32 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
-
+    //--------AKTIVERES NÅR ASYNC FOR KART ER FULLFØRT OG KLART TIL BRUK--------
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
 
-        //ULIKE ONCLICK-LISTERNERS TIL KARTET
+        //FORSKJELLIGE ONCLICK-LISTERNERS TIL KARTET
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowLongClickListener(this);
 
+        //MÅ HA DENNE I TILFELLE BRUKER IKKE HAR SATT PÅ GPS - FOR Å SØKE TIL VALGT STED (DA UTEN LOCATION CHANGE)
+        zoomTilSted();
 
         //NÅR ASYNC FOR KART ER FERDIG UTFØRES ASYNC FOR Å HENTE ALLE ROM - MAKØRER
         kjorJsonAlleRom();
     }
 
 
+    //--------VED KLIKK PÅ INFOVINDUET TIL MARKØREN--------
     @Override
     public void onInfoWindowClick(Marker marker) {
+
+        //UTFORMER RESERVASJONSMELDING
         if(marker.getTitle().equals("Jeg er her!")){
             //marker.hideInfoWindow();
         }
@@ -537,9 +533,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
             String reservasjonerTekst = "";
 
-            String tilToast = "";
-
-            //--------HENTER DAGENS DATO I RIKTIG FORMAT TIL SAMMENLIGNING AV DET SOM LIGGER I DB--------
+            //HENTER DAGENS DATO I RIKTIG FORMAT TIL SAMMENLIGNING
             Calendar c = Calendar.getInstance();
             int aar = c.get(Calendar.YEAR);
             int mnd = c.get(Calendar.MONTH);
@@ -550,13 +544,11 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
 
             for(Reservasjon r : reservasjoner) {
-
+                //HENTER ROMNR
                 if(r.getRomNr().equals(romNr)) {
 
-
-                    //HENTER DATO FRA BESTILLINGEN
+                    //HENTER DATO FRA RESERVASJONEN
                     String dato1 = r.getDato();
-
 
                     //--------FORMATERER DATOENE FOR SAMMENLIGNING--------
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -567,9 +559,8 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                         dato2 = sdf.parse(dato1);
                         dato4 = sdf.parse(datoIdag);
 
-
                         //--------SAMMENLIGNINGER AV FORMATERTE DATOER--------
-                        //HVIS DATO ER I DAG
+                        //HVIS DATO ER I DAG - HENTER EVT RESERVASJONER
                         if((dato2.compareTo(dato4) == 0)) {
 
                             reservasjonerTekst += "Kl: " + r.getTidFra() + "-" + r.getTidTil() + ".\n";
@@ -581,12 +572,12 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                 }
             }
 
-            //Toast.makeText(this, tilToast, Toast.LENGTH_SHORT).show();
-
+            //HVIS INGEN MELDING ER UTFORMET ETTR LØKKEN
             if(reservasjonerTekst.equals("")){
                 reservasjonerTekst = "Ingen aktive reservasjoner i dag.";
             }
 
+            //METODE SOM AKTIVERER DIALOG FOR VISNING AV RESERVASJONER OG KNAPPER (RESERVASJON)
             visReservasjonssinfo(reservasjonerTekst);
 
         }
@@ -607,7 +598,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
 
 
-    //forsøk på å kjøre websiden
+    //--------HÅNDTERER KJØRING AV WEBSERVICE AV URLs--------
     private class LastSide extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -634,44 +625,30 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
 
         @Override
         protected void onPostExecute(String ss) {
-            //textView.setText(ss);
         }
     }
 
 
-    public void readWebpage() {
+    //--------UTFORMING AV URL OG KJØRING AV DENNE - SLETT RON--------
+    public void webSlettRom() {
 
         LastSide task = new LastSide();
 
-        //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
         String url = "http://student.cs.hioa.no/~s304114/SlettRom.php/?romNr="+valgtRomNr;
 
         task.execute(new String[]{url});
-
-
     }
 
-    public void readWebpage2() {
+
+    //--------UTFORMING AV URL OG KJØRING AV DENNE - SLETT RESERVASJONER--------
+    public void webSlettTilhorendeReservasjoner() {
 
         LastSide task = new LastSide();
 
-        // int sID = ID+"";
-        //String sID = 1+"";
-
-
-        //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
         String url = "http://student.cs.hioa.no/~s304114/SlettTilhorendeReservasjoner.php/?romNr="+valgtRomNr;
 
-
-        //FJERNER MELLOMROM I STRENGEN
-        //String urlUtenMellomrom = url.replaceAll(" ", "");
-
         task.execute(new String[]{url});
-
-
     }
-
-
 
 
     //-------lAGER TOOLBAR---------
@@ -681,6 +658,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         inflater.inflate(R.menu.minmeny, menu);
         return true;
     }
+
 
     //-------ULIKE VALG I TOOLBAREN---------
     @Override
@@ -701,7 +679,6 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         }
         return true;
     }
-
 
 
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
