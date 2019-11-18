@@ -39,10 +39,10 @@ import java.util.Date;
 
 public class ReserverRom extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    private ImageView logoItoolBar;
 
     //--------KNAPPER--------
     private Button btnAvbryt, btnReserver;
+    private ImageView logoItoolBar;
 
     //--------TEKST--------
     private TextView visDato,visRomNr;
@@ -52,14 +52,12 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
     //--------VERDIER--------
     private String dato;
-
     private String valgtRomNr;
-
     private String tidFra, tidTil;
     private boolean RiktigTid, RiktigDato, ReservasjonFinnes;
 
+    //--------ARRAY--------
     ArrayList<Reservasjon> reservasjoner = new ArrayList<Reservasjon>();
-
 
 
     @Override
@@ -73,12 +71,13 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         setActionBar(toolbar);
 
 
-        //--------LOGO - FUNGERER SOM KNAPP--------
-        logoItoolBar = findViewById(R.id.logo2);
-
         //--------KNAPPER--------
         btnAvbryt = (Button) findViewById(R.id.btnAvbryt);
         btnReserver = (Button) findViewById(R.id.btnReserver);
+
+
+        //--------LOGO - FUNGERER SOM KNAPP--------
+        logoItoolBar = findViewById(R.id.logo2);
 
 
         //--------TEKST--------
@@ -86,7 +85,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         visRomNr = (TextView) findViewById(R.id.visRomNr);
 
 
-        ////--------HENTER ROMNR TIL VALGT ROM FRA MINNE--------
+        //--------HENTER ROMNR FRA VALGT ROM I KART FRA MINNE--------
         valgtRomNr = getSharedPreferences("APP_INFO",MODE_PRIVATE).getString("ROMNR", "");
 
         visRomNr.setText(valgtRomNr);;
@@ -102,10 +101,11 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         populerSpinSlutt();
 
 
-        //--------ASYNC SOM HENTER ALLE RESERVASJONER - TESTE OM DE FINNES FRA FØR--------
+        //--------ASYNC SOM HENTER ALLE RESERVASJONER - BRUKES TIL Å TESTE OM DE FINNES FRA FØR--------
         kjorJsonAlleReservasjoner();
 
 
+        //--------LISTENERS--------
         //KLIKK LOGO I TOOLBAR
         logoItoolBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +130,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         btnReserver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                readWebpage();
+                webLeggTilReservasjon();
 
             }
         });
@@ -156,7 +156,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
         getJsonAlleReservasjoner task = new getJsonAlleReservasjoner();
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentReservasjoner.php"});
     }
-
 
 
     //--------HENTER ALLE RESERVASJONER SOM JSONOBJEKTER FRA WEBSERVICE--------
@@ -226,7 +225,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
             reservasjoner = jsonArray;
         }
     }
-
 
 
     //--------POPULERER SPINNER FOR START TIDSPUNKT--------
@@ -332,7 +330,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     }
 
 
-
     //--------INNEBYGD METODE FOR SETTING AV DATO--------
     @Override
     public void onDateSet(DatePicker view, int aar, int mnd, int dag) {
@@ -388,7 +385,6 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
     }
 
 
-
     //--------HÅNDTERER KJØRING AV WEBSERVICE AV URLs--------
     private class LastSide extends AsyncTask<String, Void, String> {
         @Override
@@ -421,7 +417,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
 
 
     //--------UTFORMING AV URL OG KJØRING AV DENNE - RESERVER ROM--------
-    public void readWebpage() {
+    public void webLeggTilReservasjon() {
 
         LastSide task = new LastSide();
 

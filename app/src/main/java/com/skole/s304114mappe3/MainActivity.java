@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
     //--------KNAPPER-------
     Button pilestredetKnapp, kjellerKnapp;
-
     private ImageView logoItoolBar;
 
 

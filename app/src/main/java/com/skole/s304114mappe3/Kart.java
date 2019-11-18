@@ -32,7 +32,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.skole.s304114mappe3.Dialog.SeReservasjonerDialog;
-import com.skole.s304114mappe3.Dialog.SlettReservasjonDialog;
 import com.skole.s304114mappe3.Dialog.SlettRomDialog;
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
 import com.skole.s304114mappe3.klasser.Reservasjon;
@@ -61,7 +60,8 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         SlettRomDialog.DialogClickListener {
 
 
-    //DIALOG ETTER LONGCLICK PÅ MARKØR/MESSAGE VED SLETTING AV ROM
+    //--------DIALOG ETTER LONGCLICK PÅ MARKØR/MESSAGE VED SLETTING AV ROM--------
+    //KLIKK PÅ JA
     @Override
     public void jaClickRom() {
         //SLETTER ROMMET
@@ -70,33 +70,30 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         //SLETTER TILHØRENDE RESERVASJONER TIL ROM
         webSlettTilhorendeReservasjoner();
 
-        Intent intent_tilbake = new Intent (Kart.this, Kart.class);
-        startActivity(intent_tilbake);
+        //TILBAKE TIL KART
+        Intent intent = new Intent (Kart.this, Kart.class);
+        startActivity(intent);
         finish();
         return;
     }
-
+    //KLIKK PÅ NEI
     @Override
     public void neiClickRom() {
         return;
     }
 
 
-    //--------DIALOG KNAPPER TIL FULLFORTSPILLDIALOGFRAGMENT--------
-
-    //denne
+    //--------DIALOG ETTER CLICK PÅ MARKØR - VALG FOR Å RESERVERE ROM--------
+    //KLIKK PÅ RESERVER
     @Override
     public void reserverClick() {
-        //INTENT TIL SEBESTILLINGSINFOFRAGMENT
-        Intent intent_preferanser = new Intent (Kart.this, ReserverRom.class);
-        startActivity(intent_preferanser);
+        Intent intent = new Intent (Kart.this, ReserverRom.class);
+        startActivity(intent);
         finish();
     }
-
-    //denne
+    //KLIKK PÅ AVBRYT
     @Override
     public void avbrytClick() {
-        Toast.makeText(getApplicationContext(), "Avbrutt bestilling", Toast.LENGTH_LONG).show();
         return;
     }
 
@@ -115,7 +112,8 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     //--------VERDIER--------
     String datoIdag, valgtRomNr;
 
-    private ImageView logo;
+    //--------KNAPP - LOGO--------
+    private ImageView logoItoolBar;
 
 
 
@@ -143,6 +141,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                 .addApi(LocationServices.API)
                 .build();
 
+
         //-------HENTER LOKASJON TIL GPS---------
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -152,12 +151,13 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
                 .setFastestInterval(60 * 10000);
 
 
-        //LOGO
-        logo = findViewById(R.id.logo2);
+        //--------LOGO - FUNGERER SOM KNAPP--------
+        logoItoolBar = findViewById(R.id.logo2);
+
 
         //--------LISTENERS--------
         //KLIKK LOGO I TOOLBAR
-        logo.setOnClickListener(new View.OnClickListener() {
+        logoItoolBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent_startspill = new Intent(Kart.this, MainActivity.class);
@@ -383,7 +383,7 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
     }
 
 
-    //--------CLICK PÅ KART--------
+    //--------KLIKK PÅ KART - REGISTRERING AV ROM PÅ POSISJONEN--------
     @Override
     public void onMapClick(LatLng latLng) {
 

@@ -20,11 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
-import com.google.android.gms.maps.model.LatLng;
 import com.skole.s304114mappe3.ListView.SeAlleReservasjoner;
-import com.skole.s304114mappe3.klasser.Rom;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -35,6 +31,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
 
     //--------KNAPPER--------
     private Button btnRegistrer, btnAvbryt;
+    private ImageView logoItoolBar;
 
     //--------TEKST--------
     private EditText romNr;
@@ -42,20 +39,13 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
 
     //--------SPINNERE--------
     private Spinner spinBygg;
+
+    //--------TALLPICKER--------
     NumberPicker sitteplasser;
 
-    //--------DB HANDLER--------
-    //DBhandler db;
-
-    Rom nyttRom;
-
-    //brukes av tallpicker
-    int antSitteplasser;
-    String bygg;
-
-    private ImageView logo;
-
-    private String lat,len;
+    //--------VERDIER--------
+    private int antSitteplasser;
+    private String lat,len, bygg;
 
 
     @Override
@@ -63,35 +53,33 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrer_rom);
 
-
+        //--------TOOLBAR--------
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.minmeny);
-        //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
         setActionBar(toolbar);
 
 
-        logo = findViewById(R.id.logo2);
+        //--------LOGO - FUNGERER SOM KNAPP--------
+        logoItoolBar = findViewById(R.id.logo2);
 
 
         //--------KNAPPER--------
         btnRegistrer = (Button) findViewById(R.id.btnRegistrer);
         btnAvbryt = (Button) findViewById(R.id.btnAvbryt);
 
+
         //--------INPUTS--------
         romNr = (EditText)findViewById(R.id.romNr);
-        //beskrivelse = (EditText)findViewById(R.id.beskrivelse);
-
-
         latKoordinat = (TextView) findViewById(R.id.latKoordinat);
         lenKoordinat = (TextView) findViewById(R.id.lenKoordinat);
 
 
-        //HENTER FRA MAINNY KOORDINATER INTENT
+        //--------HENTER KOORDINATENE HVOR DET BLE TRYKKET PÅ KARTET--------
         lat = getIntent().getStringExtra("LAT");
         len = getIntent().getStringExtra("LEN");
 
 
+        //--------SETTER INN KOORDINATENE FERDIG UTFYLT--------
         latKoordinat.setText(lat);
         lenKoordinat.setText(len);
 
@@ -99,34 +87,46 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
         //--------SPINNERE--------
         spinBygg = (Spinner) findViewById(R.id.spinBygg);
 
+
+        //--------POPULERER SPINNER FOR BYGG--------
+        populerSpinBygg();
+
+
         //--------TALL PICKER--------
         sitteplasser = findViewById(R.id.sitteplasser);
 
+
+        //SETTER MIN OG MAKS VERDI PÅ ANTALL PLASSER
         sitteplasser.setMinValue(1);
-        sitteplasser.setMaxValue(10);
+        sitteplasser.setMaxValue(15);
         sitteplasser.setOnValueChangedListener(this);
 
 
-
-        //--------DB HANDLER--------
-        //db = new DBhandler(this);
-
-
         //--------LISTENERS--------
-        //KLIKK PÅ LEGG TIL
+        //KLIKK LOGO I TOOLBAR
+        logoItoolBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentS = new Intent (RegistrerRom.this, MainActivity.class);
+                startActivity(intentS);
+                finish();
+            }
+        });
+
+        //KLIKK PÅ REGISTRER
         btnRegistrer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //METODE FOR Å KONTROLLRE AT ALT ER VALIDERT FØR REGISTRERING
                 fullforRegistrering();
             }
         });
 
-        //KLIKK PÅ TILBAKE
+        //KLIKK PÅ AVBRYT
         btnAvbryt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //VIEW OPPDATERES FORTLØPENDE - FORHINDRER STACK
                 Intent intent_tilbake = new Intent (RegistrerRom.this, Kart.class);
                 startActivity(intent_tilbake);
                 finish();
@@ -134,51 +134,49 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
         });
         //--------SLUTT LISTENERS--------
 
-
-        populerSpinBygg();
-
     }//-------CREATE SLUTTER---------
 
 
+
+    //-------HENTER UT VERDIEN VED ENDRINGER I TALLVELGER FOR ANTALL ROM---------
     @Override
     public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-        //tvShowNumbers.setText("Old Value = " + i + " New Value = " + i1);
-        antSitteplasser = i1;
-        //INFOMELDING UT
-        toastMessage(antSitteplasser+"");
 
+        antSitteplasser = i1;
     }
 
-    //FIKS INPUTVALIDERING HER
-    //--------METODE FOR Å LEGGE TIL OPPRETTET RESTURANT--------
+
+    //--------METODE FOR Å REGISTRER ROM - KONTROLLERER VERDIR--------
     private void fullforRegistrering() {
 
         String hentRomNr = romNr.getText().toString();
 
-        //INPUTVALIDERING
-        if(!hentRomNr.equals("") && hentRomNr.matches("[a-zA-Z0-9\\-\\ \\.]{2,20}+")) {
+        //INPUTVALIDERING - BARE ROM SOM TRENGER ETTERSOM ALT ANNET ER LÅSTE VERDIER
+        if(!hentRomNr.equals("") && hentRomNr.matches("[a-zA-Z0-9\\-\\.]{2,20}+")) {
 
-            readWebpage();
+            //WEBSERVICE SOM UTFØRER REGISTRERINGEN AV ROM
+            webLeggTilRom();
 
             //INFOMELDING UT
             toastMessage("Rom lagt til!");
             //MELDING TIL LOGG
             Log.d("Legg inn: ", "Rom lagt til");
 
-
+            //TILBAKE TIL KARTET
             Intent intent_tilbake = new Intent (RegistrerRom.this, Kart.class);
             startActivity(intent_tilbake);
             finish();
 
        }
+        //HVIS INPUT IKKE ER GODKJENT - FEILMELDING MED TIPS
        else {
             ////INFOMELDING UT - FEIL INPUT
-            toastMessage("Romnummer må være på riktig format (Tips: PH360 eller FI10.117");
+            toastMessage("Romnummer må være på riktig format (Tips: PH360 eller FI10.117)");
         }
     }
 
 
-    //--------POPULERER VENNERLISTVIEWET - MULIGHET FOR LESTTING DIREKTE--------
+    //--------POPULERER SPINNER FOR BYGG--------
     private void populerSpinBygg() {
 
         //GENERERER ARRAYADAPTER TIL LISTVIEWET
@@ -191,12 +189,8 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                //bygg = adapterView.getItemAtPosition(i).toString();
-
-
+                //VALGT BYGG OVERFØRES TIL BYGG VERDI
                 bygg = (String) spinBygg.getItemAtPosition(i);
-
-                Toast.makeText(adapterView.getContext(), bygg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -208,66 +202,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
 
 
 
-    //--------METODE FOR OPPRETTE RESTURANT--------
-    public void leggtil(String romNummer, String bygg, String antallSitteplasser, String lat, String len) {
-        //OPPRETTER NYTT RESTURANT-OBJEKT
-        Double latD = Double.parseDouble(lat);
-        Double lenD = Double.parseDouble(len);
-        LatLng koordinater = new LatLng(latD, lenD);
-
-        nyttRom = new Rom(romNummer,bygg, antallSitteplasser, koordinater);
-
-        //LEGGER TIL NY RESTURANT I DB
-        //db.leggTilResturant(nyResturant);
-
-        //NULLSTILLER INPUT
-        romNr.setText("");
-       // beskrivelse.setText("");
-        latKoordinat.setText("");
-        lenKoordinat.setText("");
-
-        //INFOMELDING UT
-        toastMessage("Rom lagt til!");
-        //MELDING TIL LOGG
-        Log.d("Legg inn: ", "Rom lagt til");
-
-        //VIEW OPPDATERES FORTLØPENDE - FORHINDRER STACK
-        Intent intent_tilbake = new Intent (RegistrerRom.this, MainActivity.class);
-        startActivity(intent_tilbake);
-        finish();
-    }
-
-
-    //-------lAGER TOOLBAR---------
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.minmeny, menu);
-        return true;
-    }
-
-    //-------ULIKE VALG I TOOLBAREN---------
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.velgSted:
-                Intent intent = new Intent (RegistrerRom.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.SeAlleReservasjoner:
-                Intent intent_preferanser = new Intent (RegistrerRom.this, SeAlleReservasjoner.class);
-                startActivity(intent_preferanser);
-                finish();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
-
-
-    //forsøk på å kjøre websiden
+    //--------HÅNDTERER KJØRING AV WEBSERVICE AV URLs--------
     private class LastSide extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
@@ -294,33 +229,59 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
 
         @Override
         protected void onPostExecute(String ss) {
-            //textView.setText(ss);
         }
     }
 
-    public void readWebpage() {
+
+    //--------UTFORMING AV URL OG KJØRING AV DENNE - LEGG TIL ROM--------
+    public void webLeggTilRom() {
 
         LastSide task = new LastSide();
 
-        //lager stringer til url url
+        //HENTER VERDIENE TIL URL
         String hentRomNr = romNr.getText().toString();
         String hentBygg = bygg;
         String hentAntSitteplasser = antSitteplasser+"";
         String hentLat = latKoordinat.getText().toString();
         String hentLen = lenKoordinat.getText().toString();
 
-
-        //må fikse  denne strengen så den er uten mellomrom og nordiske tegn og kan brukes i url
+        //UTFORMING AV URL TIL WEBSERVICE
         String url = "http://student.cs.hioa.no/~s304114/LeggTilRom.php/?romNr="+hentRomNr+"&bygg="+hentBygg+"&antSitteplasser="+hentAntSitteplasser+"&lat="+hentLat+"&len="+hentLen;
         //FJERNER MELLOMROM I STRENGEN
         String urlUtenMellomrom = url.replaceAll(" ", "");
-
 
         task.execute(new String[]{urlUtenMellomrom});
     }
 
 
+    //-------LAGER TOOLBAR---------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.minmeny, menu);
+        return true;
+    }
 
+
+    //-------ULIKE VALG I TOOLBAR---------
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.velgSted:
+                Intent intent = new Intent (RegistrerRom.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.SeAlleReservasjoner:
+                Intent intent_preferanser = new Intent (RegistrerRom.this, SeAlleReservasjoner.class);
+                startActivity(intent_preferanser);
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
 
     //-------TILBAKE KNAPP - FORHINDRER STACK---------
