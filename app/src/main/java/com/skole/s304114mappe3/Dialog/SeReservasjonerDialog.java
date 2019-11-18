@@ -1,17 +1,13 @@
 package com.skole.s304114mappe3.Dialog;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.skole.s304114mappe3.R;
 
-import java.util.ArrayList;
 
 public class SeReservasjonerDialog extends DialogFragment {
 

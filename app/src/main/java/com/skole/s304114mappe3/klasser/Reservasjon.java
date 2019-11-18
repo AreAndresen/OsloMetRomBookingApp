@@ -1,7 +1,5 @@
 package com.skole.s304114mappe3.klasser;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class Reservasjon {
     //-------ATTRIBUTTER-------
     private int id;
@@ -9,13 +7,6 @@ public class Reservasjon {
     private String tidFra;
     private String tidTil;
     private String romNr;
-
-
-
-    //-------KONSTRUKTØRER-------
-    /*public Reservasjon() {
-        this.id = id;
-    }*/
 
     //-------KONTRUKSTØR-------
     public Reservasjon(int id, String dato, String tidFra, String tidTil, String romNr) {
@@ -26,16 +17,6 @@ public class Reservasjon {
         this.romNr = romNr;
 
     }
-
-    /*public Reservasjon(int id, String dato, String tidFra, String tidTil, String romNr) {
-        this.id = id;
-        this.dato = dato;
-        this.tidFra = tidFra;
-        this.tidTil = tidTil;
-        this.romNr = romNr;
-
-    }*/
-
 
 
     //-------GET/SET-------
@@ -78,7 +59,7 @@ public class Reservasjon {
     //-------TOSTRING BRUKES I LISTVIEW, DERFOR FÆRRE VERDIER FOR RYDDIGHET-------
     @Override
     public String toString() {
-        return "Dato: "+getDato()+". Romnr: "+getRomNr()+"."; // Kl: "+getTidFra()+"-"+getTidTil()+"
+        return "Dato: "+getDato()+". Romnr: "+getRomNr()+".";
     }
 }
 

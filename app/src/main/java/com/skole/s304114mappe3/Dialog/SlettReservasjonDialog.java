@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 
-
 public class SlettReservasjonDialog extends DialogFragment {
     private DialogClickListener callback;
 

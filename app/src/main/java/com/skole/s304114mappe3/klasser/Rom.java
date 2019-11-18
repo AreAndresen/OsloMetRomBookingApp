@@ -50,7 +50,7 @@ public class Rom {
     }
 
 
-    //-------TOSTRING BRUKES I LISTVIEW, DERFOR FÆRRE VERDIER FOR RYDDIGHET-------
+    //-------TOSTRING-------
     @Override
     public String toString() {
         return getRomNr();

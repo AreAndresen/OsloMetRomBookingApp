@@ -1,7 +1,6 @@
 package com.skole.s304114mappe3.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,21 +11,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
 import com.skole.s304114mappe3.Dialog.SeReservasjonsInfoFragment;
 import com.skole.s304114mappe3.Kart;
 import com.skole.s304114mappe3.MainActivity;
 import com.skole.s304114mappe3.R;
-import com.skole.s304114mappe3.RegistrerRom;
 import com.skole.s304114mappe3.klasser.Reservasjon;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -37,6 +33,7 @@ public class SeAlleReservasjoner extends AppCompatActivity {
 
     //--------KNAPPER--------
     private Button btnTilbake;
+    private ImageView logoItoolBar;
 
     //--------LISTVIEW--------
     private ListView reservasjonerListView;
@@ -47,28 +44,27 @@ public class SeAlleReservasjoner extends AppCompatActivity {
     ArrayList<Reservasjon> reservasjoner = new ArrayList<Reservasjon>();
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_se_alle_reservasjoner);
 
+        //--------TOOLBAR--------
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.minmeny);
-        //toolbar.setNavigationIcon(R.drawable.ic_action_name); //android: //src="@drawable/logo"
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.colorText2));
         setActionBar(toolbar);
+
 
         //--------KNAPPER--------
         btnTilbake = (Button) findViewById(R.id.btnTilbake);
 
+
+        //--------LOGO - FUNGERER SOM KNAPP--------
+        logoItoolBar = findViewById(R.id.logo2);
+
+
         //--------LISTVIEW--------
         reservasjonerListView = (ListView) findViewById(R.id.list);
-
-
-        //--------POPULERER BESTILLINGER LISTVIEWET--------
-        //populerListView();
 
 
         //--------LISTENERS--------
@@ -81,18 +77,30 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                 finish();
             }
         });
+
+        //KLIKK LOGO I TOOLBAR
+        logoItoolBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentS = new Intent (SeAlleReservasjoner.this, MainActivity.class);
+                startActivity(intentS);
+                finish();
+            }
+        });
         //--------SLUTT LISTENERS--------
 
 
+        //--------HENTER ALLE RESERVASJONER FRA WEBSERVICE--------
         kjorJsonAlleReservasjoner();
 
     }//-------CREATE SLUTTER---------
 
 
-    //--------POPULERER BESTILLINGER-LISTVIEWET--------
+
+    //--------POPULERER RESERVASJONER-LISTVIEWET--------
     private void populerListView() {
 
-        //HENTER ALLE BESTILLINGER FRA DB OG LEGGER OVER I ARRAY
+        //HENTER ALLE RESERVASJONER HENTET FRA WEBSERVICE LEGGER OVER I ARRAY
         final ArrayList<Reservasjon> HentReservasjoner = reservasjoner;
 
         //GENERERER ARRAYADAPTER TIL LISTVIEWET
@@ -100,15 +108,15 @@ public class SeAlleReservasjoner extends AppCompatActivity {
         reservasjonerListView.setAdapter(adapter);
 
 
-        //VED KLIKK PÅ BESTILLING I LISTVIEWET
+        //VED KLIKK PÅ RESERVASJON I LISTVIEWET
         reservasjonerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                //GIR VALGTBESTILLING VERDIEN TIL VALGT OBJEKT FRA LISTVIEWET
+                //GIR VALGTRESERVASJON VERDIEN TIL VALGT OBJEKT FRA LISTVIEWET
                 valgtReservasjon = (Reservasjon) reservasjonerListView.getItemAtPosition(i);
 
-                //HENTER OG PARSER ID FRA BESTILLINGEN
+                //HENTER OG PARSER VERDIER FRA RESERVASJONEN
                 int ID = (int) valgtReservasjon.getId();
                 String dato = (String) valgtReservasjon.getDato();
                 String tidFra = (String) valgtReservasjon.getTidFra();
@@ -116,7 +124,7 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                 String romNr = (String) valgtReservasjon.getRomNr();
 
 
-                //LAGRER ID I MINNET - BENYTTES TIL I SEBESTILLINGSINFODIALOGFRAGMENT OG I MINSERVICE/NOTIFIKASJON FOR VISNING
+                //LAGRER VERDIER I MINNET - BENYTTES TIL I SERESERVASJONINFODIALOGFRAGMENT FOR VISNING
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putInt("VISNINGSID", ID).apply();
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("VISNINGSDATO", dato).apply();
                 getSharedPreferences("APP_INFO",MODE_PRIVATE).edit().putString("VISNINGSTIDFRA", tidFra).apply();
@@ -126,7 +134,7 @@ public class SeAlleReservasjoner extends AppCompatActivity {
 
                 toastMessage(ID+""+valgtReservasjon.getRomNr());
 
-                //INTENT TIL SEBESTILLINGSINFOFRAGMENT
+                //GÅR TIL SERESERVASJONSINFO-FRAGMENTET ETTER TRYKK PÅ OBJEKT FRA LISTEN
                 Intent intentet = new Intent(SeAlleReservasjoner.this, SeReservasjonsInfoFragment.class);
                 startActivity(intentet);
                 finish();
@@ -135,25 +143,21 @@ public class SeAlleReservasjoner extends AppCompatActivity {
     }
 
 
+    //--------HENTER ALLE RESERVASJONER--------
     public void kjorJsonAlleReservasjoner(){
-        //JSON GREIER
-        //textView = (TextView) findViewById(R.id.jasontekst);
+
         getJSONHentReservasjoner task = new getJSONHentReservasjoner();
         task.execute(new String[]{"http://student.cs.hioa.no/~s304114/HentReservasjoner.php"});
     }
 
 
-
-    //METODER FOR Å HENTE JSONOBJEKTENE FRA URL  - Sette inn ArrayList HER?
+    //--------HENTER ALLE RESERVASJONER SOM JSONOBJEKTER FRA WEBSERVICE--------
     private class getJSONHentReservasjoner extends AsyncTask<String, Void, ArrayList<Reservasjon>> {
         JSONObject jsonObject;
         ArrayList<Reservasjon> jsonArray = new ArrayList<>();
 
-        //kjører i bakgrunnen - heavy work
         @Override
         protected ArrayList<Reservasjon> doInBackground(String... urls) {
-            //String retur = "";
-
             String s = "";
             String output = "";
 
@@ -177,9 +181,9 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                         JSONArray mat = new JSONArray(output);
 
                         for (int i = 0; i < mat.length(); i++) {
-                            //henter alle json objectene
                             JSONObject jsonobject = mat.getJSONObject(i);
 
+                            //HENTER ALLE RESERVASJONER OG OVERFØRER VERDIENE
                             int id = jsonobject.getInt("id");
                             String dato = jsonobject.getString("dato");
                             String tidFra = jsonobject.getString("tidFra");
@@ -187,8 +191,10 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                             String romNr = jsonobject.getString("romNr");
 
 
+                            //OPPRETTER NY RESERVASJON
                             Reservasjon nyReservasjon = new Reservasjon(id, dato, tidFra, tidTil, romNr);
 
+                            //OVERFØRER ALLE RESERVASJONER TIL JSONARRAY-ARRAYET
                             jsonArray.add(nyReservasjon);
                         }
                         return jsonArray;
@@ -199,7 +205,6 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                     return jsonArray;
                 }
                 catch(Exception e) {
-                    //return "Noe gikk feil";
                     e.printStackTrace();
                 }
             }
@@ -208,8 +213,11 @@ public class SeAlleReservasjoner extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Reservasjon> jsonArray) {
+
+            //OVERFØRER ARRAYET TIL ET TILGJENGELIG RESERVASJONER-ARRAY
             reservasjoner = jsonArray;
 
+            //--------POPULERER LISTVIWET ETTER ASYN ER UTFØRT--------
             populerListView();
         }
     }

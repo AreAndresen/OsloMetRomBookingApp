@@ -201,7 +201,6 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
     }
 
 
-
     //--------HÅNDTERER KJØRING AV WEBSERVICE AV URLs--------
     private class LastSide extends AsyncTask<String, Void, String> {
         @Override

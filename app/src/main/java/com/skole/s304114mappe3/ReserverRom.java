@@ -255,7 +255,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
                 int tidFraInt = Integer.parseInt(sTidFra);
                 int tidTilInt = Integer.parseInt(sTidTil);
 
-                //KONTROLLERER DIFFERANSEN MELLOM TIDENE
+                //FINNER DIFFERANSEN MELLOM TIDENE
                 int sum = tidTilInt - tidFraInt;
 
                 //BOOLEAN BRUKES FOR VERIFISERING SENERE
