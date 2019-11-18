@@ -135,7 +135,7 @@ public class ReserverRom extends AppCompatActivity implements DatePickerDialog.O
             }
         });
 
-        //KLIKK PÅ TILBAKE
+        //KLIKK PÅ AVBRYT
         btnAvbryt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

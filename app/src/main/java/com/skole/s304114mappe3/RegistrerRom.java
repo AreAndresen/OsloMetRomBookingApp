@@ -170,7 +170,7 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
        }
         //HVIS INPUT IKKE ER GODKJENT - FEILMELDING MED TIPS
        else {
-            ////INFOMELDING UT - FEIL INPUT
+            //INFOMELDING UT - FEIL INPUT
             toastMessage("Romnummer må være på riktig format (Tips: PH360 eller FI10.117)");
         }
     }
