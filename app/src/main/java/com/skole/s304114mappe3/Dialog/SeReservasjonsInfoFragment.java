@@ -87,8 +87,8 @@ public class SeReservasjonsInfoFragment extends AppCompatActivity implements Sle
         Log.d("Legg inn: ", "Rom lagt til");
 
         //FORTLØPENDE TILBAKE TIL OVERSIKTEN OVER ALLE RESERVAJONER - NÅ UTEN SLETTET RESERVASJON
-        Intent intent_tilbake = new Intent (SeReservasjonsInfoFragment.this, SeAlleReservasjoner.class);
-        startActivity(intent_tilbake);
+        Intent intent = new Intent (SeReservasjonsInfoFragment.this, SeAlleReservasjoner.class);
+        startActivity(intent);
         finish();
     }
     //-----------------------METODER TIL HOVEDKLASSE-----------------------------

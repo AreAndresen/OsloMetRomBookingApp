@@ -26,7 +26,7 @@ public class SlettReservasjonDialog extends DialogFragment {
         }
     }
 
-    //--------DIALOGBOKS FOR AVBESTILLING--------
+    //--------DIALOGBOKS FOR AVBESTILLING/SLETTING AV RESERVASJON--------
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity()).setTitle("Slett/avbestill reservasjon").setMessage("Er du sikker på at du vil slette/avbestille reservasjonen?").

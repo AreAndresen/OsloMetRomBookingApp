@@ -160,8 +160,8 @@ public class Kart extends AppCompatActivity implements OnMapReadyCallback, Googl
         logoItoolBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_startspill = new Intent(Kart.this, MainActivity.class);
-                startActivity(intent_startspill);
+                Intent intent = new Intent(Kart.this, MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });

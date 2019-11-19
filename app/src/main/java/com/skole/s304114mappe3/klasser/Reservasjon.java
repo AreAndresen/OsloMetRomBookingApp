@@ -62,4 +62,3 @@ public class Reservasjon {
         return "Dato: "+getDato()+". Romnr: "+getRomNr()+".";
     }
 }
-

@@ -272,8 +272,8 @@ public class RegistrerRom extends AppCompatActivity implements NumberPicker.OnVa
                 finish();
                 break;
             case R.id.SeAlleReservasjoner:
-                Intent intent_preferanser = new Intent (RegistrerRom.this, SeAlleReservasjoner.class);
-                startActivity(intent_preferanser);
+                Intent intentSe = new Intent (RegistrerRom.this, SeAlleReservasjoner.class);
+                startActivity(intentSe);
                 finish();
                 break;
             default:

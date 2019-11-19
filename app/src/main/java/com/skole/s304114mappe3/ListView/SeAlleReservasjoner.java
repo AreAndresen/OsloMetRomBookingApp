@@ -242,8 +242,8 @@ public class SeAlleReservasjoner extends AppCompatActivity {
                 finish();
                 break;
             case R.id.SeAlleReservasjoner:
-                Intent intent_preferanser = new Intent (SeAlleReservasjoner.this, SeAlleReservasjoner.class);
-                startActivity(intent_preferanser);
+                Intent intentSe = new Intent (SeAlleReservasjoner.this, SeAlleReservasjoner.class);
+                startActivity(intentSe);
                 finish();
                 break;
             default:

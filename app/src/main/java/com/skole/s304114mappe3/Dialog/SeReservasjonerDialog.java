@@ -40,11 +40,11 @@ public class SeReservasjonerDialog extends DialogFragment {
     }
 
 
-    //Egendefinert alertboks kalles her
+    //EGENDEFINERT ALERT BOKS MED RESERVASJONER
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = new Dialog(getActivity());
-        dialog.setContentView(R.layout.activity_se_reservasjoner_dialog); //setter egen layout her
+        dialog.setContentView(R.layout.activity_se_reservasjoner_dialog);
 
 
         //--------TEKST--------
@@ -55,9 +55,8 @@ public class SeReservasjonerDialog extends DialogFragment {
 
         reservasjonerTekst.setText(reservasjoner);
 
-        //bare en ja knapp når spill er ferdig
         //--------LISTENERS--------
-        //KLIKK PÅ BESTILL
+        //KLIKK PÅ RESERVER
         btnTllReservering.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +65,7 @@ public class SeReservasjonerDialog extends DialogFragment {
             }
         });
 
-        //KLIKK PÅ AVBRYT
+        //KLIKK PÅ TILBAKE
         btnTllbake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,5 +76,4 @@ public class SeReservasjonerDialog extends DialogFragment {
         dialog.show();
         return dialog;
     }
-
 }
